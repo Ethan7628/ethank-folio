@@ -1,24 +1,89 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ethans-future-folio</title>
-    <meta name="description" content="Lovable Generated Project" />
-    <meta name="author" content="Lovable" />
+    <title>Ethan Kusasirakwe - Software Developer & Creative Technologist 2030</title>
+    <meta name="description" content="Futuristic portfolio of Ethan Kusasirakwe - Full-stack developer, UI/UX designer, and data specialist building experiences for the intelligent web." />
+    <meta name="author" content="Ethan Kusasirakwe" />
+    <meta name="keywords" content="software developer, full-stack developer, UI/UX designer, React developer, TypeScript, Kampala Uganda developer" />
 
-    <meta property="og:title" content="ethans-future-folio" />
-    <meta property="og:description" content="Lovable Generated Project" />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="Ethan Kusasirakwe - Software Developer 2030" />
+    <meta property="og:description" content="Building experiences for the intelligent web with React, TypeScript, and modern technologies" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&h=630&fit=crop&crop=face" />
+    <meta property="og:url" content="https://ethankusasirakwe.dev" />
 
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@lovable_dev" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <meta name="twitter:site" content="@ethankusasirakwe" />
+    <meta name="twitter:title" content="Ethan Kusasirakwe - Software Developer 2030" />
+    <meta name="twitter:description" content="Building experiences for the intelligent web" />
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&h=630&fit=crop&crop=face" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=face" type="image/png">
+    <link rel="apple-touch-icon" href="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=180&h=180&fit=crop&crop=face">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#00f5ff">
+    <meta name="msapplication-TileColor" content="#00f5ff">
+    
+    <!-- Preload Critical Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Performance & Security -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Ethan Kusasirakwe",
+      "jobTitle": "Software Developer",
+      "description": "Full-stack developer and creative technologist specializing in React, TypeScript, and modern web technologies",
+      "url": "https://ethankusasirakwe.dev",
+      "sameAs": [
+        "https://github.com/ethan-kusasirakwe",
+        "https://linkedin.com/in/ethan-kusasirakwe"
+      ],
+      "knowsAbout": ["JavaScript", "React", "TypeScript", "Node.js", "UI/UX Design", "Firebase"],
+      "alumniOf": "Makerere University",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Kampala",
+        "addressCountry": "Uganda"
+      }
+    }
+    </script>
   </head>
 
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('SW registered: ', registration);
+            })
+            .catch((registrationError) => {
+              console.log('SW registration failed: ', registrationError);
+            });
+        });
+      }
+    </script>
   </body>
 </html>
