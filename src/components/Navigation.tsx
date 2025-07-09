@@ -33,6 +33,19 @@ export const Navigation: React.FC = () => {
     setIsMobileMenuOpen(false);
   };
 
+  const getThemeIcon = () => {
+    switch (theme) {
+      case 'light':
+        return <Sun className="w-4 h-4 sm:w-5 sm:h-5" />;
+      case 'beige':
+        return <Zap className="w-4 h-4 sm:w-5 sm:h-5" />;
+      case 'dark':
+        return <Moon className="w-4 h-4 sm:w-5 sm:h-5" />;
+      default:
+        return <Zap className="w-4 h-4 sm:w-5 sm:h-5" />;
+    }
+  };
+
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       isScrolled ? 'glass-effect backdrop-blur-lg' : 'bg-transparent'
@@ -41,10 +54,10 @@ export const Navigation: React.FC = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-cyber-blue to-cyber-purple rounded-lg flex items-center justify-center">
-              <span className="text-white font-cyber font-bold text-sm sm:text-lg">EK</span>
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center">
+              <span className="text-primary-foreground font-tech font-bold text-sm sm:text-lg">EK</span>
             </div>
-            <span className="text-lg sm:text-xl font-cyber font-bold">Ethan</span>
+            <span className="text-lg sm:text-xl font-tech font-bold text-foreground">Ethan</span>
           </div>
 
           {/* Desktop Navigation */}
@@ -53,7 +66,7 @@ export const Navigation: React.FC = () => {
               <button
                 key={item.label}
                 onClick={() => scrollToSection(item.href)}
-                className="text-foreground hover:text-cyber-blue transition-colors duration-200 font-medium text-sm xl:text-base"
+                className="text-foreground hover:text-primary transition-colors duration-200 font-medium text-sm xl:text-base"
               >
                 {item.label}
               </button>
@@ -66,22 +79,16 @@ export const Navigation: React.FC = () => {
               variant="ghost"
               size="sm"
               onClick={toggleTheme}
-              className="p-2"
+              className="p-2 text-foreground hover:text-primary"
             >
-              {theme === 'light' ? (
-                <Moon className="w-4 h-4 sm:w-5 sm:h-5" />
-              ) : theme === 'dark' ? (
-                <Zap className="w-4 h-4 sm:w-5 sm:h-5" />
-              ) : (
-                <Sun className="w-4 h-4 sm:w-5 sm:h-5" />
-              )}
+              {getThemeIcon()}
             </Button>
 
             {/* Mobile Menu Button */}
             <Button
               variant="ghost"
               size="sm"
-              className="lg:hidden p-2"
+              className="lg:hidden p-2 text-foreground hover:text-primary"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? (
@@ -100,7 +107,7 @@ export const Navigation: React.FC = () => {
               <button
                 key={item.label}
                 onClick={() => scrollToSection(item.href)}
-                className="block w-full text-left text-foreground hover:text-cyber-blue transition-colors duration-200 font-medium py-2 text-base"
+                className="block w-full text-left text-foreground hover:text-primary transition-colors duration-200 font-medium py-2 text-base"
               >
                 {item.label}
               </button>
