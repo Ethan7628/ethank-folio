@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Code, Palette, Database, Tool, Zap } from 'lucide-react';
+import { Code, Palette, Database, Wrench, Zap } from 'lucide-react';
 
 export const SkillsSection: React.FC = () => {
   const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
@@ -55,7 +55,7 @@ export const SkillsSection: React.FC = () => {
     },
     {
       title: 'Tools',
-      icon: Tool,
+      icon: Wrench,
       color: 'from-cyber-green to-cyber-blue',
       skills: [
         { name: 'Git/GitHub', level: 95, years: 3 },
