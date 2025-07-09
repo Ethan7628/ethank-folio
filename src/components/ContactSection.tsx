@@ -6,6 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Mail, Phone, Github, Linkedin, MapPin, Send, MessageSquare, Calendar } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 
 export const ContactSection: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ export const ContactSection: React.FC = () => {
     message: ''
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [chatInput, setChatInput] = useState('');
   const [chatMessages, setChatMessages] = useState([
     { type: 'bot', message: 'Hi! I\'m Ethan\'s AI assistant. Ask me anything about his skills, projects, or experience!' }
@@ -26,11 +28,49 @@ export const ContactSection: React.FC = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Placeholder for form submission
-    alert('Thank you for your message! I will get back to you soon.');
-    setFormData({ name: '', email: '', message: '' });
+    
+    if (!formData.name || !formData.email || !formData.message) {
+      alert('Please fill in all fields');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // EmailJS template parameters
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        message: formData.message,
+        to_email: 'kusasirakweethan31@gmail.com'
+      };
+
+      // Send email using EmailJS
+      // You'll need to set up EmailJS account and get these IDs
+      // For now, using placeholder IDs - you'll replace these with your actual EmailJS service details
+      const result = await emailjs.send(
+        'YOUR_SERVICE_ID', // Replace with your EmailJS service ID
+        'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
+        templateParams,
+        'YOUR_PUBLIC_KEY' // Replace with your EmailJS public key
+      );
+
+      console.log('Email sent successfully:', result);
+      alert('Thank you for your message! I will get back to you soon.');
+      setFormData({ name: '', email: '', message: '' });
+    } catch (error) {
+      console.error('Failed to send email:', error);
+      // Fallback - open default email client
+      const subject = encodeURIComponent(`Portfolio Contact from ${formData.name}`);
+      const body = encodeURIComponent(`From: ${formData.name} (${formData.email})\n\nMessage:\n${formData.message}`);
+      window.location.href = `mailto:kusasirakweethan31@gmail.com?subject=${subject}&body=${body}`;
+      
+      setFormData({ name: '', email: '', message: '' });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChatSubmit = (e: React.FormEvent) => {
@@ -111,6 +151,7 @@ export const ContactSection: React.FC = () => {
                     onChange={handleInputChange}
                     className="bg-background/50 border-cyber-blue/30 focus:border-cyber-blue h-10 sm:h-12 text-sm sm:text-base"
                     required
+                    disabled={isSubmitting}
                   />
                 </div>
                 <div>
@@ -122,6 +163,7 @@ export const ContactSection: React.FC = () => {
                     onChange={handleInputChange}
                     className="bg-background/50 border-cyber-blue/30 focus:border-cyber-blue h-10 sm:h-12 text-sm sm:text-base"
                     required
+                    disabled={isSubmitting}
                   />
                 </div>
                 <div>
@@ -132,14 +174,16 @@ export const ContactSection: React.FC = () => {
                     onChange={handleInputChange}
                     className="bg-background/50 border-cyber-blue/30 focus:border-cyber-blue min-h-[120px] sm:min-h-[150px] text-sm sm:text-base"
                     required
+                    disabled={isSubmitting}
                   />
                 </div>
                 <Button 
                   type="submit"
-                  className="w-full bg-gradient-to-r from-cyber-blue to-cyber-purple hover:from-cyber-purple hover:to-cyber-pink text-white font-semibold py-2 sm:py-3 text-sm sm:text-base"
+                  disabled={isSubmitting}
+                  className="w-full bg-gradient-to-r from-cyber-blue to-cyber-purple hover:from-cyber-purple hover:to-cyber-pink text-white font-semibold py-2 sm:py-3 text-sm sm:text-base disabled:opacity-50"
                 >
                   <Send className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                  Send Message
+                  {isSubmitting ? 'Sending...' : 'Send Message'}
                 </Button>
               </form>
             </CardContent>
