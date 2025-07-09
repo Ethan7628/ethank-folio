@@ -53,23 +53,11 @@ export const HeroSection: React.FC = () => {
 
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden px-4 sm:px-6 lg:px-8">
-      {/* Clean geometric background pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `linear-gradient(45deg, hsl(var(--tech-primary)) 25%, transparent 25%), 
-                           linear-gradient(-45deg, hsl(var(--tech-primary)) 25%, transparent 25%), 
-                           linear-gradient(45deg, transparent 75%, hsl(var(--tech-secondary)) 75%), 
-                           linear-gradient(-45deg, transparent 75%, hsl(var(--tech-secondary)) 75%)`,
-          backgroundSize: '60px 60px',
-          backgroundPosition: '0 0, 0 30px, 30px -30px, -30px 0px'
-        }}></div>
-      </div>
-
       <div className="container mx-auto relative z-10 max-w-4xl">
         <div className="text-center space-y-6 sm:space-y-8">
           {/* Avatar */}
           <div className="relative mx-auto w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 mb-6 sm:mb-8">
-            <div className="w-full h-full rounded-full bg-gradient-to-r from-tech-primary via-tech-secondary to-tech-accent p-1">
+            <div className="w-full h-full rounded-full bg-gradient-to-r from-primary to-secondary p-1">
               <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
                 <img
                   src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face"
@@ -86,9 +74,9 @@ export const HeroSection: React.FC = () => {
                 className="rounded-full w-8 h-8 sm:w-12 sm:h-12 p-0"
               >
                 {isVoicePlaying ? (
-                  <VolumeX className="w-4 h-4 sm:w-6 sm:h-6 text-tech-primary" />
+                  <VolumeX className="w-4 h-4 sm:w-6 sm:h-6 text-primary" />
                 ) : (
-                  <Volume2 className="w-4 h-4 sm:w-6 sm:h-6 text-tech-primary" />
+                  <Volume2 className="w-4 h-4 sm:w-6 sm:h-6 text-primary" />
                 )}
               </Button>
             </div>
@@ -106,7 +94,7 @@ export const HeroSection: React.FC = () => {
 
           {/* Animated Tagline */}
           <div className="h-12 sm:h-16 flex items-center justify-center animate-slide-up px-4" style={{ animationDelay: '0.4s' }}>
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-tech-primary font-medium text-center">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-primary font-medium text-center">
               {text}
               <span className="animate-ping">|</span>
             </p>
@@ -116,7 +104,7 @@ export const HeroSection: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center animate-slide-up px-4" style={{ animationDelay: '0.6s' }}>
             <Button 
               size="lg" 
-              className="bg-gradient-to-r from-tech-primary to-tech-secondary hover:from-tech-secondary hover:to-tech-accent transition-all duration-300 text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full w-full sm:w-auto text-sm sm:text-base"
+              className="bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-accent transition-all duration-300 text-primary-foreground font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full w-full sm:w-auto text-sm sm:text-base"
               onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
             >
               <Play className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
@@ -127,7 +115,7 @@ export const HeroSection: React.FC = () => {
               variant="outline" 
               size="lg"
               onClick={downloadCV}
-              className="border-tech-primary text-tech-primary hover:bg-tech-primary hover:text-white transition-all duration-300 px-6 sm:px-8 py-3 sm:py-4 rounded-full w-full sm:w-auto text-sm sm:text-base"
+              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 px-6 sm:px-8 py-3 sm:py-4 rounded-full w-full sm:w-auto text-sm sm:text-base"
             >
               <Download className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               📄 Download Smart CV
@@ -137,7 +125,7 @@ export const HeroSection: React.FC = () => {
               variant="ghost" 
               size="lg"
               onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-              className="text-tech-secondary hover:text-tech-accent transition-all duration-300 px-6 sm:px-8 py-3 sm:py-4 rounded-full w-full sm:w-auto text-sm sm:text-base"
+              className="text-secondary hover:text-accent transition-all duration-300 px-6 sm:px-8 py-3 sm:py-4 rounded-full w-full sm:w-auto text-sm sm:text-base"
             >
               <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               🤖 Chat With My AI Bot

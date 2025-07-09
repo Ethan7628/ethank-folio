@@ -1,7 +1,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-type Theme = 'light' | 'dark' | 'cyber';
+type Theme = 'light' | 'dark' | 'beige';
 
 interface ThemeContextType {
   theme: Theme;
@@ -20,27 +20,29 @@ export const useTheme = () => {
 };
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [theme, setTheme] = useState<Theme>('dark');
+  const [theme, setTheme] = useState<Theme>('beige');
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as Theme;
-    if (savedTheme) {
+    if (savedTheme && ['light', 'dark', 'beige'].includes(savedTheme)) {
       setTheme(savedTheme);
     } else {
-      // Auto-detect based on system preference
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      setTheme(systemTheme);
+      // Default to beige theme
+      setTheme('beige');
     }
   }, []);
 
   useEffect(() => {
     const root = document.documentElement;
-    root.className = theme;
+    // Remove all theme classes first
+    root.classList.remove('light', 'dark', 'beige');
+    // Add the current theme class
+    root.classList.add(theme);
     localStorage.setItem('theme', theme);
   }, [theme]);
 
   const toggleTheme = () => {
-    const themes: Theme[] = ['light', 'dark', 'cyber'];
+    const themes: Theme[] = ['light', 'beige', 'dark'];
     const currentIndex = themes.indexOf(theme);
     const nextIndex = (currentIndex + 1) % themes.length;
     setTheme(themes[nextIndex]);
