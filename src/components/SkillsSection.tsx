@@ -12,18 +12,18 @@ export const SkillsSection: React.FC = () => {
     {
       title: 'Languages',
       icon: Code,
-      color: 'from-cyber-blue to-cyber-purple',
+      color: 'from-tech-primary to-tech-secondary',
       skills: [
         { name: 'JavaScript', level: 95, years: 3 },
         { name: 'TypeScript', level: 90, years: 2 },
-        { name: 'Python', level: 85, years: 2 },
         { name: 'HTML/CSS', level: 98, years: 3 },
+        { name: 'SQL', level: 80, years: 2 },
       ]
     },
     {
       title: 'Frameworks',
       icon: Zap,
-      color: 'from-cyber-purple to-cyber-pink',
+      color: 'from-tech-secondary to-tech-accent',
       skills: [
         { name: 'React', level: 95, years: 3 },
         { name: 'Node.js', level: 88, years: 2 },
@@ -34,7 +34,7 @@ export const SkillsSection: React.FC = () => {
     {
       title: 'Design',
       icon: Palette,
-      color: 'from-cyber-pink to-cyber-orange',
+      color: 'from-tech-accent to-tech-primary',
       skills: [
         { name: 'Figma', level: 92, years: 2 },
         { name: 'Tailwind CSS', level: 95, years: 2 },
@@ -45,18 +45,18 @@ export const SkillsSection: React.FC = () => {
     {
       title: 'Databases',
       icon: Database,
-      color: 'from-cyber-orange to-cyber-green',
+      color: 'from-tech-primary to-tech-accent',
       skills: [
         { name: 'Firebase', level: 90, years: 2 },
         { name: 'MongoDB', level: 85, years: 2 },
         { name: 'Supabase', level: 88, years: 1 },
-        { name: 'SQL', level: 80, years: 2 },
+        { name: 'PostgreSQL', level: 78, years: 1 },
       ]
     },
     {
       title: 'Tools',
       icon: Wrench,
-      color: 'from-cyber-green to-cyber-blue',
+      color: 'from-tech-secondary to-tech-primary',
       skills: [
         { name: 'Git/GitHub', level: 95, years: 3 },
         { name: 'VS Code', level: 98, years: 3 },
@@ -69,7 +69,7 @@ export const SkillsSection: React.FC = () => {
   const githubStats = {
     totalRepos: 24,
     totalCommits: 1247,
-    languages: ['JavaScript', 'TypeScript', 'Python', 'CSS'],
+    languages: ['JavaScript', 'TypeScript', 'HTML/CSS', 'SQL'],
     streak: 156
   };
 
@@ -77,13 +77,13 @@ export const SkillsSection: React.FC = () => {
     <section id="skills" className="py-12 sm:py-16 lg:py-20 relative px-4 sm:px-6 lg:px-8">
       <div className="container mx-auto">
         <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-cyber font-bold text-gradient mb-4 sm:mb-6">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-tech font-bold text-gradient mb-4 sm:mb-6">
             My Tech Arsenal
           </h2>
           <p className="text-lg sm:text-xl text-muted-foreground mb-6 sm:mb-8 px-4">
             Real-time data from GitHub and project experience
           </p>
-          <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-cyber-blue to-cyber-purple mx-auto"></div>
+          <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-tech-primary to-tech-secondary mx-auto"></div>
         </div>
 
         {/* GitHub Stats */}
@@ -95,7 +95,7 @@ export const SkillsSection: React.FC = () => {
             { label: 'Languages', value: githubStats.languages.length, suffix: '' },
           ].map((stat, index) => (
             <Card key={index} className="glass-effect border-0 text-center p-3 sm:p-4 hover:scale-105 transition-transform duration-300">
-              <div className="text-xl sm:text-2xl font-cyber font-bold text-cyber-blue">
+              <div className="text-xl sm:text-2xl font-tech font-bold text-tech-primary">
                 {stat.value}{stat.suffix}
               </div>
               <div className="text-xs sm:text-sm text-muted-foreground">{stat.label}</div>
@@ -162,8 +162,11 @@ export const SkillsSection: React.FC = () => {
             {['React', 'TypeScript', 'Node.js', 'Firebase', 'Tailwind', 'Figma', 'Git'].map((tech, index) => (
               <Badge 
                 key={tech}
-                className={`px-3 sm:px-4 py-2 text-sm sm:text-lg animate-pulse-cyber bg-gradient-to-r from-cyber-blue to-cyber-purple text-white border-0`}
-                style={{ animationDelay: `${index * 0.2}s` }}
+                className={`px-3 sm:px-4 py-2 text-sm sm:text-lg bg-gradient-to-r from-tech-primary to-tech-secondary text-white border-0`}
+                style={{ 
+                  animation: `pulse 2s ease-in-out infinite`,
+                  animationDelay: `${index * 0.2}s` 
+                }}
               >
                 {tech}
               </Badge>
