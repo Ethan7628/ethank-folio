@@ -37,23 +37,23 @@ export const Navigation: React.FC = () => {
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       isScrolled ? 'glass-effect backdrop-blur-lg' : 'bg-transparent'
     }`}>
-      <div className="container mx-auto px-6 py-4">
+      <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-gradient-to-r from-cyber-blue to-cyber-purple rounded-lg flex items-center justify-center">
-              <span className="text-white font-cyber font-bold text-lg">EK</span>
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-cyber-blue to-cyber-purple rounded-lg flex items-center justify-center">
+              <span className="text-white font-cyber font-bold text-sm sm:text-lg">EK</span>
             </div>
-            <span className="text-xl font-cyber font-bold">Ethan</span>
+            <span className="text-lg sm:text-xl font-cyber font-bold">Ethan</span>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
             {navItems.map((item) => (
               <button
                 key={item.label}
                 onClick={() => scrollToSection(item.href)}
-                className="text-foreground hover:text-cyber-blue transition-colors duration-200 font-medium"
+                className="text-foreground hover:text-cyber-blue transition-colors duration-200 font-medium text-sm xl:text-base"
               >
                 {item.label}
               </button>
@@ -61,7 +61,7 @@ export const Navigation: React.FC = () => {
           </div>
 
           {/* Theme Toggle & Mobile Menu */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4">
             <Button
               variant="ghost"
               size="sm"
@@ -69,11 +69,11 @@ export const Navigation: React.FC = () => {
               className="p-2"
             >
               {theme === 'light' ? (
-                <Moon className="w-5 h-5" />
+                <Moon className="w-4 h-4 sm:w-5 sm:h-5" />
               ) : theme === 'dark' ? (
-                <Zap className="w-5 h-5" />
+                <Zap className="w-4 h-4 sm:w-5 sm:h-5" />
               ) : (
-                <Sun className="w-5 h-5" />
+                <Sun className="w-4 h-4 sm:w-5 sm:h-5" />
               )}
             </Button>
 
@@ -81,13 +81,13 @@ export const Navigation: React.FC = () => {
             <Button
               variant="ghost"
               size="sm"
-              className="md:hidden p-2"
+              className="lg:hidden p-2"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? (
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4 sm:w-5 sm:h-5" />
               ) : (
-                <Menu className="w-5 h-5" />
+                <Menu className="w-4 h-4 sm:w-5 sm:h-5" />
               )}
             </Button>
           </div>
@@ -95,12 +95,12 @@ export const Navigation: React.FC = () => {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="md:hidden mt-4 glass-effect rounded-lg p-4 space-y-4">
+          <div className="lg:hidden mt-4 glass-effect rounded-lg p-4 space-y-3 sm:space-y-4">
             {navItems.map((item) => (
               <button
                 key={item.label}
                 onClick={() => scrollToSection(item.href)}
-                className="block w-full text-left text-foreground hover:text-cyber-blue transition-colors duration-200 font-medium py-2"
+                className="block w-full text-left text-foreground hover:text-cyber-blue transition-colors duration-200 font-medium py-2 text-base"
               >
                 {item.label}
               </button>
