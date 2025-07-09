@@ -115,29 +115,29 @@ export const ProjectsSection: React.FC = () => {
   };
 
   return (
-    <section id="projects" className="py-20 relative">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-cyber font-bold text-gradient mb-6">
+    <section id="projects" className="py-12 sm:py-16 lg:py-20 relative px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-tech font-bold text-gradient mb-4 sm:mb-6">
             Featured Projects
           </h2>
-          <p className="text-xl text-muted-foreground mb-8">
+          <p className="text-lg sm:text-xl text-muted-foreground mb-6 sm:mb-8">
             Innovative solutions built with cutting-edge technology
           </p>
-          <div className="w-24 h-1 bg-gradient-to-r from-cyber-blue to-cyber-purple mx-auto"></div>
+          <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto"></div>
         </div>
 
         {/* Filter Buttons */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
+        <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-8 sm:mb-12">
           {categories.map((category) => (
             <Button
               key={category}
               variant={filter === category ? "default" : "outline"}
               onClick={() => setFilter(category)}
-              className={`px-6 py-2 rounded-full transition-all duration-300 ${
+              className={`px-4 sm:px-6 py-2 rounded-full transition-all duration-300 text-sm sm:text-base ${
                 filter === category 
-                  ? 'bg-gradient-to-r from-cyber-blue to-cyber-purple text-white' 
-                  : 'border-cyber-blue text-cyber-blue hover:bg-cyber-blue hover:text-white'
+                  ? 'bg-gradient-to-r from-primary to-secondary text-primary-foreground' 
+                  : 'border-primary text-primary hover:bg-primary hover:text-primary-foreground'
               }`}
             >
               {category}
@@ -146,7 +146,7 @@ export const ProjectsSection: React.FC = () => {
         </div>
 
         {/* Projects Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {filteredProjects.map((project, index) => (
             <Card 
               key={project.id}
@@ -173,7 +173,7 @@ export const ProjectsSection: React.FC = () => {
                       size="sm"
                       variant="secondary"
                       onClick={() => playVoiceNote(project.title)}
-                      className="bg-white/20 backdrop-blur-sm hover:bg-white/30"
+                      className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-white/20"
                     >
                       <Volume2 className="w-4 h-4" />
                     </Button>
@@ -181,10 +181,10 @@ export const ProjectsSection: React.FC = () => {
                 </div>
               </div>
 
-              <CardContent className="p-6">
+              <CardContent className="p-4 sm:p-6">
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-xl font-bold mb-2 group-hover:text-cyber-blue transition-colors">
+                    <h3 className="text-lg sm:text-xl font-bold mb-2 text-foreground group-hover:text-primary transition-colors">
                       {project.title}
                     </h3>
                     <p className="text-muted-foreground text-sm">
@@ -194,12 +194,12 @@ export const ProjectsSection: React.FC = () => {
 
                   <div className="flex flex-wrap gap-2">
                     {project.tech.slice(0, 3).map((tech) => (
-                      <Badge key={tech} variant="secondary" className="text-xs">
+                      <Badge key={tech} variant="secondary" className="text-xs bg-primary/10 text-primary border-primary/20">
                         {tech}
                       </Badge>
                     ))}
                     {project.tech.length > 3 && (
-                      <Badge variant="secondary" className="text-xs">
+                      <Badge variant="secondary" className="text-xs bg-primary/10 text-primary border-primary/20">
                         +{project.tech.length - 3}
                       </Badge>
                     )}
@@ -216,7 +216,7 @@ export const ProjectsSection: React.FC = () => {
                   <div className="flex space-x-2 pt-4">
                     <Button 
                       size="sm" 
-                      className="flex-1 bg-gradient-to-r from-cyber-blue to-cyber-purple hover:from-cyber-purple hover:to-cyber-pink"
+                      className="flex-1 bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-accent text-primary-foreground"
                       onClick={() => window.open(project.liveUrl, '_blank')}
                     >
                       <ExternalLink className="w-4 h-4 mr-2" />
@@ -226,14 +226,14 @@ export const ProjectsSection: React.FC = () => {
                       size="sm" 
                       variant="outline"
                       onClick={() => window.open(project.githubUrl, '_blank')}
-                      className="border-cyber-blue text-cyber-blue hover:bg-cyber-blue hover:text-white"
+                      className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
                     >
                       <Github className="w-4 h-4" />
                     </Button>
                     <Button 
                       size="sm" 
                       variant="outline"
-                      className="border-cyber-purple text-cyber-purple hover:bg-cyber-purple hover:text-white"
+                      className="border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground"
                     >
                       <Eye className="w-4 h-4" />
                     </Button>
@@ -245,11 +245,11 @@ export const ProjectsSection: React.FC = () => {
         </div>
 
         {/* View All Projects Button */}
-        <div className="text-center mt-12">
+        <div className="text-center mt-8 sm:mt-12">
           <Button 
             size="lg"
             variant="outline"
-            className="border-cyber-blue text-cyber-blue hover:bg-cyber-blue hover:text-white px-8 py-4 rounded-full"
+            className="border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base"
           >
             View All Projects on GitHub
           </Button>

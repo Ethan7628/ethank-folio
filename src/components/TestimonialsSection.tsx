@@ -103,29 +103,29 @@ export const TestimonialsSection: React.FC = () => {
   const current = testimonials[currentTestimonial];
 
   return (
-    <section className="py-20 relative">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-cyber font-bold text-gradient mb-6">
+    <section className="py-12 sm:py-16 lg:py-20 relative px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-tech font-bold text-gradient mb-4 sm:mb-6">
             Client Success Stories
           </h2>
-          <p className="text-xl text-muted-foreground mb-8">
+          <p className="text-lg sm:text-xl text-muted-foreground mb-6 sm:mb-8">
             Real feedback from satisfied clients and collaborators
           </p>
-          <div className="w-24 h-1 bg-gradient-to-r from-cyber-blue to-cyber-purple mx-auto"></div>
+          <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto"></div>
         </div>
 
         {/* Main Testimonial */}
-        <div className="max-w-4xl mx-auto mb-12">
-          <Card className="glass-effect border-0 p-8 relative">
+        <div className="max-w-4xl mx-auto mb-8 sm:mb-12">
+          <Card className="glass-effect border-0 p-6 sm:p-8 relative">
             <CardContent className="p-0">
-              <div className="absolute top-6 left-6">
-                <Quote className="w-12 h-12 text-cyber-blue/30" />
+              <div className="absolute top-4 sm:top-6 left-4 sm:left-6">
+                <Quote className="w-8 h-8 sm:w-12 sm:h-12 text-primary/30" />
               </div>
               
-              <div className="text-center mb-8">
-                <div className="relative mx-auto w-24 h-24 mb-6">
-                  <div className="w-full h-full rounded-full bg-gradient-to-r from-cyber-blue to-cyber-purple p-1">
+              <div className="text-center mb-6 sm:mb-8">
+                <div className="relative mx-auto w-20 h-20 sm:w-24 sm:h-24 mb-4 sm:mb-6">
+                  <div className="w-full h-full rounded-full bg-gradient-to-r from-primary to-secondary p-1">
                     <img
                       src={current.image}
                       alt={current.name}
@@ -134,27 +134,27 @@ export const TestimonialsSection: React.FC = () => {
                   </div>
                 </div>
                 
-                <h3 className="text-2xl font-bold mb-2">{current.name}</h3>
-                <p className="text-cyber-blue font-semibold mb-1">{current.role}</p>
-                <p className="text-muted-foreground text-sm mb-4">{current.company}</p>
+                <h3 className="text-lg sm:text-2xl font-bold mb-2 text-foreground">{current.name}</h3>
+                <p className="text-primary font-semibold mb-1 text-sm sm:text-base">{current.role}</p>
+                <p className="text-muted-foreground text-xs sm:text-sm mb-4">{current.company}</p>
                 
-                <div className="flex justify-center mb-6">
+                <div className="flex justify-center mb-4 sm:mb-6">
                   {[...Array(current.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                    <Star key={i} className="w-4 h-4 sm:w-5 sm:h-5 fill-yellow-400 text-yellow-400" />
                   ))}
                 </div>
               </div>
 
-              <blockquote className="text-lg md:text-xl text-center leading-relaxed mb-8 italic">
+              <blockquote className="text-base sm:text-lg lg:text-xl text-center leading-relaxed mb-6 sm:mb-8 italic text-foreground">
                 "{current.text}"
               </blockquote>
 
               <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                <div className="flex items-center space-x-4">
-                  <Badge className="bg-cyber-purple/20 text-cyber-purple border-cyber-purple/30">
+                <div className="flex items-center space-x-3 sm:space-x-4">
+                  <Badge className="bg-primary/20 text-primary border-primary/30 text-xs sm:text-sm">
                     {current.project}
                   </Badge>
-                  <Badge className="bg-cyber-blue/20 text-cyber-blue border-cyber-blue/30">
+                  <Badge className="bg-secondary/20 text-secondary border-secondary/30 text-xs sm:text-sm">
                     {current.date}
                   </Badge>
                 </div>
@@ -164,30 +164,30 @@ export const TestimonialsSection: React.FC = () => {
                     variant="outline"
                     size="sm"
                     onClick={() => playVoiceTestimonial(current.text, current.name)}
-                    className="border-cyber-blue text-cyber-blue hover:bg-cyber-blue hover:text-white"
+                    className="border-primary text-primary hover:bg-primary hover:text-primary-foreground text-xs sm:text-sm"
                   >
-                    <Volume2 className="w-4 h-4 mr-2" />
+                    <Volume2 className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                     Play Audio
                   </Button>
                 </div>
               </div>
 
               {/* AI Summary */}
-              <div className="mt-6 p-4 bg-gradient-to-r from-cyber-blue/10 to-cyber-purple/10 rounded-lg border border-cyber-blue/20">
-                <p className="text-sm text-center">
-                  <span className="text-cyber-blue font-semibold">AI Summary:</span> {current.aiSummary}
+              <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg border border-primary/20">
+                <p className="text-xs sm:text-sm text-center text-foreground">
+                  <span className="text-primary font-semibold">AI Summary:</span> {current.aiSummary}
                 </p>
               </div>
             </CardContent>
           </Card>
 
           {/* Navigation */}
-          <div className="flex justify-center items-center space-x-4 mt-8">
+          <div className="flex justify-center items-center space-x-3 sm:space-x-4 mt-6 sm:mt-8">
             <Button
               variant="outline"
               size="sm"
               onClick={prevTestimonial}
-              className="border-cyber-blue text-cyber-blue hover:bg-cyber-blue hover:text-white"
+              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
             >
               <ChevronLeft className="w-4 h-4" />
             </Button>
@@ -200,10 +200,10 @@ export const TestimonialsSection: React.FC = () => {
                     setCurrentTestimonial(index);
                     setIsAutoPlaying(false);
                   }}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                  className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
                     index === currentTestimonial
-                      ? 'bg-cyber-blue scale-125'
-                      : 'bg-cyber-blue/30 hover:bg-cyber-blue/60'
+                      ? 'bg-primary scale-125'
+                      : 'bg-primary/30 hover:bg-primary/60'
                   }`}
                 />
               ))}
@@ -213,7 +213,7 @@ export const TestimonialsSection: React.FC = () => {
               variant="outline"
               size="sm"
               onClick={nextTestimonial}
-              className="border-cyber-blue text-cyber-blue hover:bg-cyber-blue hover:text-white"
+              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
             >
               <ChevronRight className="w-4 h-4" />
             </Button>
@@ -221,38 +221,38 @@ export const TestimonialsSection: React.FC = () => {
         </div>
 
         {/* Floating Testimonial Bubbles */}
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
           {testimonials.slice(0, 3).map((testimonial, index) => (
             <Card 
               key={testimonial.id}
-              className="glass-effect border-0 p-4 cursor-pointer hover:scale-105 transition-all duration-300"
+              className="glass-effect border-0 p-3 sm:p-4 cursor-pointer hover:scale-105 transition-all duration-300"
               onClick={() => {
                 setCurrentTestimonial(testimonials.findIndex(t => t.id === testimonial.id));
                 setIsAutoPlaying(false);
               }}
             >
               <CardContent className="p-0">
-                <div className="flex items-center space-x-3 mb-3">
+                <div className="flex items-center space-x-2 sm:space-x-3 mb-2 sm:mb-3">
                   <img
                     src={testimonial.image}
                     alt={testimonial.name}
-                    className="w-12 h-12 rounded-full object-cover"
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
                   />
                   <div>
-                    <h4 className="font-semibold text-sm">{testimonial.name}</h4>
+                    <h4 className="font-semibold text-xs sm:text-sm text-foreground">{testimonial.name}</h4>
                     <p className="text-xs text-muted-foreground">{testimonial.role}</p>
                   </div>
                 </div>
-                <p className="text-sm text-muted-foreground line-clamp-3">
+                <p className="text-xs sm:text-sm text-muted-foreground line-clamp-3">
                   "{testimonial.text}"
                 </p>
-                <div className="flex justify-between items-center mt-3">
+                <div className="flex justify-between items-center mt-2 sm:mt-3">
                   <div className="flex">
                     {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                      <Star key={i} className="w-2 h-2 sm:w-3 sm:h-3 fill-yellow-400 text-yellow-400" />
                     ))}
                   </div>
-                  <Badge variant="secondary" className="text-xs">
+                  <Badge variant="secondary" className="text-xs bg-primary/10 text-primary border-primary/20">
                     {testimonial.project}
                   </Badge>
                 </div>
