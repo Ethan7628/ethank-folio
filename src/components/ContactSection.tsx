@@ -1,347 +1,243 @@
 
 import React, { useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Send, 
-  MessageSquare, 
-  Mic, 
-  MicOff,
-  Github,
-  Linkedin,
-  ExternalLink,
-  Calendar,
-  Globe
-} from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { Mail, Phone, Github, Linkedin, MapPin, Send, MessageSquare, Calendar } from 'lucide-react';
 
 export const ContactSection: React.FC = () => {
-  const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: ''
   });
-  const [isRecording, setIsRecording] = useState(false);
-  const [chatMessage, setChatMessage] = useState('');
-  const [chatHistory, setChatHistory] = useState<Array<{role: 'user' | 'assistant', content: string}>>([
-    {
-      role: 'assistant',
-      content: 'Hi! I\'m Ethan\'s AI assistant. Ask me anything about his skills, experience, or projects!'
-    }
+
+  const [chatInput, setChatInput] = useState('');
+  const [chatMessages, setChatMessages] = useState([
+    { type: 'bot', message: 'Hi! I\'m Ethan\'s AI assistant. Ask me anything about his skills, projects, or experience!' }
   ]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Simulate form submission
-    try {
-      // In a real app, this would send to EmailJS, Formspree, or your backend
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      toast({
-        title: "Message Sent!",
-        description: "Thanks for reaching out! I'll get back to you within 24 hours.",
-      });
-      
-      setFormData({ name: '', email: '', message: '' });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to send message. Please try again.",
-        variant: "destructive"
-      });
-    }
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   };
 
-  const handleVoiceMessage = () => {
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
-      const recognition = new SpeechRecognition();
-      
-      if (isRecording) {
-        recognition.stop();
-        setIsRecording(false);
-      } else {
-        recognition.start();
-        setIsRecording(true);
-        
-        recognition.onresult = (event: any) => {
-          const transcript = event.results[0][0].transcript;
-          setFormData(prev => ({ ...prev, message: prev.message + ' ' + transcript }));
-          setIsRecording(false);
-        };
-        
-        recognition.onerror = () => {
-          setIsRecording(false);
-          toast({
-            title: "Voice Recognition Error",
-            description: "Please check microphone permissions and try again.",
-            variant: "destructive"
-          });
-        };
-      }
-    } else {
-      toast({
-        title: "Voice Input Not Supported",
-        description: "Your browser doesn't support voice input.",
-        variant: "destructive"
-      });
-    }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Placeholder for form submission
+    alert('Thank you for your message! I will get back to you soon.');
+    setFormData({ name: '', email: '', message: '' });
   };
 
   const handleChatSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!chatMessage.trim()) return;
+    if (!chatInput.trim()) return;
 
-    const newUserMessage = { role: 'user' as const, content: chatMessage };
-    setChatHistory(prev => [...prev, newUserMessage]);
-    
-    // Simulate AI response
-    setTimeout(() => {
-      const responses = [
-        "Ethan has 3+ years of experience in full-stack development, specializing in React, TypeScript, and Node.js.",
-        "His most notable project is the Breakfast Buddy App, which uses AI to recommend personalized meal plans.",
-        "Ethan is available for full-time, contract, or consulting work. You can schedule a call using the calendar link below.",
-        "He's proficient in React, TypeScript, Python, Firebase, and modern UI/UX design principles.",
-        "Ethan has worked with 20+ clients and maintains a 98% satisfaction rate on all projects."
-      ];
-      
-      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-      const aiMessage = { role: 'assistant' as const, content: randomResponse };
-      setChatHistory(prev => [...prev, aiMessage]);
-    }, 1000);
-    
-    setChatMessage('');
+    setChatMessages([
+      ...chatMessages,
+      { type: 'user', message: chatInput },
+      { type: 'bot', message: 'Thanks for your question! I\'m still learning. Please reach out directly for detailed information.' }
+    ]);
+    setChatInput('');
   };
 
   const contactInfo = [
     {
       icon: Mail,
       label: 'Email',
-      value: 'ethan.kusasirakwe@gmail.com',
-      href: 'mailto:ethan.kusasirakwe@gmail.com'
+      value: 'kusasirakweethan31@gmail.com',
+      href: 'mailto:kusasirakweethan31@gmail.com'
     },
     {
       icon: Phone,
-      label: 'WhatsApp',
-      value: '+256 700 123 456',
-      href: 'https://wa.me/256700123456'
+      label: 'Phone',
+      value: '+256 742 128 488',
+      href: 'tel:+256742128488'
+    },
+    {
+      icon: Phone,
+      label: 'Phone Alt',
+      value: '+256 776 347 516',
+      href: 'tel:+256776347516'
+    },
+    {
+      icon: Github,
+      label: 'GitHub',
+      value: 'github.com/Ethan7628',
+      href: 'https://github.com/Ethan7628'
+    },
+    {
+      icon: Linkedin,
+      label: 'LinkedIn',
+      value: 'Kusasirakwe Ethan',
+      href: 'https://www.linkedin.com/in/kusasirakwe-ethan-21585a34b/'
     },
     {
       icon: MapPin,
       label: 'Location',
       value: 'Kampala, Uganda',
       href: '#'
-    },
-    {
-      icon: Calendar,
-      label: 'Schedule Call',
-      value: 'Book a Meeting',
-      href: 'https://calendly.com/ethan-kusasirakwe'
     }
   ];
 
-  const socialLinks = [
-    { icon: Github, label: 'GitHub', href: 'https://github.com/ethan-kusasirakwe' },
-    { icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com/in/ethan-kusasirakwe' },
-    { icon: Globe, label: 'Portfolio', href: '#' },
-    { icon: Mail, label: 'Telegram', href: 'https://t.me/ethankusasirakwe' }
-  ];
-
   return (
-    <section id="contact" className="py-20 relative">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-cyber font-bold text-gradient mb-6">
-            Let's Connect
+    <section id="contact" className="py-12 sm:py-16 lg:py-20 relative px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-cyber font-bold text-gradient mb-4 sm:mb-6">
+            Let's Connect & Create
           </h2>
-          <p className="text-xl text-muted-foreground mb-8">
-            Ready to start your next project? Let's discuss how I can help bring your ideas to life.
+          <p className="text-lg sm:text-xl text-muted-foreground mb-6 sm:mb-8 px-4">
+            Ready to build something amazing together? Let's chat!
           </p>
-          <div className="w-24 h-1 bg-gradient-to-r from-cyber-blue to-cyber-purple mx-auto"></div>
+          <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-cyber-blue to-cyber-purple mx-auto"></div>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Contact Information */}
-          <div className="space-y-6">
-            <Card className="glass-effect border-0">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-4 text-cyber-blue">Get In Touch</h3>
-                <div className="space-y-4">
-                  {contactInfo.map((item, index) => (
-                    <a
-                      key={index}
-                      href={item.href}
-                      target={item.href.startsWith('http') ? '_blank' : undefined}
-                      rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                      className="flex items-center space-x-3 p-3 rounded-lg hover:bg-cyber-blue/10 transition-colors group"
-                    >
-                      <div className="w-10 h-10 bg-gradient-to-r from-cyber-blue to-cyber-purple rounded-lg flex items-center justify-center">
-                        <item.icon className="w-5 h-5 text-white" />
-                      </div>
-                      <div>
-                        <div className="text-sm text-muted-foreground">{item.label}</div>
-                        <div className="font-medium group-hover:text-cyber-blue transition-colors">
-                          {item.value}
-                        </div>
-                      </div>
-                      {item.href.startsWith('http') && (
-                        <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-cyber-blue transition-colors ml-auto" />
-                      )}
-                    </a>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Social Links */}
-            <Card className="glass-effect border-0">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-4 text-cyber-purple">Follow Me</h3>
-                <div className="grid grid-cols-2 gap-3">
-                  {socialLinks.map((social, index) => (
-                    <a
-                      key={index}
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center space-x-2 p-3 rounded-lg border border-cyber-blue/20 hover:bg-cyber-blue hover:text-white transition-all duration-300 group"
-                    >
-                      <social.icon className="w-5 h-5" />
-                      <span className="text-sm font-medium">{social.label}</span>
-                    </a>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Availability Badge */}
-            <Card className="glass-effect border-0">
-              <CardContent className="p-6 text-center">
-                <Badge className="bg-green-500/20 text-green-400 border-green-500/30 mb-3">
-                  🟢 Available for Work
-                </Badge>
-                <p className="text-sm text-muted-foreground">
-                  Currently accepting new projects and collaborations
-                </p>
-                <div className="mt-3 text-xs text-muted-foreground">
-                  Response time: Within 24 hours
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Contact Form */}
-          <div>
-            <Card className="glass-effect border-0">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-4 text-cyber-green">Send Message</h3>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <Input
-                      placeholder="Your Name"
-                      value={formData.name}
-                      onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                      required
-                      className="bg-background/50 border-cyber-blue/30 focus:border-cyber-blue"
-                    />
-                  </div>
-                  <div>
-                    <Input
-                      type="email"
-                      placeholder="Your Email"
-                      value={formData.email}
-                      onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                      required
-                      className="bg-background/50 border-cyber-blue/30 focus:border-cyber-blue"
-                    />
-                  </div>
-                  <div className="relative">
-                    <Textarea
-                      placeholder="Your Message"
-                      value={formData.message}
-                      onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
-                      required
-                      className="bg-background/50 border-cyber-blue/30 focus:border-cyber-blue min-h-[120px]"
-                    />
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleVoiceMessage}
-                      className="absolute bottom-2 right-2 p-2"
-                    >
-                      {isRecording ? (
-                        <MicOff className="w-4 h-4 text-red-500" />
-                      ) : (
-                        <Mic className="w-4 h-4 text-cyber-blue" />
-                      )}
-                    </Button>
-                  </div>
-                  <Button 
-                    type="submit" 
-                    className="w-full bg-gradient-to-r from-cyber-blue to-cyber-purple hover:from-cyber-purple hover:to-cyber-pink text-white"
-                  >
-                    <Send className="w-4 h-4 mr-2" />
-                    Send Message
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-          </div>
+          <Card className="glass-effect border-0 animate-slide-up">
+            <CardContent className="p-6 sm:p-8">
+              <h3 className="text-xl sm:text-2xl font-bold mb-6">Send Me a Message</h3>
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+                <div>
+                  <Input
+                    name="name"
+                    placeholder="Your Name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className="bg-background/50 border-cyber-blue/30 focus:border-cyber-blue h-10 sm:h-12 text-sm sm:text-base"
+                    required
+                  />
+                </div>
+                <div>
+                  <Input
+                    name="email"
+                    type="email"
+                    placeholder="Your Email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="bg-background/50 border-cyber-blue/30 focus:border-cyber-blue h-10 sm:h-12 text-sm sm:text-base"
+                    required
+                  />
+                </div>
+                <div>
+                  <Textarea
+                    name="message"
+                    placeholder="Your Message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    className="bg-background/50 border-cyber-blue/30 focus:border-cyber-blue min-h-[120px] sm:min-h-[150px] text-sm sm:text-base"
+                    required
+                  />
+                </div>
+                <Button 
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-cyber-blue to-cyber-purple hover:from-cyber-purple hover:to-cyber-pink text-white font-semibold py-2 sm:py-3 text-sm sm:text-base"
+                >
+                  <Send className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                  Send Message
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
 
-          {/* AI Chatbot */}
-          <div>
-            <Card className="glass-effect border-0">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-4 text-cyber-orange flex items-center">
-                  <MessageSquare className="w-5 h-5 mr-2" />
-                  Ask My AI Assistant
-                </h3>
-                
-                <div className="space-y-4 mb-4 max-h-60 overflow-y-auto">
-                  {chatHistory.map((message, index) => (
-                    <div
-                      key={index}
-                      className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                    >
-                      <div
-                        className={`max-w-[80%] p-3 rounded-lg text-sm ${
-                          message.role === 'user'
-                            ? 'bg-cyber-blue text-white'
-                            : 'bg-background/50 border border-cyber-blue/30'
-                        }`}
-                      >
-                        {message.content}
+          {/* Contact Info & AI Chat */}
+          <div className="space-y-6 sm:space-y-8">
+            {/* Contact Info */}
+            <Card className="glass-effect border-0 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+              <CardContent className="p-6 sm:p-8">
+                <h3 className="text-xl sm:text-2xl font-bold mb-6">Get In Touch</h3>
+                <div className="space-y-4 sm:space-y-6">
+                  {contactInfo.map((contact, index) => (
+                    <div key={index} className="flex items-center space-x-3 sm:space-x-4">
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-cyber-blue to-cyber-purple rounded-lg flex items-center justify-center">
+                        <contact.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs sm:text-sm text-muted-foreground">{contact.label}</p>
+                        {contact.href !== '#' ? (
+                          <a 
+                            href={contact.href}
+                            target={contact.href.startsWith('http') ? '_blank' : undefined}
+                            rel={contact.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                            className="text-sm sm:text-base font-medium text-cyber-blue hover:text-cyber-purple transition-colors duration-200 break-all"
+                          >
+                            {contact.value}
+                          </a>
+                        ) : (
+                          <p className="text-sm sm:text-base font-medium">{contact.value}</p>
+                        )}
                       </div>
                     </div>
                   ))}
                 </div>
+              </CardContent>
+            </Card>
 
-                <form onSubmit={handleChatSubmit} className="flex space-x-2">
+            {/* AI Chat Bot */}
+            <Card className="glass-effect border-0 animate-slide-up" style={{ animationDelay: '0.4s' }}>
+              <CardContent className="p-6 sm:p-8">
+                <h3 className="text-lg sm:text-xl font-bold mb-4 flex items-center">
+                  <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 mr-2 text-cyber-blue" />
+                  AI Assistant
+                </h3>
+                <div className="space-y-3 sm:space-y-4 max-h-48 sm:max-h-60 overflow-y-auto mb-4">
+                  {chatMessages.map((msg, index) => (
+                    <div key={index} className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+                      <Badge 
+                        variant={msg.type === 'user' ? 'default' : 'secondary'}
+                        className={`max-w-[80%] p-2 sm:p-3 text-xs sm:text-sm ${
+                          msg.type === 'user' 
+                            ? 'bg-cyber-blue text-white' 
+                            : 'bg-muted'
+                        }`}
+                      >
+                        {msg.message}
+                      </Badge>
+                    </div>
+                  ))}
+                </div>
+                <form onSubmit={handleChatSubmit} className="flex gap-2">
                   <Input
-                    placeholder="Ask about Ethan's skills, experience..."
-                    value={chatMessage}
-                    onChange={(e) => setChatMessage(e.target.value)}
-                    className="bg-background/50 border-cyber-blue/30 focus:border-cyber-blue"
+                    value={chatInput}
+                    onChange={(e) => setChatInput(e.target.value)}
+                    placeholder="Ask me anything..."
+                    className="flex-1 bg-background/50 border-cyber-blue/30 focus:border-cyber-blue h-9 sm:h-10 text-sm"
                   />
                   <Button 
                     type="submit" 
                     size="sm"
-                    className="bg-cyber-orange hover:bg-cyber-orange/80"
+                    className="bg-cyber-blue hover:bg-cyber-purple text-white px-3 sm:px-4"
                   >
-                    <Send className="w-4 h-4" />
+                    <Send className="w-3 h-3 sm:w-4 sm:h-4" />
                   </Button>
                 </form>
               </CardContent>
             </Card>
+
+            {/* Quick Actions */}
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <Button 
+                variant="outline"
+                className="flex-1 border-cyber-green text-cyber-green hover:bg-cyber-green hover:text-white transition-all duration-300 py-2 sm:py-3 text-sm sm:text-base"
+                onClick={() => window.open('https://calendly.com/ethankusasirakwe', '_blank')}
+              >
+                <Calendar className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                Book a Call
+              </Button>
+              <Button 
+                variant="outline"
+                className="flex-1 border-cyber-purple text-cyber-purple hover:bg-cyber-purple hover:text-white transition-all duration-300 py-2 sm:py-3 text-sm sm:text-base"
+                onClick={() => window.open('https://wa.me/256742128488', '_blank')}
+              >
+                <Phone className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                WhatsApp
+              </Button>
+            </div>
           </div>
         </div>
       </div>
