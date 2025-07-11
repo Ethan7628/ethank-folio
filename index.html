@@ -1,50 +1,57 @@
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ethan Kusasirakwe - Software Developer & Creative Technologist 2030</title>
-    <meta name="description" content="Futuristic portfolio of Ethan Kusasirakwe - Full-stack developer, UI/UX designer, and data specialist building experiences for the intelligent web." />
-    <meta name="author" content="Ethan Kusasirakwe" />
-    <meta name="keywords" content="software developer, full-stack developer, UI/UX designer, React developer, TypeScript, Kampala Uganda developer" />
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:title" content="Ethan Kusasirakwe - Software Developer 2030" />
-    <meta property="og:description" content="Building experiences for the intelligent web with React, TypeScript, and modern technologies" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&h=630&fit=crop&crop=face" />
-    <meta property="og:url" content="https://ethankusasirakwe.dev" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ethan Kusasirakwe - Software Developer & Creative Technologist</title>
+  <meta name="description"
+    content="Futuristic portfolio of Ethan Kusasirakwe - Full-stack developer, UI/UX designer, and data specialist building experiences for the intelligent web." />
+  <meta name="author" content="Ethan Kusasirakwe" />
+  <meta name="keywords"
+    content="software developer, full-stack developer, UI/UX designer, React developer, TypeScript, Kampala Uganda developer" />
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@ethankusasirakwe" />
-    <meta name="twitter:title" content="Ethan Kusasirakwe - Software Developer 2030" />
-    <meta name="twitter:description" content="Building experiences for the intelligent web" />
-    <meta name="twitter:image" content="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&h=630&fit=crop&crop=face" />
+  <!-- Open Graph / Facebook -->
+  <meta property="og:title" content="Ethan Kusasirakwe - Software Developer 2025" />
+  <meta property="og:description"
+    content="Building experiences for the intelligent web with React, TypeScript, and modern technologies" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image"
+    content="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&h=630&fit=crop&crop=face" />
+  <meta property="og:url" content="https://ethankusasirakwe.dev" />
 
-    <!-- Favicon -->
-    <link rel="icon" href="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=face" type="image/png">
-    <link rel="apple-touch-icon" href="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=180&h=180&fit=crop&crop=face">
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@ethankusasirakwe" />
+  <meta name="twitter:title" content="Ethan Kusasirakwe - Software Developer 2025" />
+  <meta name="twitter:description" content="Building experiences for the intelligent web" />
+  <meta name="twitter:image"
+    content="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&h=630&fit=crop&crop=face" />
 
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.json">
-    
-    <!-- Theme Color -->
-    <meta name="theme-color" content="#00f5ff">
-    <meta name="msapplication-TileColor" content="#00f5ff">
-    
-    <!-- Preload Critical Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <!-- Performance & Security -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="robots" content="index, follow">
-    <meta name="language" content="English">
-    
-    <!-- Structured Data -->
-    <script type="application/ld+json">
+  <!-- Favicon -->
+  <link rel="icon" href="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=face"
+    type="image/png">
+  <link rel="apple-touch-icon"
+    href="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=180&h=180&fit=crop&crop=face">
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="/manifest.json">
+
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#00f5ff">
+  <meta name="msapplication-TileColor" content="#00f5ff">
+
+  <!-- Preload Critical Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Performance & Security -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Person",
@@ -65,25 +72,26 @@
       }
     }
     </script>
-  </head>
+</head>
 
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-    
-    <!-- Service Worker Registration -->
-    <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js')
-            .then((registration) => {
-              console.log('SW registered: ', registration);
-            })
-            .catch((registrationError) => {
-              console.log('SW registration failed: ', registrationError);
-            });
-        });
-      }
-    </script>
-  </body>
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then((registration) => {
+            console.log('SW registered: ', registration);
+          })
+          .catch((registrationError) => {
+            console.log('SW registration failed: ', registrationError);
+          });
+      });
+    }
+  </script>
+</body>
+
 </html>
