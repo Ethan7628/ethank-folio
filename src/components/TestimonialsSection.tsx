@@ -122,7 +122,7 @@ export const TestimonialsSection: React.FC = () => {
               <div className="absolute top-4 sm:top-6 left-4 sm:left-6">
                 <Quote className="w-8 h-8 sm:w-12 sm:h-12 text-primary/30" />
               </div>
-              
+
               <div className="text-center mb-6 sm:mb-8">
                 <div className="relative mx-auto w-20 h-20 sm:w-24 sm:h-24 mb-4 sm:mb-6">
                   <div className="w-full h-full rounded-full bg-gradient-to-r from-primary to-secondary p-1">
@@ -133,11 +133,11 @@ export const TestimonialsSection: React.FC = () => {
                     />
                   </div>
                 </div>
-                
+
                 <h3 className="text-lg sm:text-2xl font-bold mb-2 text-foreground">{current.name}</h3>
                 <p className="text-primary font-semibold mb-1 text-sm sm:text-base">{current.role}</p>
                 <p className="text-muted-foreground text-xs sm:text-sm mb-4">{current.company}</p>
-                
+
                 <div className="flex justify-center mb-4 sm:mb-6">
                   {[...Array(current.rating)].map((_, i) => (
                     <Star key={i} className="w-4 h-4 sm:w-5 sm:h-5 fill-yellow-400 text-yellow-400" />
@@ -158,7 +158,7 @@ export const TestimonialsSection: React.FC = () => {
                     {current.date}
                   </Badge>
                 </div>
-                
+
                 <div className="flex items-center space-x-2">
                   <Button
                     variant="outline"
@@ -191,24 +191,24 @@ export const TestimonialsSection: React.FC = () => {
             >
               <ChevronLeft className="w-4 h-4" />
             </Button>
-            
+
             <div className="flex space-x-2">
               {testimonials.map((_, index) => (
                 <button
                   key={index}
+                  aria-label={`Go to testimonial ${index + 1}`}
                   onClick={() => {
                     setCurrentTestimonial(index);
                     setIsAutoPlaying(false);
                   }}
-                  className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
-                    index === currentTestimonial
+                  className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${index === currentTestimonial
                       ? 'bg-primary scale-125'
                       : 'bg-primary/30 hover:bg-primary/60'
-                  }`}
+                    }`}
                 />
               ))}
             </div>
-            
+
             <Button
               variant="outline"
               size="sm"
@@ -223,7 +223,7 @@ export const TestimonialsSection: React.FC = () => {
         {/* Floating Testimonial Bubbles */}
         <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
           {testimonials.slice(0, 3).map((testimonial, index) => (
-            <Card 
+            <Card
               key={testimonial.id}
               className="glass-effect border-0 p-3 sm:p-4 cursor-pointer hover:scale-105 transition-all duration-300"
               onClick={() => {

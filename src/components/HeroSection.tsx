@@ -60,7 +60,7 @@ const HeroSectionComponent: React.FC = memo(() => {
           <div className="relative mx-auto w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 mb-6 sm:mb-8">
             <div className="w-full h-full rounded-full bg-gradient-to-r from-primary via-secondary to-accent p-1 animate-spin-slow">
               <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
-                <OptimizedImage
+                <img
                   src="/lovable-uploads/790aa63d-8736-498b-b561-e0884f2609a7.png"
                   alt="Ethan Kusasirakwe"
                   className="w-[calc(100%-8px)] h-[calc(100%-8px)] rounded-full object-cover animate-hologram-flicker"
@@ -92,13 +92,13 @@ const HeroSectionComponent: React.FC = memo(() => {
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-tech font-bold holographic-text animate-slide-up">
               ETHAN KUSASIRAKWE
             </h1>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground animate-slide-up px-4" style={{ animationDelay: '0.2s' }}>
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground animate-slide-up px-4 anim-delay-200">
               🚀 Software Developer • 🎨 Creative Technologist • 📊 Data Specialist
             </p>
           </div>
 
           {/* Animated Tagline */}
-          <div className="h-12 sm:h-16 flex items-center justify-center animate-slide-up px-4" style={{ animationDelay: '0.4s' }}>
+          <div className="h-12 sm:h-16 flex items-center justify-center animate-slide-up px-4 anim-delay-400">
             <p className="text-sm sm:text-base md:text-lg lg:text-xl text-primary font-medium text-center">
               {text}
               <span className="animate-ping">|</span>
@@ -106,7 +106,7 @@ const HeroSectionComponent: React.FC = memo(() => {
           </div>
 
           {/* Enhanced CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center animate-slide-up px-4" style={{ animationDelay: '0.6s' }}>
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center animate-slide-up px-4 anim-delay-600">
             <Button
               size="lg"
               className="bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-accent transition-all duration-300 text-primary-foreground font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full w-full sm:w-auto text-sm sm:text-base"
@@ -143,4 +143,16 @@ const HeroSectionComponent: React.FC = memo(() => {
 });
 
 HeroSectionComponent.displayName = 'HeroSection';
+
+// Simple error boundary HOC
+function withErrorBoundary<P>(Component: React.ComponentType<P>) {
+  return function WrappedComponent(props: P) {
+    try {
+      return <Component {...props} />;
+    } catch (error) {
+      return <div>Something went wrong.</div>;
+    }
+  };
+}
+
 export const HeroSection = withErrorBoundary(HeroSectionComponent);

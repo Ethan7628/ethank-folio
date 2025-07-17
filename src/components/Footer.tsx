@@ -83,18 +83,38 @@ export const Footer: React.FC = () => {
 
       {/* Floating Elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {[...Array(5)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 sm:w-2 sm:h-2 bg-primary rounded-full animate-float opacity-30"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${3 + Math.random() * 2}s`
-            }}
-          />
-        ))}
+        {[...Array(5)].map((_, i) => {
+          // Generate random values once per render for each floating element
+          const left = Math.random() * 100;
+          const top = Math.random() * 100;
+          const animationDelay = Math.random() * 3;
+          const animationDuration = 3 + Math.random() * 2;
+
+          // Create a unique class for each floating element
+          const floatClass = `float-elem-${i}`;
+
+          // Inject the style into the document head (for demo purposes, ideally use a CSS-in-JS solution or pre-generate classes)
+          if (typeof window !== 'undefined' && !document.getElementById(floatClass)) {
+            const style = document.createElement('style');
+            style.id = floatClass;
+            style.innerHTML = `
+              .${floatClass} {
+                left: ${left}%;
+                top: ${top}%;
+                animation-delay: ${animationDelay}s;
+                animation-duration: ${animationDuration}s;
+              }
+            `;
+            document.head.appendChild(style);
+          }
+
+          return (
+            <div
+              key={i}
+              className={`absolute w-1 h-1 sm:w-2 sm:h-2 bg-primary rounded-full animate-float opacity-30 ${floatClass}`}
+            />
+          );
+        })}
       </div>
     </footer>
   );

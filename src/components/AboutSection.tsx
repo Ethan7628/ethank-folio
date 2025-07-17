@@ -73,7 +73,7 @@ export const AboutSection: React.FC = () => {
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {content.highlights.map((highlight, index) => (
-                    <Badge 
+                    <Badge
                       key={index}
                       variant="secondary"
                       className="bg-primary/10 text-primary border-primary/20"
@@ -110,7 +110,7 @@ export const AboutSection: React.FC = () => {
             </h3>
             <div className="space-y-4 sm:space-y-6">
               {milestones.map((milestone, index) => (
-                <div 
+                <div
                   key={index}
                   className="flex items-center space-x-3 sm:space-x-4 animate-slide-up"
                   style={{ animationDelay: `${index * 0.1}s` }}
