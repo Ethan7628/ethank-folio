@@ -1,9 +1,10 @@
 
 import { useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import type { Json } from '@/integrations/supabase/types';
 
 export const useAnalytics = () => {
-  const trackEvent = async (eventType: string, section?: string, metadata?: any) => {
+  const trackEvent = async (eventType: string, section?: string, metadata?: Json) => {
     try {
       const { error } = await supabase
         .from('analytics')
@@ -13,7 +14,7 @@ export const useAnalytics = () => {
           user_agent: navigator.userAgent,
           metadata: metadata
         });
-      
+
       if (error) {
         console.error('Analytics tracking error:', error);
       }
@@ -25,9 +26,8 @@ export const useAnalytics = () => {
   const trackPageView = (section: string) => {
     trackEvent('page_view', section);
   };
-
-  const trackInteraction = (action: string, section: string, metadata?: any) => {
-    trackEvent('interaction', section, { action, ...metadata });
+  const trackInteraction = (action: string, section: string, metadata?: Json) => {
+    trackEvent('interaction', section, { action, ...(metadata as object) });
   };
 
   const trackFormSubmission = (formType: string, success: boolean) => {
@@ -47,5 +47,6 @@ export const usePageAnalytics = (section: string) => {
 
   useEffect(() => {
     trackPageView(section);
-  }, [section, trackPageView]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [section]);
 };

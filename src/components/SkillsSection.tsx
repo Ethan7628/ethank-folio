@@ -121,12 +121,12 @@ const SkillsSectionComponent: React.FC = memo(() => {
           {skillCategories.map((category, categoryIndex) => {
             const isExpanded = expandedCategories.has(category.title);
             const visibleSkills = isExpanded ? category.skills : category.skills.slice(0, 2);
-            
+
             return (
-              <Card 
+              <Card
                 key={category.title}
                 className="glass-effect border-0 hover:scale-105 transition-all duration-500 animate-slide-up neon-border"
-                style={{ 
+                style={{
                   animationDelay: `${categoryIndex * 0.15}s`,
                   opacity: isVisible ? 1 : 0,
                   transform: isVisible ? 'translateY(0)' : 'translateY(50px)'
@@ -156,7 +156,7 @@ const SkillsSectionComponent: React.FC = memo(() => {
 
                   <div className="space-y-3 sm:space-y-4">
                     {visibleSkills.map((skill, skillIndex) => (
-                      <div 
+                      <div
                         key={skill.name}
                         className="space-y-2 transform transition-all duration-300 hover:scale-105"
                         onMouseEnter={() => setHoveredSkill(skill.name)}
@@ -167,7 +167,7 @@ const SkillsSectionComponent: React.FC = memo(() => {
                       >
                         <div className="flex justify-between items-center">
                           <span className="font-medium text-sm sm:text-base text-foreground">{skill.name}</span>
-                          <Badge 
+                          <Badge
                             variant="secondary"
                             className="text-xs bg-gradient-to-r from-primary/20 to-secondary/20 text-primary border-primary/30 animate-pulse"
                           >
@@ -175,8 +175,8 @@ const SkillsSectionComponent: React.FC = memo(() => {
                           </Badge>
                         </div>
                         <div className="relative">
-                          <Progress 
-                            value={skill.level} 
+                          <Progress
+                            value={skill.level}
                             className="h-3 bg-muted rounded-full overflow-hidden"
                           />
                           {hoveredSkill === skill.name && (
@@ -188,7 +188,7 @@ const SkillsSectionComponent: React.FC = memo(() => {
                       </div>
                     ))}
                   </div>
-                  
+
                   {category.skills.length > 2 && !isExpanded && (
                     <div className="mt-4 text-center">
                       <span className="text-xs text-muted-foreground">
@@ -215,12 +215,12 @@ const SkillsSectionComponent: React.FC = memo(() => {
               { name: 'Figma', emoji: '🎨' },
               { name: 'Git', emoji: '📊' }
             ].map((tech, index) => (
-              <Badge 
+              <Badge
                 key={tech.name}
                 className="px-3 sm:px-4 py-2 text-sm sm:text-lg bg-gradient-to-r from-primary via-secondary to-accent text-primary-foreground border-0 neon-border hover:scale-110 transform transition-all duration-300"
-                style={{ 
+                style={{
                   animation: `pulse-glow 3s ease-in-out infinite`,
-                  animationDelay: `${index * 0.2}s` 
+                  animationDelay: `${index * 0.2}s`
                 }}
               >
                 {tech.emoji} {tech.name}

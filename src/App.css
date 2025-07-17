@@ -1,3 +1,63 @@
+.anim-delay-0 {
+  animation-delay: 0s;
+}
+
+.anim-delay-2 {
+  animation-delay: 0.2s;
+}
+
+.anim-delay-4 {
+  animation-delay: 0.4s;
+}
+
+.anim-delay-6 {
+  animation-delay: 0.6s;
+}
+
+.anim-delay-8 {
+  animation-delay: 0.8s;
+}
+
+.anim-delay-10 {
+  animation-delay: 1s;
+}
+
+.anim-delay-12 {
+  animation-delay: 1.2s;
+}
+
+.anim-delay-14 {
+  animation-delay: 1.4s;
+}
+
+.anim-delay-15 {
+  animation-delay: 1.5s;
+}
+
+.anim-delay-16 {
+  animation-delay: 1.6s;
+}
+
+.anim-delay-18 {
+  animation-delay: 1.8s;
+}
+
+.anim-delay-20 {
+  animation-delay: 2s;
+}
+
+.anim-delay-200 {
+  animation-delay: 0.2s;
+}
+
+.anim-delay-400 {
+  animation-delay: 0.4s;
+}
+
+.anim-delay-600 {
+  animation-delay: 0.6s;
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -11,9 +71,11 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -22,6 +84,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
