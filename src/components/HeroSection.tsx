@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Download, MessageSquare, Play, Volume2, VolumeX } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
 
+
 export const HeroSection: React.FC = () => {
   const { theme } = useTheme();
   const [isVoicePlaying, setIsVoicePlaying] = useState(false);
@@ -27,11 +28,11 @@ export const HeroSection: React.FC = () => {
   const handleVoiceGreeting = () => {
     if ('speechSynthesis' in window) {
       const utterance = new SpeechSynthesisUtterance(
-        "Hello! I'm Ethan Kusasirakwe, a software developer and creative technologist. Welcome to my professional portfolio!"
+        "Hello! I'm Ethan Kusasirakwe, a software developer and creative technologist. Welcome to my  portfolio!"
       );
       utterance.rate = 0.9;
       utterance.pitch = 1;
-      
+
       if (isVoicePlaying) {
         speechSynthesis.cancel();
         setIsVoicePlaying(false);
@@ -60,7 +61,7 @@ export const HeroSection: React.FC = () => {
             <div className="w-full h-full rounded-full bg-gradient-to-r from-primary to-secondary p-1">
               <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
                 <img
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face"
+                  src=''
                   alt="Ethan Kusasirakwe"
                   className="w-[calc(100%-8px)] h-[calc(100%-8px)] rounded-full object-cover"
                 />
@@ -102,17 +103,17 @@ export const HeroSection: React.FC = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center animate-slide-up px-4" style={{ animationDelay: '0.6s' }}>
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               className="bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-accent transition-all duration-300 text-primary-foreground font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full w-full sm:w-auto text-sm sm:text-base"
               onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
             >
               <Play className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               ✨ Launch My Work
             </Button>
-            
-            <Button 
-              variant="outline" 
+
+            <Button
+              variant="outline"
               size="lg"
               onClick={downloadCV}
               className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 px-6 sm:px-8 py-3 sm:py-4 rounded-full w-full sm:w-auto text-sm sm:text-base"
@@ -120,9 +121,9 @@ export const HeroSection: React.FC = () => {
               <Download className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               📄 Download Smart CV
             </Button>
-            
-            <Button 
-              variant="ghost" 
+
+            <Button
+              variant="ghost"
               size="lg"
               onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
               className="text-secondary hover:text-accent transition-all duration-300 px-6 sm:px-8 py-3 sm:py-4 rounded-full w-full sm:w-auto text-sm sm:text-base"
