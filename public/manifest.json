@@ -10,15 +10,21 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/lovable-uploads/790aa63d-8736-498b-b561-e0884f2609a7.png",
+      "src": "/ek-logo.svg",
       "sizes": "192x192",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     {
-      "src": "/lovable-uploads/790aa63d-8736-498b-b561-e0884f2609a7.png",
+      "src": "/ek-logo.svg",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/ek-logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
       "purpose": "any maskable"
     }
   ],

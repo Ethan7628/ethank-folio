@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -7,12 +7,13 @@ import { EnhancedCard, EnhancedCardContent } from '@/components/ui/enhanced-card
 import { Badge } from '@/components/ui/badge';
 import { LoadingSpinner } from '@/components/enhanced/LoadingSpinner';
 import { AnimatedSection } from '@/components/enhanced/AnimatedSection';
-import { Mail, Phone, Github, Linkedin, MapPin, Send, MessageSquare, Calendar, CheckCircle } from 'lucide-react';
+import { Mail, Phone, Github, Linkedin, MapPin, Send, MessageSquare, Calendar, CheckCircle, ChevronDown, ChevronUp } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { useToast } from '@/hooks/use-toast';
+import { withErrorBoundary } from './enhanced/PerformanceOptimizer';
 
-export const ContactSection: React.FC = () => {
+const ContactSectionComponent: React.FC = memo(() => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -24,8 +25,9 @@ export const ContactSection: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [chatInput, setChatInput] = useState('');
+  const [showAllContacts, setShowAllContacts] = useState(false);
   const [chatMessages, setChatMessages] = useState([
-    { type: 'bot', message: 'Hi! I\'m Ethan\'s AI assistant. Ask me about his skills, projects, or experience!' }
+    { type: 'bot', message: '🤖 Hi! I\'m Ethan\'s neural AI assistant. Ask me about his skills, projects, or experience!' }
   ]);
 
   const { trackFormSubmission, trackInteraction } = useAnalytics();
@@ -287,31 +289,49 @@ export const ContactSection: React.FC = () => {
               <EnhancedCard variant="glass" className="border-0">
                 <EnhancedCardContent className="p-6 sm:p-8">
                   <h3 className="text-xl sm:text-2xl font-bold mb-6">Get In Touch</h3>
-                  <div className="space-y-4 sm:space-y-6">
-                    {contactInfo.map((contact, index) => (
-                      <div key={index} className="flex items-center space-x-3 sm:space-x-4 group">
-                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-tech-primary to-tech-secondary rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                          <contact.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xs sm:text-sm text-muted-foreground">{contact.label}</p>
-                          {contact.href !== '#' ? (
-                            <a 
-                              href={contact.href}
-                              target={contact.href.startsWith('http') ? '_blank' : undefined}
-                              rel={contact.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                              className="text-sm sm:text-base font-medium text-tech-primary hover:text-tech-secondary transition-colors duration-200 break-all hover:underline"
-                              onClick={() => trackInteraction('contact_click', 'contact', { type: contact.label })}
-                            >
-                              {contact.value}
-                            </a>
-                          ) : (
-                            <p className="text-sm sm:text-base font-medium">{contact.value}</p>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                   <div className="space-y-4 sm:space-y-6">
+                     {(showAllContacts ? contactInfo : contactInfo.slice(0, 3)).map((contact, index) => (
+                       <div key={index} className="flex items-center space-x-3 sm:space-x-4 group">
+                         <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-primary via-secondary to-accent rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300 neon-border">
+                           <contact.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                         </div>
+                         <div className="flex-1 min-w-0">
+                           <p className="text-xs sm:text-sm text-muted-foreground">{contact.label}</p>
+                           {contact.href !== '#' ? (
+                             <a 
+                               href={contact.href}
+                               target={contact.href.startsWith('http') ? '_blank' : undefined}
+                               rel={contact.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                               className="text-sm sm:text-base font-medium holographic-text hover:scale-105 transform transition-all duration-300 break-all hover:underline"
+                               onClick={() => trackInteraction('contact_click', 'contact', { type: contact.label })}
+                             >
+                               {contact.value}
+                             </a>
+                           ) : (
+                             <p className="text-sm sm:text-base font-medium holographic-text">{contact.value}</p>
+                           )}
+                         </div>
+                       </div>
+                     ))}
+                     {contactInfo.length > 3 && (
+                       <button
+                         onClick={() => setShowAllContacts(!showAllContacts)}
+                         className="flex items-center justify-center w-full py-2 text-sm text-primary hover:text-secondary transition-colors"
+                       >
+                         {showAllContacts ? (
+                           <>
+                             <ChevronUp className="w-4 h-4 mr-1" />
+                             Show Less
+                           </>
+                         ) : (
+                           <>
+                             <ChevronDown className="w-4 h-4 mr-1" />
+                             Show More (+{contactInfo.length - 3})
+                           </>
+                         )}
+                       </button>
+                     )}
+                   </div>
                 </EnhancedCardContent>
               </EnhancedCard>
             </AnimatedSection>
@@ -394,4 +414,7 @@ export const ContactSection: React.FC = () => {
       </div>
     </section>
   );
-};
+});
+
+ContactSectionComponent.displayName = 'ContactSection';
+export const ContactSection = withErrorBoundary(ContactSectionComponent);
