@@ -5,18 +5,18 @@
   "description": "Futuristic portfolio of Ethan Kusasirakwe - Software Developer & Creative Technologist",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#00f5ff",
+  "background_color": "#f0f4f8",
+  "theme_color": "#3b82f6",
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=192&h=192&fit=crop&crop=face",
+      "src": "/lovable-uploads/790aa63d-8736-498b-b561-e0884f2609a7.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=512&h=512&fit=crop&crop=face",
+      "src": "/lovable-uploads/790aa63d-8736-498b-b561-e0884f2609a7.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
