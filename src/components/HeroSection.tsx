@@ -60,7 +60,7 @@ export const HeroSection: React.FC = () => {
             <div className="w-full h-full rounded-full bg-gradient-to-r from-primary to-secondary p-1">
               <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
                 <img
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face"
+                  src="/lovable-uploads/790aa63d-8736-498b-b561-e0884f2609a7.png"
                   alt="Ethan Kusasirakwe"
                   className="w-[calc(100%-8px)] h-[calc(100%-8px)] rounded-full object-cover"
                 />
