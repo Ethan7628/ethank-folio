@@ -52,13 +52,65 @@ export const Navigation: React.FC = () => {
     
     switch (theme) {
       case 'light':
-        return 'bg-background/80 backdrop-blur-lg border-b border-primary/20';
+        return 'bg-background/85 backdrop-blur-lg border-b border-primary/25';
       case 'beige':
-        return 'bg-background/80 backdrop-blur-lg border-b border-tech-primary/20';
+        return 'bg-background/85 backdrop-blur-lg border-b border-tech-primary/25';
       case 'dark':
         return 'glass-effect backdrop-blur-lg';
       default:
         return 'glass-effect backdrop-blur-lg';
+    }
+  };
+
+  const getButtonStyle = () => {
+    switch (theme) {
+      case 'light':
+        return {
+          color: 'hsl(210 20% 10%)',
+          textShadow: '0 1px 2px rgba(0, 0, 0, 0.15)',
+          border: '1px solid hsl(210 20% 70%)',
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          fontWeight: '600'
+        };
+      case 'beige':
+        return {
+          color: 'hsl(25 35% 15%)',
+          textShadow: '0 1px 2px rgba(0, 0, 0, 0.18)',
+          border: '1px solid hsl(35 30% 70%)',
+          backgroundColor: 'rgba(251, 243, 219, 0.9)',
+          fontWeight: '600'
+        };
+      case 'dark':
+        return {
+          color: 'hsl(210 40% 95%)',
+          textShadow: '0 1px 3px rgba(0, 0, 0, 0.5)',
+          border: '1px solid hsl(217 33% 30%)',
+          fontWeight: '600'
+        };
+      default:
+        return {};
+    }
+  };
+
+  const getTextStyle = () => {
+    switch (theme) {
+      case 'light':
+        return {
+          color: 'hsl(210 20% 10%)',
+          textShadow: '0 1px 2px rgba(0, 0, 0, 0.12)'
+        };
+      case 'beige':
+        return {
+          color: 'hsl(25 35% 15%)',
+          textShadow: '0 1px 2px rgba(0, 0, 0, 0.18)'
+        };
+      case 'dark':
+        return {
+          color: 'hsl(210 40% 95%)',
+          textShadow: '0 1px 2px rgba(0, 0, 0, 0.4)'
+        };
+      default:
+        return {};
     }
   };
 
@@ -71,7 +123,12 @@ export const Navigation: React.FC = () => {
             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center shadow-lg">
               <span className="text-primary-foreground font-tech font-bold text-sm sm:text-lg">EK</span>
             </div>
-            <span className="text-lg sm:text-xl font-tech font-bold text-foreground">Ethan</span>
+            <span 
+              className="text-lg sm:text-xl font-tech font-bold"
+              style={getTextStyle()}
+            >
+              Ethan
+            </span>
           </div>
 
           {/* Desktop Navigation */}
@@ -80,15 +137,8 @@ export const Navigation: React.FC = () => {
               <button
                 key={item.label}
                 onClick={() => scrollToSection(item.href)}
-                className="text-foreground hover:text-primary transition-colors duration-200 font-medium text-sm xl:text-base relative group"
-                style={{
-                  color: theme === 'light' ? 'hsl(222 84% 5%)' : 
-                         theme === 'beige' ? 'hsl(25 35% 15%)' : 
-                         'hsl(210 40% 95%)',
-                  textShadow: theme === 'light' ? '0 0.5px 1px rgba(0, 0, 0, 0.1)' :
-                             theme === 'beige' ? '0 0.5px 1px rgba(0, 0, 0, 0.15)' :
-                             'none'
-                }}
+                className="hover:text-primary transition-colors duration-200 font-medium text-sm xl:text-base relative group"
+                style={getTextStyle()}
               >
                 {item.label}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
@@ -103,17 +153,7 @@ export const Navigation: React.FC = () => {
               variant="ghost"
               size="sm"
               className="p-2 transition-all duration-300 hover:bg-primary/10"
-              style={{
-                color: theme === 'light' ? 'hsl(222 84% 5%)' : 
-                       theme === 'beige' ? 'hsl(25 35% 15%)' : 
-                       'hsl(210 40% 95%)',
-                textShadow: theme === 'light' ? '0 1px 2px rgba(0, 0, 0, 0.1)' :
-                           theme === 'beige' ? '0 1px 2px rgba(0, 0, 0, 0.15)' :
-                           'none',
-                border: theme === 'light' ? '1px solid hsl(214 32% 85%)' :
-                        theme === 'beige' ? '1px solid hsl(35 30% 75%)' :
-                        'none'
-              }}
+              style={getButtonStyle()}
             >
               <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
             </Button>
@@ -123,17 +163,7 @@ export const Navigation: React.FC = () => {
               size="sm"
               onClick={toggleTheme}
               className="p-2 transition-all duration-300 hover:bg-primary/10"
-              style={{
-                color: theme === 'light' ? 'hsl(222 84% 5%)' : 
-                       theme === 'beige' ? 'hsl(25 35% 15%)' : 
-                       'hsl(210 40% 95%)',
-                textShadow: theme === 'light' ? '0 1px 2px rgba(0, 0, 0, 0.1)' :
-                           theme === 'beige' ? '0 1px 2px rgba(0, 0, 0, 0.15)' :
-                           'none',
-                border: theme === 'light' ? '1px solid hsl(214 32% 85%)' :
-                        theme === 'beige' ? '1px solid hsl(35 30% 75%)' :
-                        'none'
-              }}
+              style={getButtonStyle()}
             >
               {getThemeIcon()}
             </Button>
@@ -144,17 +174,7 @@ export const Navigation: React.FC = () => {
               size="sm"
               className="lg:hidden p-2 transition-all duration-300 hover:bg-primary/10"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              style={{
-                color: theme === 'light' ? 'hsl(222 84% 5%)' : 
-                       theme === 'beige' ? 'hsl(25 35% 15%)' : 
-                       'hsl(210 40% 95%)',
-                textShadow: theme === 'light' ? '0 1px 2px rgba(0, 0, 0, 0.1)' :
-                           theme === 'beige' ? '0 1px 2px rgba(0, 0, 0, 0.15)' :
-                           'none',
-                border: theme === 'light' ? '1px solid hsl(214 32% 85%)' :
-                        theme === 'beige' ? '1px solid hsl(35 30% 75%)' :
-                        'none'
-              }}
+              style={getButtonStyle()}
             >
               {isMobileMenuOpen ? (
                 <X className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -173,14 +193,7 @@ export const Navigation: React.FC = () => {
                 key={item.label}
                 onClick={() => scrollToSection(item.href)}
                 className="block w-full text-left font-medium py-2 text-base hover:bg-primary/5 rounded px-2 transition-colors duration-200"
-                style={{
-                  color: theme === 'light' ? 'hsl(222 84% 5%)' : 
-                         theme === 'beige' ? 'hsl(25 35% 15%)' : 
-                         'hsl(210 40% 95%)',
-                  textShadow: theme === 'light' ? '0 0.5px 1px rgba(0, 0, 0, 0.1)' :
-                             theme === 'beige' ? '0 0.5px 1px rgba(0, 0, 0, 0.15)' :
-                             'none'
-                }}
+                style={getTextStyle()}
               >
                 {item.label}
               </button>
