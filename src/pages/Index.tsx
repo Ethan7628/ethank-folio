@@ -13,7 +13,6 @@ import { ContactSection } from '@/components/ContactSection';
 import { Footer } from '@/components/Footer';
 import { SEOHead } from '@/components/enhanced/SEOHead';
 import { ScrollProgressIndicator } from '@/components/enhanced/ProgressIndicator';
-import { TypographyEnhancer } from '@/components/enhanced/TypographyEnhancer';
 import { usePageAnalytics } from '@/hooks/useAnalytics';
 
 const Index = () => {
@@ -24,7 +23,6 @@ const Index = () => {
       <ThemeProvider>
         <SEOHead />
         <ScrollProgressIndicator />
-        <TypographyEnhancer />
         <div className="min-h-screen bg-background text-foreground">
           <Navigation />
           <main>

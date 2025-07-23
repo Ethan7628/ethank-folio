@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Moon, Sun, Zap, Menu, X } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
+import { ChatDialog } from './ChatDialog';
 
 export const Navigation: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
@@ -46,32 +47,23 @@ export const Navigation: React.FC = () => {
     }
   };
 
-  // Enhanced glass effect based on theme
   const getNavBackground = () => {
     if (!isScrolled) return 'bg-transparent';
-    
-    switch (theme) {
-      case 'light':
-        return 'bg-background/80 backdrop-blur-lg border-b border-primary/20';
-      case 'beige':
-        return 'bg-background/80 backdrop-blur-lg border-b border-tech-primary/20';
-      case 'dark':
-        return 'glass-effect backdrop-blur-lg';
-      default:
-        return 'glass-effect backdrop-blur-lg';
-    }
+    return 'glass-effect backdrop-blur-lg';
   };
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${getNavBackground()}`}>
       <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
         <div className="flex items-center justify-between">
-          {/* Enhanced Logo */}
+          {/* Logo */}
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center shadow-lg">
               <span className="text-primary-foreground font-tech font-bold text-sm sm:text-lg">EK</span>
             </div>
-            <span className="text-lg sm:text-xl font-tech font-bold text-foreground">Ethan</span>
+            <span className="text-lg sm:text-xl font-tech font-bold text-foreground">
+              Ethan
+            </span>
           </div>
 
           {/* Desktop Navigation */}
@@ -88,13 +80,15 @@ export const Navigation: React.FC = () => {
             ))}
           </div>
 
-          {/* Theme Toggle & Mobile Menu */}
+          {/* AI Chat Button & Theme Toggle & Mobile Menu */}
           <div className="flex items-center space-x-2 sm:space-x-4">
+            <ChatDialog />
+
             <Button
               variant="ghost"
               size="sm"
               onClick={toggleTheme}
-              className="p-2 text-foreground hover:text-primary transition-all duration-300 hover:bg-primary/10"
+              className="p-2 transition-all duration-300 hover:bg-primary/10 text-foreground"
             >
               {getThemeIcon()}
             </Button>
@@ -103,7 +97,7 @@ export const Navigation: React.FC = () => {
             <Button
               variant="ghost"
               size="sm"
-              className="lg:hidden p-2 text-foreground hover:text-primary transition-all duration-300 hover:bg-primary/10"
+              className="lg:hidden p-2 transition-all duration-300 hover:bg-primary/10 text-foreground"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? (
@@ -115,14 +109,14 @@ export const Navigation: React.FC = () => {
           </div>
         </div>
 
-        {/* Enhanced Mobile Navigation */}
+        {/* Mobile Navigation */}
         {isMobileMenuOpen && (
           <div className="lg:hidden mt-4 glass-effect rounded-lg p-4 space-y-3 sm:space-y-4 shadow-xl">
             {navItems.map((item) => (
               <button
                 key={item.label}
                 onClick={() => scrollToSection(item.href)}
-                className="block w-full text-left text-foreground hover:text-primary transition-colors duration-200 font-medium py-2 text-base hover:bg-primary/5 rounded px-2"
+                className="block w-full text-left font-medium py-2 text-base text-foreground hover:bg-primary/5 rounded px-2 transition-colors duration-200"
               >
                 {item.label}
               </button>
