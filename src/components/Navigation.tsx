@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Moon, Sun, Zap, Menu, X } from 'lucide-react';
+import { Moon, Sun, Zap, Menu, X, MessageCircle } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
 
 export const Navigation: React.FC = () => {
@@ -81,6 +81,14 @@ export const Navigation: React.FC = () => {
                 key={item.label}
                 onClick={() => scrollToSection(item.href)}
                 className="text-foreground hover:text-primary transition-colors duration-200 font-medium text-sm xl:text-base relative group"
+                style={{
+                  color: theme === 'light' ? 'hsl(222 84% 5%)' : 
+                         theme === 'beige' ? 'hsl(25 35% 15%)' : 
+                         'hsl(210 40% 95%)',
+                  textShadow: theme === 'light' ? '0 0.5px 1px rgba(0, 0, 0, 0.1)' :
+                             theme === 'beige' ? '0 0.5px 1px rgba(0, 0, 0, 0.15)' :
+                             'none'
+                }}
               >
                 {item.label}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
@@ -88,13 +96,44 @@ export const Navigation: React.FC = () => {
             ))}
           </div>
 
-          {/* Theme Toggle & Mobile Menu */}
+          {/* AI Chat Button & Theme Toggle & Mobile Menu */}
           <div className="flex items-center space-x-2 sm:space-x-4">
+            {/* AI Chat Button - Enhanced visibility */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="p-2 transition-all duration-300 hover:bg-primary/10"
+              style={{
+                color: theme === 'light' ? 'hsl(222 84% 5%)' : 
+                       theme === 'beige' ? 'hsl(25 35% 15%)' : 
+                       'hsl(210 40% 95%)',
+                textShadow: theme === 'light' ? '0 1px 2px rgba(0, 0, 0, 0.1)' :
+                           theme === 'beige' ? '0 1px 2px rgba(0, 0, 0, 0.15)' :
+                           'none',
+                border: theme === 'light' ? '1px solid hsl(214 32% 85%)' :
+                        theme === 'beige' ? '1px solid hsl(35 30% 75%)' :
+                        'none'
+              }}
+            >
+              <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+            </Button>
+
             <Button
               variant="ghost"
               size="sm"
               onClick={toggleTheme}
-              className="p-2 text-foreground hover:text-primary transition-all duration-300 hover:bg-primary/10"
+              className="p-2 transition-all duration-300 hover:bg-primary/10"
+              style={{
+                color: theme === 'light' ? 'hsl(222 84% 5%)' : 
+                       theme === 'beige' ? 'hsl(25 35% 15%)' : 
+                       'hsl(210 40% 95%)',
+                textShadow: theme === 'light' ? '0 1px 2px rgba(0, 0, 0, 0.1)' :
+                           theme === 'beige' ? '0 1px 2px rgba(0, 0, 0, 0.15)' :
+                           'none',
+                border: theme === 'light' ? '1px solid hsl(214 32% 85%)' :
+                        theme === 'beige' ? '1px solid hsl(35 30% 75%)' :
+                        'none'
+              }}
             >
               {getThemeIcon()}
             </Button>
@@ -103,8 +142,19 @@ export const Navigation: React.FC = () => {
             <Button
               variant="ghost"
               size="sm"
-              className="lg:hidden p-2 text-foreground hover:text-primary transition-all duration-300 hover:bg-primary/10"
+              className="lg:hidden p-2 transition-all duration-300 hover:bg-primary/10"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              style={{
+                color: theme === 'light' ? 'hsl(222 84% 5%)' : 
+                       theme === 'beige' ? 'hsl(25 35% 15%)' : 
+                       'hsl(210 40% 95%)',
+                textShadow: theme === 'light' ? '0 1px 2px rgba(0, 0, 0, 0.1)' :
+                           theme === 'beige' ? '0 1px 2px rgba(0, 0, 0, 0.15)' :
+                           'none',
+                border: theme === 'light' ? '1px solid hsl(214 32% 85%)' :
+                        theme === 'beige' ? '1px solid hsl(35 30% 75%)' :
+                        'none'
+              }}
             >
               {isMobileMenuOpen ? (
                 <X className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -122,7 +172,15 @@ export const Navigation: React.FC = () => {
               <button
                 key={item.label}
                 onClick={() => scrollToSection(item.href)}
-                className="block w-full text-left text-foreground hover:text-primary transition-colors duration-200 font-medium py-2 text-base hover:bg-primary/5 rounded px-2"
+                className="block w-full text-left font-medium py-2 text-base hover:bg-primary/5 rounded px-2 transition-colors duration-200"
+                style={{
+                  color: theme === 'light' ? 'hsl(222 84% 5%)' : 
+                         theme === 'beige' ? 'hsl(25 35% 15%)' : 
+                         'hsl(210 40% 95%)',
+                  textShadow: theme === 'light' ? '0 0.5px 1px rgba(0, 0, 0, 0.1)' :
+                             theme === 'beige' ? '0 0.5px 1px rgba(0, 0, 0, 0.15)' :
+                             'none'
+                }}
               >
                 {item.label}
               </button>
