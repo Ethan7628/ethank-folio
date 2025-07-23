@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, memo } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -88,31 +87,44 @@ const SkillsSectionComponent: React.FC = memo(() => {
     streak: 156
   };
 
-  const getThemeTextColor = () => {
+  const getThemeStyles = () => {
     switch (theme) {
       case 'light':
-        return 'hsl(222 84% 5%)';
+        return {
+          textColor: 'hsl(210 20% 10%)',
+          textShadow: '0 1px 2px rgba(0, 0, 0, 0.12)',
+          badgeBackground: 'hsl(210 40% 25%)',
+          badgeColor: 'hsl(0 0% 98%)',
+          badgeBorder: '1px solid hsl(210 40% 25%)'
+        };
       case 'beige':
-        return 'hsl(25 35% 15%)';
+        return {
+          textColor: 'hsl(25 35% 15%)',
+          textShadow: '0 1px 2px rgba(0, 0, 0, 0.18)',
+          badgeBackground: 'hsl(28 60% 30%)',
+          badgeColor: 'hsl(42 25% 96%)',
+          badgeBorder: '1px solid hsl(28 60% 30%)'
+        };
       case 'dark':
-        return 'hsl(210 40% 95%)';
+        return {
+          textColor: 'hsl(210 40% 95%)',
+          textShadow: '0 1px 2px rgba(0, 0, 0, 0.4)',
+          badgeBackground: 'hsl(217 91% 60%)',
+          badgeColor: 'hsl(222 84% 10%)',
+          badgeBorder: 'none'
+        };
       default:
-        return 'hsl(210 40% 95%)';
+        return {
+          textColor: 'hsl(210 40% 95%)',
+          textShadow: 'none',
+          badgeBackground: 'hsl(217 91% 60%)',
+          badgeColor: 'hsl(222 84% 10%)',
+          badgeBorder: 'none'
+        };
     }
   };
 
-  const getThemeTextShadow = () => {
-    switch (theme) {
-      case 'light':
-        return '0 0.5px 1px rgba(0, 0, 0, 0.1)';
-      case 'beige':
-        return '0 0.5px 1px rgba(0, 0, 0, 0.15)';
-      case 'dark':
-        return 'none';
-      default:
-        return 'none';
-    }
-  };
+  const themeStyles = getThemeStyles();
 
   return (
     <section ref={ref} id="skills" className="py-12 sm:py-16 lg:py-20 relative px-4 sm:px-6 lg:px-8">
@@ -124,8 +136,8 @@ const SkillsSectionComponent: React.FC = memo(() => {
           <p 
             className="text-lg sm:text-xl mb-6 sm:mb-8 px-4"
             style={{
-              color: getThemeTextColor(),
-              textShadow: getThemeTextShadow()
+              color: themeStyles.textColor,
+              textShadow: themeStyles.textShadow
             }}
           >
             Real-time data from GitHub and project experience
@@ -148,8 +160,8 @@ const SkillsSectionComponent: React.FC = memo(() => {
               <div 
                 className="text-xs sm:text-sm"
                 style={{
-                  color: getThemeTextColor(),
-                  textShadow: getThemeTextShadow()
+                  color: themeStyles.textColor,
+                  textShadow: themeStyles.textShadow
                 }}
               >
                 {stat.label}
@@ -211,8 +223,8 @@ const SkillsSectionComponent: React.FC = memo(() => {
                           <span 
                             className="font-medium text-sm sm:text-base"
                             style={{
-                              color: getThemeTextColor(),
-                              textShadow: getThemeTextShadow()
+                              color: themeStyles.textColor,
+                              textShadow: themeStyles.textShadow
                             }}
                           >
                             {skill.name}
@@ -221,15 +233,11 @@ const SkillsSectionComponent: React.FC = memo(() => {
                             variant="secondary"
                             className="text-xs animate-pulse"
                             style={{
-                              background: theme === 'light' ? 'hsl(222 84% 25%)' : 
-                                         theme === 'beige' ? 'hsl(28 60% 35%)' : 
-                                         'hsl(217 91% 65%)',
-                              color: theme === 'light' ? 'hsl(0 0% 98%)' : 
-                                     theme === 'beige' ? 'hsl(42 25% 96%)' : 
-                                     'hsl(222 84% 10%)',
-                              border: theme === 'light' ? '1px solid hsl(222 84% 25%)' : 
-                                     theme === 'beige' ? '1px solid hsl(28 60% 35%)' : 
-                                     'none'
+                              background: themeStyles.badgeBackground,
+                              color: themeStyles.badgeColor,
+                              border: themeStyles.badgeBorder,
+                              textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)',
+                              fontWeight: '600'
                             }}
                           >
                             {skill.years}y
@@ -244,8 +252,8 @@ const SkillsSectionComponent: React.FC = memo(() => {
                             <div 
                               className="absolute -top-10 left-0 glass-effect rounded px-3 py-1 text-xs z-10 shadow-xl border border-primary/20"
                               style={{
-                                color: getThemeTextColor(),
-                                textShadow: getThemeTextShadow()
+                                color: themeStyles.textColor,
+                                textShadow: themeStyles.textShadow
                               }}
                             >
                               <span className="holographic-text font-bold">{skill.level}%</span>
@@ -261,8 +269,8 @@ const SkillsSectionComponent: React.FC = memo(() => {
                       <span 
                         className="text-xs"
                         style={{
-                          color: getThemeTextColor(),
-                          textShadow: getThemeTextShadow()
+                          color: themeStyles.textColor,
+                          textShadow: themeStyles.textShadow
                         }}
                       >
                         +{category.skills.length - 2} more skills
@@ -275,9 +283,17 @@ const SkillsSectionComponent: React.FC = memo(() => {
           })}
         </div>
 
-        {/* Enhanced 2050 Tech Stack - Fixed visibility */}
+        {/* Enhanced Neural Stack Arsenal - Fixed visibility */}
         <div className="mt-12 sm:mt-16 text-center">
-          <h3 className="text-xl sm:text-2xl font-bold mb-6 sm:mb-8 holographic-text">⚡ Neural Stack Arsenal</h3>
+          <h3 
+            className="text-xl sm:text-2xl font-bold mb-6 sm:mb-8 holographic-text"
+            style={{
+              color: themeStyles.textColor,
+              textShadow: themeStyles.textShadow
+            }}
+          >
+            ⚡ Neural Stack Arsenal
+          </h3>
           <div className="flex flex-wrap justify-center gap-2 sm:gap-4 px-4">
             {[
               { name: 'React', emoji: '⚛️' },
@@ -292,18 +308,13 @@ const SkillsSectionComponent: React.FC = memo(() => {
                 key={tech.name}
                 className="px-3 sm:px-4 py-2 text-sm sm:text-lg border-0 neon-border hover:scale-110 transform transition-all duration-300"
                 style={{
-                  background: theme === 'light' ? 'hsl(222 84% 25%)' : 
-                             theme === 'beige' ? 'hsl(28 60% 35%)' : 
-                             'hsl(217 91% 65%)',
-                  color: theme === 'light' ? 'hsl(0 0% 98%)' : 
-                         theme === 'beige' ? 'hsl(42 25% 96%)' : 
-                         'hsl(222 84% 10%)',
+                  background: themeStyles.badgeBackground,
+                  color: themeStyles.badgeColor,
                   animation: `pulse-glow 3s ease-in-out infinite`,
                   animationDelay: `${index * 0.2}s`,
-                  textShadow: 'none',
-                  border: theme === 'light' ? '1px solid hsl(222 84% 25%)' : 
-                         theme === 'beige' ? '1px solid hsl(28 60% 35%)' : 
-                         'none'
+                  textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)',
+                  border: themeStyles.badgeBorder,
+                  fontWeight: '600'
                 }}
               >
                 {tech.emoji} {tech.name}
