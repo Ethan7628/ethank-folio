@@ -1,165 +1,158 @@
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight, Download, Github, Linkedin } from 'lucide-react';
+import React, { useState, useEffect, memo } from 'react';
 import { Button } from '@/components/ui/button';
-import { AnimatedSection } from '@/components/enhanced/AnimatedSection';
+import { Download, MessageSquare, Play, Volume2, VolumeX, Sparkles } from 'lucide-react';
+import { useTheme } from './ThemeProvider';
 
-export const HeroSection = () => {
-  const handleDownloadCV = () => {
-    // Create a temporary link to download CV
+
+const HeroSectionComponent: React.FC = memo(() => {
+  const { theme } = useTheme();
+  const [isVoicePlaying, setIsVoicePlaying] = useState(false);
+  const [text, setText] = useState('');
+  const fullText = "Code. Create. Connect. I build experiences for the intelligent web.";
+
+  useEffect(() => {
+    let i = 0;
+    const timer = setInterval(() => {
+      if (i < fullText.length) {
+        setText(fullText.slice(0, i + 1));
+        i++;
+      } else {
+        clearInterval(timer);
+      }
+    }, 100);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const handleVoiceGreeting = () => {
+    if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(
+        "Hello! I'm Ethan Kusasirakwe, a software developer and creative technologist. Welcome to my  portfolio!"
+      );
+      utterance.rate = 0.9;
+      utterance.pitch = 1;
+
+      if (isVoicePlaying) {
+        speechSynthesis.cancel();
+        setIsVoicePlaying(false);
+      } else {
+        speechSynthesis.speak(utterance);
+        setIsVoicePlaying(true);
+        utterance.onend = () => setIsVoicePlaying(false);
+      }
+    }
+  };
+
+  const downloadCV = () => {
+    // Create a placeholder PDF download
     const link = document.createElement('a');
-    link.href = '/cv-ethan-kusasirakwe.pdf';
-    link.download = 'Ethan-Kusasirakwe-CV.pdf';
+    link.href = '#';
+    link.download = 'Ethan_Kusasirakwe_CV_2024.pdf';
     link.click();
   };
 
   return (
-    <AnimatedSection className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5" />
-      <div className="absolute inset-0 cyber-grid opacity-20" />
-      
-      {/* Floating Elements */}
-      <div className="absolute top-20 left-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl animate-float" />
-      <div className="absolute bottom-20 right-10 w-40 h-40 bg-secondary/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
-      
-      <div className="container mx-auto px-4 py-20">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Column - Text Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="space-y-8"
-          >
-            <div className="space-y-4">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="inline-block"
-              >
-                <span className="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium">
-                  Available for Work
-                </span>
-              </motion.div>
-              
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                className="text-4xl md:text-6xl font-bold text-gradient"
-              >
-                Hello, I'm{' '}
-                <span className="text-primary">Ethan</span>
-              </motion.h1>
-              
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-                className="text-xl md:text-2xl text-muted-foreground"
-              >
-                Software Developer & Creative Technologist
-              </motion.p>
-              
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.8 }}
-                className="text-base md:text-lg text-muted-foreground max-w-2xl"
-              >
-                Building experiences for the intelligent web with React, TypeScript, and modern technologies. 
-                Passionate about creating scalable solutions and beautiful user interfaces.
-              </motion.p>
-            </div>
-            
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1.0 }}
-              className="flex flex-wrap gap-4"
-            >
-              <Button 
-                size="lg" 
-                className="group"
-                onClick={handleDownloadCV}
-              >
-                Download CV
-                <Download className="ml-2 h-4 w-4 group-hover:translate-y-1 transition-transform" />
-              </Button>
-              
-              <Button 
-                variant="outline" 
-                size="lg"
-                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                Let's Connect
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1.2 }}
-              className="flex gap-6"
-            >
-              <a
-                href="https://github.com/ethan-kusasirakwe"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-3 bg-primary/10 text-primary rounded-full hover:bg-primary/20 transition-colors"
-              >
-                <Github className="h-5 w-5" />
-              </a>
-              <a
-                href="https://linkedin.com/in/ethan-kusasirakwe"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-3 bg-primary/10 text-primary rounded-full hover:bg-primary/20 transition-colors"
-              >
-                <Linkedin className="h-5 w-5" />
-              </a>
-            </motion.div>
-          </motion.div>
-          
-          {/* Right Column - Profile Image */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex justify-center"
-          >
-            <div className="relative">
-              <div className="w-80 h-80 md:w-96 md:h-96 relative">
-                <div className="w-full h-full rounded-full bg-gradient-to-r from-primary via-secondary to-accent p-1 animate-spin-slow">
-                  <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
-                    <img
-                      src="./uploads/790aa63d-8736-498b-b561-e0884f2609a7.png"
-                      alt="Ethan Kusasirakwe"
-                      className="w-[calc(100%-8px)] h-[calc(100%-8px)] rounded-full object-cover animate-hologram-flicker"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = './placeholder.svg';
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-              
-              {/* Floating Tech Icons */}
-              <div className="absolute -top-4 -right-4 w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center animate-bounce">
-                <span className="text-2xl">⚛️</span>
-              </div>
-              <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-secondary/20 rounded-full flex items-center justify-center animate-bounce" style={{ animationDelay: '1s' }}>
-                <span className="text-2xl">🚀</span>
+    <section className="min-h-screen flex items-center justify-center relative overflow-hidden px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto relative z-10 max-w-4xl">
+        <div className="text-center space-y-6 sm:space-y-8">
+          {/* Enhanced Avatar with Holographic Effect */}
+          <div className="relative mx-auto w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 mb-6 sm:mb-8">
+            <div className="w-full h-full rounded-full bg-gradient-to-r from-primary via-secondary to-accent p-1 animate-spin-slow">
+              <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
+                <img
+                  src="/uploads/790aa63d-8736-498b-b561-e0884f2609a7.png"
+                  alt="Ethan Kusasirakwe"
+                  className="w-[calc(100%-8px)] h-[calc(100%-8px)] rounded-full object-cover animate-hologram-flicker"
+                />
               </div>
             </div>
-          </motion.div>
+            {/* Floating Sparkles */}
+            <div className="absolute -top-2 -left-2">
+              <Sparkles className="w-6 h-6 text-primary animate-pulse" />
+            </div>
+            <div className="absolute -bottom-2 -right-2 sm:-bottom-4 sm:-right-4 glass-effect rounded-full p-2 sm:p-3 neon-border">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleVoiceGreeting}
+                className="rounded-full w-8 h-8 sm:w-12 sm:h-12 p-0 hover:scale-110 transition-transform"
+              >
+                {isVoicePlaying ? (
+                  <VolumeX className="w-4 h-4 sm:w-6 sm:h-6 text-primary animate-pulse" />
+                ) : (
+                  <Volume2 className="w-4 h-4 sm:w-6 sm:h-6 text-primary" />
+                )}
+              </Button>
+            </div>
+          </div>
+
+          {/* Enhanced Name and Title */}
+          <div className="space-y-3 sm:space-y-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-tech font-bold holographic-text animate-slide-up">
+              ETHAN KUSASIRAKWE
+            </h1>
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground animate-slide-up px-4 anim-delay-200">
+              🚀 Software Developer • 🎨 Creative Technologist • 📊 Data Specialist
+            </p>
+          </div>
+
+          {/* Animated Tagline */}
+          <div className="h-12 sm:h-16 flex items-center justify-center animate-slide-up px-4 anim-delay-400">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-primary font-medium text-center">
+              {text}
+              <span className="animate-ping">|</span>
+            </p>
+          </div>
+
+          {/* Enhanced CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center animate-slide-up px-4 anim-delay-600">
+            <Button
+              size="lg"
+              className="bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-accent transition-all duration-300 text-primary-foreground font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full w-full sm:w-auto text-sm sm:text-base"
+              onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              <Play className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+              🚀 Launch My Work
+            </Button>
+
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={downloadCV}
+              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-500 px-6 sm:px-8 py-3 sm:py-4 rounded-full w-full sm:w-auto text-sm sm:text-base glass-effect hover:scale-105 transform"
+            >
+              <Download className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+              📱 Download Smart CV
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="lg"
+              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+              className="text-secondary hover:text-accent transition-all duration-500 px-6 sm:px-8 py-3 sm:py-4 rounded-full w-full sm:w-auto text-sm sm:text-base hover:scale-105 transform hover:bg-accent/10"
+            >
+              <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+              🤖 Neural Chat Interface
+            </Button>
+          </div>
         </div>
       </div>
-    </AnimatedSection>
+    </section>
   );
-};
+});
+
+HeroSectionComponent.displayName = 'HeroSection';
+
+// Simple error boundary HOC
+function withErrorBoundary<P>(Component: React.ComponentType<P>) {
+  return function WrappedComponent(props: P) {
+    try {
+      return <Component {...props} />;
+    } catch (error) {
+      return <div>Something went wrong.</div>;
+    }
+  };
+}
+
+export const HeroSection = withErrorBoundary(HeroSectionComponent);
