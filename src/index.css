@@ -9,34 +9,24 @@
     /* Clean Light theme with slate gray */
     --background: 0 0% 100%;
     --foreground: 215 25% 27%;
-
     --card: 0 0% 98%;
     --card-foreground: 215 25% 27%;
-
     --popover: 0 0% 100%;
     --popover-foreground: 215 25% 27%;
-
     --primary: 215 25% 27%;
     --primary-foreground: 0 0% 98%;
-
     --secondary: 215 20% 65%;
     --secondary-foreground: 215 25% 27%;
-
     --muted: 215 15% 92%;
     --muted-foreground: 215 20% 45%;
-
     --accent: 215 20% 88%;
     --accent-foreground: 215 25% 27%;
-
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 215 15% 85%;
     --input: 215 15% 85%;
     --ring: 215 25% 27%;
-
     --radius: 0.5rem;
-
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 215 25% 27%;
     --sidebar-primary: 215 25% 27%;
@@ -51,32 +41,23 @@
     /* Pure dark theme - consistent darkness */
     --background: 215 28% 7%;
     --foreground: 210 40% 98%;
-
     --card: 215 28% 10%;
     --card-foreground: 210 40% 98%;
-
     --popover: 215 28% 10%;
     --popover-foreground: 210 40% 98%;
-
     --primary: 217 91% 65%;
     --primary-foreground: 215 28% 7%;
-
     --secondary: 215 28% 17%;
     --secondary-foreground: 210 40% 98%;
-
     --muted: 215 28% 17%;
     --muted-foreground: 215 20% 65%;
-
     --accent: 215 28% 20%;
     --accent-foreground: 210 40% 98%;
-
     --destructive: 0 62% 55%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 215 28% 20%;
     --input: 215 28% 20%;
     --ring: 217 91% 65%;
-
     --sidebar-background: 215 28% 7%;
     --sidebar-foreground: 210 40% 98%;
     --sidebar-primary: 217 91% 65%;
@@ -91,32 +72,23 @@
     /* Warm beige theme - consistent warmth */
     --background: 42 35% 96%;
     --foreground: 25 40% 15%;
-
     --card: 40 35% 93%;
     --card-foreground: 25 40% 15%;
-
     --popover: 40 35% 93%;
     --popover-foreground: 25 40% 15%;
-
     --primary: 28 65% 35%;
     --primary-foreground: 42 35% 96%;
-
     --secondary: 38 40% 70%;
     --secondary-foreground: 25 40% 20%;
-
     --muted: 38 40% 85%;
     --muted-foreground: 25 30% 35%;
-
     --accent: 35 45% 75%;
     --accent-foreground: 25 40% 20%;
-
     --destructive: 0 84% 60%;
     --destructive-foreground: 42 35% 96%;
-
     --border: 35 35% 80%;
     --input: 35 35% 80%;
     --ring: 28 65% 35%;
-
     --sidebar-background: 42 35% 96%;
     --sidebar-foreground: 25 40% 20%;
     --sidebar-primary: 28 65% 35%;
@@ -125,8 +97,6 @@
     --sidebar-accent-foreground: 25 40% 20%;
     --sidebar-border: 35 35% 80%;
     --sidebar-ring: 28 65% 35%;
-
-    /* Tech theme colors for beige */
     --tech-primary: 28 70% 40%;
     --tech-secondary: 22 60% 30%;
     --tech-accent: 35 65% 45%;
@@ -148,7 +118,35 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Clean backgrounds for each theme */
+  /* Loading screen styles */
+  .loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: hsl(var(--background));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid hsl(var(--muted));
+    border-top: 3px solid hsl(var(--primary));
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Theme backgrounds */
   .light body {
     background: linear-gradient(135deg,
         rgba(255, 255, 255, 0.95) 0%,
@@ -156,7 +154,6 @@
         rgba(241, 245, 249, 0.95) 50%,
         rgba(248, 250, 252, 0.95) 75%,
         rgba(255, 255, 255, 0.95) 100%);
-    background-attachment: fixed;
   }
 
   .beige body {
@@ -166,7 +163,6 @@
         rgba(252, 211, 77, 0.95) 50%,
         rgba(253, 230, 138, 0.95) 75%,
         rgba(254, 243, 199, 0.95) 100%);
-    background-attachment: fixed;
   }
 
   .dark body {
@@ -176,13 +172,11 @@
         rgba(51, 65, 85, 0.95) 50%,
         rgba(30, 41, 59, 0.95) 75%,
         rgba(15, 23, 42, 0.95) 100%);
-    background-attachment: fixed;
   }
 
-  /* Consistent glass effects */
+  /* Glass effects */
   .glass-effect {
     background: rgba(255, 255, 255, 0.1);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
     backdrop-filter: blur(20px) saturate(180%);
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
@@ -215,20 +209,15 @@
     font-weight: 700;
   }
 
-  /* Tech theme utilities */
-  .text-tech-primary {
-    color: hsl(var(--tech-primary, var(--primary)));
-  }
-
-  .text-tech-secondary {
-    color: hsl(var(--tech-secondary, var(--secondary)));
-  }
-
-  .text-tech-accent {
-    color: hsl(var(--tech-accent, var(--accent)));
-  }
-
   /* Animations */
+  .animate-slide-up {
+    animation: slide-up 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+
   @keyframes slide-up {
     from {
       opacity: 0;
@@ -244,32 +233,11 @@
 
   @keyframes float {
     0%, 100% {
-      transform: translateY(0px) rotateX(0deg);
+      transform: translateY(0px);
     }
     50% {
-      transform: translateY(-15px) rotateX(2deg);
+      transform: translateY(-15px);
     }
-  }
-
-  @keyframes pulse-glow {
-    0%, 100% {
-      box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
-    }
-    50% {
-      box-shadow: 0 0 40px rgba(139, 92, 246, 0.5);
-    }
-  }
-
-  .animate-slide-up {
-    animation: slide-up 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-  }
-
-  .animate-float {
-    animation: float 4s ease-in-out infinite;
-  }
-
-  .animate-pulse-glow {
-    animation: pulse-glow 3s ease-in-out infinite;
   }
 
   /* Cyber grid */
