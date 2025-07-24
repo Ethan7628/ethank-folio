@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,7 +17,7 @@
   <meta property="og:description"
     content="Building experiences for the intelligent web with React, TypeScript, and modern technologies" />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="/lovable-uploads/790aa63d-8736-498b-b561-e0884f2609a7.png" />
+  <meta property="og:image" content="./uploads/790aa63d-8736-498b-b561-e0884f2609a7.png" />
   <meta property="og:url" content="https://ethankusasirakwe.dev" />
 
   <!-- Twitter -->
@@ -24,14 +25,14 @@
   <meta name="twitter:site" content="@ethankusasirakwe" />
   <meta name="twitter:title" content="Ethan Kusasirakwe - Software Developer 2025" />
   <meta name="twitter:description" content="Building experiences for the intelligent web" />
-  <meta name="twitter:image" content="/lovable-uploads/790aa63d-8736-498b-b561-e0884f2609a7.png" />
+  <meta name="twitter:image" content="./uploads/790aa63d-8736-498b-b561-e0884f2609a7.png" />
 
   <!-- Futuristic SVG Favicon -->
-  <link rel="icon" type="image/svg+xml" href="/ek-logo.svg">
-  <link rel="apple-touch-icon" href="/ek-logo.svg">
+  <link rel="icon" type="image/svg+xml" href="./assets/ek-logo.svg">
+  <link rel="apple-touch-icon" href="./assets/ek-logo.svg">
 
   <!-- PWA Manifest -->
-  <link rel="manifest" href="/manifest.json">
+  <link rel="manifest" href="./manifest.json">
 
   <!-- Theme Color -->
   <meta name="theme-color" content="#3b82f6">
@@ -55,7 +56,7 @@
       "jobTitle": "Software Developer",
       "description": "Full-stack developer and creative technologist specializing in React, TypeScript, and modern web technologies",
       "url": "https://ethankusasirakwe.dev",
-      "image": "/lovable-uploads/790aa63d-8736-498b-b561-e0884f2609a7.png",
+      "image": "./uploads/790aa63d-8736-498b-b561-e0884f2609a7.png",
       "sameAs": [
         "https://github.com/ethan-kusasirakwe",
         "https://linkedin.com/in/ethan-kusasirakwe"
@@ -68,10 +69,14 @@
         "addressCountry": "Uganda"
       }
     }
-    </script>
+  </script>
 </head>
 
 <body>
+  <div id="loading-screen" class="loading-screen">
+    <div class="loading-spinner"></div>
+  </div>
+  
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
 
@@ -79,7 +84,7 @@
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
+        navigator.serviceWorker.register('./sw.js')
           .then((registration) => {
             console.log('SW registered: ', registration);
           })
@@ -88,6 +93,16 @@
           });
       });
     }
+
+    // Hide loading screen when app is loaded
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const loadingScreen = document.getElementById('loading-screen');
+        if (loadingScreen) {
+          loadingScreen.style.display = 'none';
+        }
+      }, 500);
+    });
   </script>
 </body>
 
