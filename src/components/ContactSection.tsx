@@ -1,4 +1,3 @@
-
 import React, { useState, memo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -52,6 +51,17 @@ const ContactSectionComponent: React.FC = memo(() => {
       return;
     }
 
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast({
+        title: "Invalid Email",
+        description: "Please enter a valid email address.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -85,7 +95,7 @@ const ContactSectionComponent: React.FC = memo(() => {
       
       toast({
         title: "Failed to Send",
-        description: "There was an error sending your message. Please try again or contact me directly.",
+        description: "There was an error sending your message. Please try again or contact me directly at kusasirakweethan31@gmail.com",
         variant: "destructive"
       });
     } finally {

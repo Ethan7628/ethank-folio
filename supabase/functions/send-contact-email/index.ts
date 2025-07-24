@@ -1,6 +1,6 @@
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.50.5';
+import { Resend } from "npm:resend@4.0.0";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -21,11 +21,7 @@ serve(async (req) => {
   }
 
   try {
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? ''
-    );
-
+    const resend = new Resend(Deno.env.get('RESEND_API_KEY'));
     const { name, email, message, phone, company }: ContactRequest = await req.json();
 
     // Validate required fields
@@ -39,39 +35,47 @@ serve(async (req) => {
       );
     }
 
-    // Store contact form submission in database
-    const { data, error } = await supabase
-      .from('contacts')
-      .insert({
-        name,
-        email,
-        message,
-        phone,
-        company,
-        source: 'portfolio_form'
-      })
-      .select()
-      .single();
+    // Send email notification to you
+    const emailResponse = await resend.emails.send({
+      from: 'Portfolio Contact <onboarding@resend.dev>',
+      to: ['kusasirakweethan31@gmail.com'],
+      subject: `New Contact Form Submission from ${name}`,
+      html: `
+        <h2>New Contact Form Submission</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        ${phone ? `<p><strong>Phone:</strong> ${phone}</p>` : ''}
+        ${company ? `<p><strong>Company:</strong> ${company}</p>` : ''}
+        <p><strong>Message:</strong></p>
+        <p>${message.replace(/\n/g, '<br>')}</p>
+        <hr>
+        <p><em>This message was sent from your portfolio contact form.</em></p>
+      `,
+    });
 
-    if (error) {
-      console.error('Database error:', error);
-      return new Response(
-        JSON.stringify({ error: 'Failed to save contact information' }),
-        { 
-          status: 500, 
-          headers: { 'Content-Type': 'application/json', ...corsHeaders }
-        }
-      );
-    }
+    // Send confirmation email to the client
+    await resend.emails.send({
+      from: 'Ethan Kusasirakwe <onboarding@resend.dev>',
+      to: [email],
+      subject: 'Thank you for contacting me!',
+      html: `
+        <h2>Thank you for reaching out, ${name}!</h2>
+        <p>I've received your message and will get back to you within 24 hours.</p>
+        <p><strong>Your message:</strong></p>
+        <p>${message.replace(/\n/g, '<br>')}</p>
+        <hr>
+        <p>Best regards,<br>
+        Ethan Kusasirakwe<br>
+        Full Stack Developer</p>
+      `,
+    });
 
-    console.log('Contact form submitted successfully:', data);
+    console.log('Emails sent successfully:', emailResponse);
 
-    // Return success response
     return new Response(
       JSON.stringify({ 
         success: true, 
         message: 'Thank you for your message! I will get back to you soon.',
-        id: data.id
       }),
       {
         status: 200,
@@ -82,7 +86,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Function error:', error);
     return new Response(
-      JSON.stringify({ error: 'Internal server error' }),
+      JSON.stringify({ error: 'Failed to send email. Please try again.' }),
       {
         status: 500,
         headers: { 'Content-Type': 'application/json', ...corsHeaders },
