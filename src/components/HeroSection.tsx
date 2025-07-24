@@ -137,12 +137,12 @@ export const HeroSection = () => {
                 <div className="w-full h-full rounded-full bg-gradient-to-r from-primary via-secondary to-accent p-1 animate-spin-slow">
                   <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
                     <img
-                      src="/uploads/790aa63d-8736-498b-b561-e0884f2609a7.png"
+                      src="./uploads/790aa63d-8736-498b-b561-e0884f2609a7.png"
                       alt="Ethan Kusasirakwe"
                       className="w-[calc(100%-8px)] h-[calc(100%-8px)] rounded-full object-cover animate-hologram-flicker"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
-                        target.src = '/placeholder.svg';
+                        target.src = './placeholder.svg';
                       }}
                     />
                   </div>
