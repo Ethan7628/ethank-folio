@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap');
 @tailwind base;
 @tailwind components;
@@ -142,8 +141,13 @@
   }
 
   @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
   }
 
   /* Theme backgrounds */
@@ -177,10 +181,13 @@
   /* Glass effects */
   .glass-effect {
     background: rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    /* ✅ Safari support */
     backdrop-filter: blur(20px) saturate(180%);
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   }
+
 
   .light .glass-effect {
     background: rgba(255, 255, 255, 0.8);
@@ -224,6 +231,7 @@
       transform: translateY(50px) scale(0.95);
       filter: blur(5px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0) scale(1);
@@ -232,9 +240,12 @@
   }
 
   @keyframes float {
-    0%, 100% {
+
+    0%,
+    100% {
       transform: translateY(0px);
     }
+
     50% {
       transform: translateY(-15px);
     }
