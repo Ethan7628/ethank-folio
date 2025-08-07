@@ -127,10 +127,10 @@ const HeroSectionComponent: React.FC = memo(() => {
             </Button>
 
             <Button
-              variant="ghost"
+              variant="outline"
               size="lg"
               onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-              className="text-secondary hover:text-accent transition-all duration-500 px-6 sm:px-8 py-3 sm:py-4 rounded-full w-full sm:w-auto text-sm sm:text-base hover:scale-105 transform hover:bg-accent/10"
+              className="border-muted-foreground/30 text-foreground hover:bg-muted hover:text-foreground hover:border-primary transition-all duration-500 px-6 sm:px-8 py-3 sm:py-4 rounded-full w-full sm:w-auto text-sm sm:text-base hover:scale-105 transform"
             >
               <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               🤖 Neural Chat Interface
