@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instanciate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "12.2.3 (519615d)"
+    PostgrestVersion: "13.0.4"
   }
   public: {
     Tables: {
@@ -77,6 +77,150 @@ export type Database = {
           phone?: string | null
           source?: string | null
           status?: string | null
+        }
+        Relationships: []
+      }
+      game_history: {
+        Row: {
+          created_at: string
+          duration_minutes: number | null
+          final_fen: string
+          game_mode: string
+          id: string
+          move_history: Json
+          opponent_id: string | null
+          rating_change: number | null
+          result: string
+          user_color: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          duration_minutes?: number | null
+          final_fen: string
+          game_mode: string
+          id?: string
+          move_history?: Json
+          opponent_id?: string | null
+          rating_change?: number | null
+          result: string
+          user_color: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          duration_minutes?: number | null
+          final_fen?: string
+          game_mode?: string
+          id?: string
+          move_history?: Json
+          opponent_id?: string | null
+          rating_change?: number | null
+          result?: string
+          user_color?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          games_drawn: number | null
+          games_lost: number | null
+          games_played: number | null
+          games_won: number | null
+          id: string
+          preferred_board_style: string | null
+          preferred_theme: string | null
+          rating: number | null
+          sound_enabled: boolean | null
+          sound_volume: number | null
+          updated_at: string
+          user_id: string
+          username: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          games_drawn?: number | null
+          games_lost?: number | null
+          games_played?: number | null
+          games_won?: number | null
+          id?: string
+          preferred_board_style?: string | null
+          preferred_theme?: string | null
+          rating?: number | null
+          sound_enabled?: boolean | null
+          sound_volume?: number | null
+          updated_at?: string
+          user_id: string
+          username: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          games_drawn?: number | null
+          games_lost?: number | null
+          games_played?: number | null
+          games_won?: number | null
+          id?: string
+          preferred_board_style?: string | null
+          preferred_theme?: string | null
+          rating?: number | null
+          sound_enabled?: boolean | null
+          sound_volume?: number | null
+          updated_at?: string
+          user_id?: string
+          username?: string
+        }
+        Relationships: []
+      }
+      saved_games: {
+        Row: {
+          created_at: string
+          current_turn: string
+          fen_position: string
+          game_mode: string
+          game_name: string
+          id: string
+          is_completed: boolean | null
+          move_history: Json | null
+          player_color: string
+          result: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          current_turn?: string
+          fen_position: string
+          game_mode?: string
+          game_name: string
+          id?: string
+          is_completed?: boolean | null
+          move_history?: Json | null
+          player_color?: string
+          result?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          current_turn?: string
+          fen_position?: string
+          game_mode?: string
+          game_name?: string
+          id?: string
+          is_completed?: boolean | null
+          move_history?: Json | null
+          player_color?: string
+          result?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }

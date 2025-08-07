@@ -65,15 +65,24 @@ const ContactSectionComponent: React.FC = memo(() => {
     setIsSubmitting(true);
 
     try {
-      const { data, error } = await supabase.functions.invoke('send-contact-email', {
-        body: formData
-      });
+      // Store contact form submission in Supabase
+      const { error } = await supabase
+        .from('contacts')
+        .insert([
+          {
+            name: formData.name,
+            email: formData.email,
+            message: formData.message,
+            phone: formData.phone || null,
+            company: formData.company || null,
+          }
+        ]);
 
       if (error) {
         throw error;
       }
 
-      console.log('Contact form submitted successfully:', data);
+      console.log('Contact form submitted successfully to database');
       
       setIsSubmitted(true);
       trackFormSubmission('contact', true);
@@ -400,7 +409,7 @@ const ContactSectionComponent: React.FC = memo(() => {
                   className="flex-1 border-tech-accent text-tech-accent hover:bg-tech-accent hover:text-white transition-all duration-300 py-2 sm:py-3 text-sm sm:text-base group"
                   onClick={() => {
                     trackInteraction('book_call', 'contact');
-                    window.open('https://calendly.com/ethankusasirakwe', '_blank');
+                    window.open('https://calendly.com/kusasirakwe-ethan-upti', '_blank');
                   }}
                 >
                   <Calendar className="w-4 h-4 sm:w-5 sm:h-5 mr-2 group-hover:scale-110 transition-transform duration-200" />
