@@ -130,17 +130,11 @@ const SkillsSectionComponent: React.FC = memo(() => {
     <section ref={ref} id="skills" className="py-12 sm:py-16 lg:py-20 relative px-4 sm:px-6 lg:px-8">
       <div className="container mx-auto">
         <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-tech font-bold text-gradient mb-4 sm:mb-6">
-            My Tech Arsenal
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-tech font-bold text-gradient-professional mb-4 sm:mb-6 professional-heading">
+            Technical Expertise
           </h2>
-          <p 
-            className="text-lg sm:text-xl mb-6 sm:mb-8 px-4"
-            style={{
-              color: themeStyles.textColor,
-              textShadow: themeStyles.textShadow
-            }}
-          >
-            Real-time data from GitHub and project experience
+          <p className="text-lg sm:text-xl mb-6 sm:mb-8 px-4 text-muted-foreground professional-body">
+            Comprehensive skill set backed by real-world project experience and continuous learning
           </p>
           <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto"></div>
         </div>
@@ -286,38 +280,31 @@ const SkillsSectionComponent: React.FC = memo(() => {
         {/* Enhanced Neural Stack Arsenal - Fixed visibility */}
         <div className="mt-12 sm:mt-16 text-center">
           <h3 
-            className="text-xl sm:text-2xl font-bold mb-6 sm:mb-8 holographic-text"
-            style={{
-              color: themeStyles.textColor,
-              textShadow: themeStyles.textShadow
-            }}
+            className="text-xl sm:text-2xl font-bold mb-6 sm:mb-8 text-gradient-professional"
           >
-            ⚡ Neural Stack Arsenal
+            Technology Stack
           </h3>
           <div className="flex flex-wrap justify-center gap-2 sm:gap-4 px-4">
             {[
-              { name: 'React', emoji: '⚛️' },
-              { name: 'TypeScript', emoji: '🔷' },
-              { name: 'Node.js', emoji: '🟢' },
-              { name: 'Firebase', emoji: '🔥' },
-              { name: 'Tailwind', emoji: '💨' },
-              { name: 'Figma', emoji: '🎨' },
-              { name: 'Git', emoji: '📊' }
+              { name: 'React', type: 'Frontend' },
+              { name: 'TypeScript', type: 'Language' },
+              { name: 'Node.js', type: 'Backend' },
+              { name: 'Firebase', type: 'Database' },
+              { name: 'Tailwind', type: 'Styling' },
+              { name: 'Figma', type: 'Design' },
+              { name: 'Git', type: 'Version Control' }
             ].map((tech, index) => (
               <Badge
                 key={tech.name}
-                className="px-3 sm:px-4 py-2 text-sm sm:text-lg border-0 neon-border hover:scale-110 transform transition-all duration-300"
+                className="px-4 py-2 text-sm sm:text-base border-0 professional-card hover:scale-110 transform transition-all duration-300 bg-primary/5 text-primary border border-primary/20"
                 style={{
-                  background: themeStyles.badgeBackground,
-                  color: themeStyles.badgeColor,
                   animation: `pulse-glow 3s ease-in-out infinite`,
                   animationDelay: `${index * 0.2}s`,
-                  textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)',
-                  border: themeStyles.badgeBorder,
                   fontWeight: '600'
                 }}
               >
-                {tech.emoji} {tech.name}
+                {tech.name}
+                <span className="text-xs text-muted-foreground ml-2">({tech.type})</span>
               </Badge>
             ))}
           </div>
