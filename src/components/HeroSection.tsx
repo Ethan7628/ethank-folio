@@ -64,11 +64,11 @@ const HeroSectionComponent: React.FC = memo(() => {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center relative overflow-hidden px-4 sm:px-6 lg:px-8">
+    <section className="min-h-screen flex items-center justify-center relative overflow-hidden px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 lg:pt-28">
       <div className="container mx-auto relative z-10 max-w-4xl">
-        <div className="text-center space-y-6 sm:space-y-8">
+        <div className="text-center space-y-8 sm:space-y-10 lg:space-y-12">
           {/* Enhanced Avatar with Holographic Effect */}
-          <div className="relative mx-auto w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 mb-6 sm:mb-8">
+          <div className="relative mx-auto w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 mt-8 sm:mt-12 lg:mt-16 mb-8 sm:mb-12 lg:mb-16">
             <div className="w-full h-full rounded-full bg-gradient-to-r from-primary via-secondary to-accent p-1 animate-spin-slow">
               <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
                 <img
@@ -99,17 +99,17 @@ const HeroSectionComponent: React.FC = memo(() => {
           </div>
 
           {/* Enhanced Name and Title */}
-          <div className="space-y-3 sm:space-y-4">
+          <div className="space-y-4 sm:space-y-6 mt-8 sm:mt-12">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-tech font-bold text-gradient-professional animate-professional-slide-in professional-heading">
               ETHAN KUSASIRAKWE
             </h1>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground animate-slide-up px-4 anim-delay-200 font-medium tracking-wide">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground animate-slide-up px-4 anim-delay-200 font-medium tracking-wide mt-6 sm:mt-8">
               Software Developer • Creative Technologist • Digital Innovation Specialist
             </p>
           </div>
 
           {/* Animated Tagline */}
-          <div className="h-12 sm:h-16 flex items-center justify-center animate-professional-fade-in px-4 anim-delay-400">
+          <div className="h-12 sm:h-16 flex items-center justify-center animate-professional-fade-in px-4 anim-delay-400 mt-8 sm:mt-10 lg:mt-12">
             <p className="text-sm sm:text-base md:text-lg lg:text-xl text-primary font-medium text-center professional-body">
               {text}
               <span className="animate-ping text-primary ml-1">|</span>
@@ -117,7 +117,7 @@ const HeroSectionComponent: React.FC = memo(() => {
           </div>
 
           {/* Enhanced CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center animate-slide-up px-4 anim-delay-600 max-w-2xl mx-auto">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center animate-slide-up px-4 anim-delay-600 max-w-2xl mx-auto mt-12 sm:mt-16 lg:mt-20">
             <Button
               size="lg"
               className="btn-professional-primary px-8 py-4 rounded-full w-full sm:w-auto text-base font-medium"
