@@ -207,22 +207,130 @@
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   }
 
-  /* Text gradient */
+  /* Professional gradients */
   .text-gradient {
     background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    font-weight: 700;
+    font-weight: 600;
   }
 
-  /* Animations */
-  .animate-slide-up {
-    animation: slide-up 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  .text-gradient-professional {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary)) 60%, hsl(var(--secondary)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
   }
 
-  .animate-float {
-    animation: float 4s ease-in-out infinite;
+  /* Professional card styles */
+  .professional-card {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .professional-card:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    transform: translateY(-4px);
+  }
+
+  /* Professional button styles */
+  .btn-professional-primary {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary)) 60%, hsl(var(--secondary)));
+    border: none;
+    color: hsl(var(--primary-foreground));
+    font-weight: 500;
+    letter-spacing: 0.025em;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .btn-professional-primary:hover {
+    background: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--primary)));
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn-professional-outline {
+    background: transparent;
+    border: 2px solid hsl(var(--primary));
+    color: hsl(var(--primary));
+    font-weight: 500;
+    letter-spacing: 0.025em;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .btn-professional-outline:hover {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    transform: translateY(-2px);
+    box-shadow: 0 8px 12px -2px hsl(var(--primary) / 0.2);
+  }
+
+  /* Professional animations */
+  @keyframes professional-slide-in {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes professional-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes professional-scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-professional-slide-in {
+    animation: professional-slide-in 0.6s ease-out forwards;
+  }
+
+  .animate-professional-fade-in {
+    animation: professional-fade-in 0.4s ease-out forwards;
+  }
+
+  .animate-professional-scale-in {
+    animation: professional-scale-in 0.5s ease-out forwards;
+  }
+
+  /* Refined typography */
+  .professional-heading {
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .professional-subheading {
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.4;
+  }
+
+  .professional-body {
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: 0.01em;
   }
 
   @keyframes slide-up {

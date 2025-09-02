@@ -26,7 +26,7 @@ const ContactSectionComponent: React.FC = memo(() => {
   const [chatInput, setChatInput] = useState('');
   const [showAllContacts, setShowAllContacts] = useState(false);
   const [chatMessages, setChatMessages] = useState([
-    { type: 'bot', message: '🤖 Hi! I\'m Ethan\'s neural AI assistant. Ask me about his skills, projects, or experience!' }
+    { type: 'bot', message: 'Hello! I\'m an AI assistant. Ask me about Ethan\'s skills, projects, or experience!' }
   ]);
 
   const { trackFormSubmission, trackInteraction } = useAnalytics();
@@ -187,10 +187,10 @@ const ContactSectionComponent: React.FC = memo(() => {
       <div className="container mx-auto">
         <AnimatedSection animation="fade-in">
           <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-tech font-bold text-gradient mb-4 sm:mb-6">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-tech font-bold text-gradient-professional mb-4 sm:mb-6 professional-heading">
               Let's Connect & Create
             </h2>
-            <p className="text-lg sm:text-xl text-muted-foreground mb-6 sm:mb-8 px-4 max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl text-muted-foreground mb-6 sm:mb-8 px-4 max-w-2xl mx-auto professional-body">
               Ready to build something amazing together? I'm available for full-time opportunities, 
               freelance projects, and consulting. Let's discuss how I can help bring your vision to life.
             </p>
@@ -201,10 +201,10 @@ const ContactSectionComponent: React.FC = memo(() => {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Contact Form */}
           <AnimatedSection animation="slide-up" delay={200}>
-            <EnhancedCard variant="glass" className="border-0">
-              <EnhancedCardContent className="p-6 sm:p-8">
-                <h3 className="text-xl sm:text-2xl font-bold mb-6 flex items-center">
-                  <Send className="w-6 h-6 mr-2 text-tech-primary" />
+            <EnhancedCard className="professional-card">
+              <EnhancedCardContent className="p-8">
+                <h3 className="text-2xl font-semibold mb-8 flex items-center professional-subheading">
+                  <Send className="w-6 h-6 mr-3 text-primary" />
                   Send Me a Message
                 </h3>
                 
@@ -281,7 +281,7 @@ const ContactSectionComponent: React.FC = memo(() => {
                     <Button 
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full bg-gradient-to-r from-tech-primary to-tech-secondary hover:from-tech-secondary hover:to-tech-accent text-white font-semibold py-2 sm:py-3 text-sm sm:text-base disabled:opacity-50 transition-all duration-300"
+                      className="w-full btn-professional-primary py-4 text-base font-medium disabled:opacity-50 transition-all duration-300"
                     >
                       {isSubmitting ? (
                         <>
@@ -305,9 +305,9 @@ const ContactSectionComponent: React.FC = memo(() => {
           <div className="space-y-6 sm:space-y-8">
             {/* Contact Info */}
             <AnimatedSection animation="slide-up" delay={400}>
-              <EnhancedCard variant="glass" className="border-0">
-                <EnhancedCardContent className="p-6 sm:p-8">
-                  <h3 className="text-xl sm:text-2xl font-bold mb-6">Get In Touch</h3>
+            <EnhancedCard className="professional-card">
+              <EnhancedCardContent className="p-8">
+                <h3 className="text-2xl font-semibold mb-8 professional-subheading">Contact Information</h3>
                    <div className="space-y-4 sm:space-y-6">
                      {(showAllContacts ? contactInfo : contactInfo.slice(0, 3)).map((contact, index) => (
                        <div key={index} className="flex items-center space-x-3 sm:space-x-4 group">
@@ -357,12 +357,12 @@ const ContactSectionComponent: React.FC = memo(() => {
 
             {/* AI Chat Bot */}
             <AnimatedSection animation="slide-up" delay={600}>
-              <EnhancedCard variant="glass" className="border-0">
-                <EnhancedCardContent className="p-6 sm:p-8">
-                  <h3 className="text-lg sm:text-xl font-bold mb-4 flex items-center">
-                    <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 mr-2 text-tech-primary" />
-                    AI Assistant
-                  </h3>
+            <EnhancedCard className="professional-card">
+              <EnhancedCardContent className="p-8">
+                <h3 className="text-xl font-semibold mb-6 flex items-center professional-subheading">
+                  <MessageSquare className="w-6 h-6 mr-3 text-primary" />
+                  AI Assistant
+                </h3>
                   <div className="space-y-3 sm:space-y-4 max-h-48 sm:max-h-60 overflow-y-auto mb-4 scrollbar-thin scrollbar-thumb-tech-primary/20">
                     {chatMessages.map((msg, index) => (
                       <AnimatedSection key={index} animation="fade-in" delay={index * 100}>
@@ -406,25 +406,25 @@ const ContactSectionComponent: React.FC = memo(() => {
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <Button 
                   variant="outline"
-                  className="flex-1 border-tech-accent text-tech-accent hover:bg-tech-accent hover:text-white transition-all duration-300 py-2 sm:py-3 text-sm sm:text-base group"
+                  className="flex-1 btn-professional-outline py-3 text-base group"
                   onClick={() => {
                     trackInteraction('book_call', 'contact');
                     window.open('https://calendly.com/kusasirakwe-ethan-upti', '_blank');
                   }}
                 >
-                  <Calendar className="w-4 h-4 sm:w-5 sm:h-5 mr-2 group-hover:scale-110 transition-transform duration-200" />
-                  Book a Call
+                  <Calendar className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-200" />
+                  Schedule a Call
                 </Button>
                 <Button 
                   variant="outline"
-                  className="flex-1 border-tech-secondary text-tech-secondary hover:bg-tech-secondary hover:text-white transition-all duration-300 py-2 sm:py-3 text-sm sm:text-base group"
+                  className="flex-1 btn-professional-outline py-3 text-base group"
                   onClick={() => {
                     trackInteraction('whatsapp_click', 'contact');
                     window.open('https://wa.me/256742128488', '_blank');
                   }}
                 >
-                  <Phone className="w-4 h-4 sm:w-5 sm:h-5 mr-2 group-hover:scale-110 transition-transform duration-200" />
-                  WhatsApp
+                  <Phone className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-200" />
+                  WhatsApp Chat
                 </Button>
               </div>
             </AnimatedSection>

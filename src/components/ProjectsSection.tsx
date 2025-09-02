@@ -118,11 +118,11 @@ export const ProjectsSection: React.FC = () => {
     <section id="projects" className="py-12 sm:py-16 lg:py-20 relative px-4 sm:px-6 lg:px-8">
       <div className="container mx-auto">
         <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-tech font-bold text-gradient mb-4 sm:mb-6">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-tech font-bold text-gradient-professional mb-4 sm:mb-6 professional-heading">
             Featured Projects
           </h2>
-          <p className="text-lg sm:text-xl text-muted-foreground mb-6 sm:mb-8">
-            Innovative solutions built with cutting-edge technology
+          <p className="text-lg sm:text-xl text-muted-foreground mb-6 sm:mb-8 professional-body">
+            Innovative solutions built with modern technology and best practices
           </p>
           <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto"></div>
         </div>
@@ -130,16 +130,16 @@ export const ProjectsSection: React.FC = () => {
         {/* Filter Buttons */}
         <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-8 sm:mb-12">
           {categories.map((category) => (
-            <Button
-              key={category}
-              variant={filter === category ? "default" : "outline"}
-              onClick={() => setFilter(category)}
-              className={`px-4 sm:px-6 py-2 rounded-full transition-all duration-300 text-sm sm:text-base ${
-                filter === category 
-                  ? 'bg-gradient-to-r from-primary to-secondary text-primary-foreground' 
-                  : 'border-primary text-primary hover:bg-primary hover:text-primary-foreground'
-              }`}
-            >
+          <Button 
+            key={category}
+            variant={filter === category ? "default" : "outline"}
+            onClick={() => setFilter(category)}
+            className={`px-6 py-3 rounded-full transition-all duration-300 text-base font-medium ${
+              filter === category 
+                ? 'btn-professional-primary' 
+                : 'btn-professional-outline'
+            }`}
+          >
               {category}
             </Button>
           ))}
@@ -148,9 +148,9 @@ export const ProjectsSection: React.FC = () => {
         {/* Projects Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {filteredProjects.map((project, index) => (
-            <Card 
+        <Card 
               key={project.id}
-              className="glass-effect border-0 group hover:scale-105 transition-all duration-300 overflow-hidden animate-slide-up"
+              className="professional-card group hover:scale-105 transition-all duration-300 overflow-hidden animate-slide-up"
               style={{ animationDelay: `${index * 0.1}s` }}
               onMouseEnter={() => setHoveredProject(project.id)}
               onMouseLeave={() => setHoveredProject(null)}
@@ -213,27 +213,24 @@ export const ProjectsSection: React.FC = () => {
                     ))}
                   </div>
 
-                  <div className="flex space-x-2 pt-4">
+                  <div className="flex space-x-3 pt-6">
                     <Button 
-                      size="sm" 
-                      className="flex-1 bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-accent text-primary-foreground"
+                      className="flex-1 btn-professional-primary"
                       onClick={() => window.open(project.liveUrl, '_blank')}
                     >
                       <ExternalLink className="w-4 h-4 mr-2" />
                       Live Demo
                     </Button>
                     <Button 
-                      size="sm" 
                       variant="outline"
                       onClick={() => window.open(project.githubUrl, '_blank')}
-                      className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                      className="btn-professional-outline"
                     >
                       <Github className="w-4 h-4" />
                     </Button>
                     <Button 
-                      size="sm" 
                       variant="outline"
-                      className="border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground"
+                      className="border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground transition-all duration-200"
                     >
                       <Eye className="w-4 h-4" />
                     </Button>

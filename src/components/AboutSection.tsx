@@ -54,7 +54,7 @@ export const AboutSection: React.FC = () => {
     <section id="about" className="py-12 sm:py-16 lg:py-20 relative px-4 sm:px-6 lg:px-8">
       <div className="container mx-auto">
         <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-tech font-bold text-gradient mb-4 sm:mb-6">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-tech font-bold text-gradient-professional mb-4 sm:mb-6 professional-heading">
             About Me
           </h2>
           <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto"></div>
@@ -63,20 +63,19 @@ export const AboutSection: React.FC = () => {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Content */}
           <div className="space-y-6 sm:space-y-8">
-            <Card className="glass-effect border-0 animate-slide-up">
-              <CardContent className="p-6 sm:p-8">
-                <h3 className="text-xl sm:text-2xl font-bold mb-4 text-primary">
+            <Card className="professional-card animate-slide-up">
+              <CardContent className="p-8">
+                <h3 className="text-2xl font-semibold mb-6 text-primary">
                   {content.title}
                 </h3>
-                <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-6">
+                <p className="text-lg text-muted-foreground leading-relaxed mb-8 font-light">
                   {content.description}
                 </p>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-3">
                   {content.highlights.map((highlight, index) => (
                     <Badge
                       key={index}
-                      variant="secondary"
-                      className="bg-primary/10 text-primary border-primary/20"
+                      className="bg-primary/10 text-primary border border-primary/20 px-4 py-2 font-medium"
                     >
                       {highlight}
                     </Badge>
@@ -86,18 +85,18 @@ export const AboutSection: React.FC = () => {
             </Card>
 
             {/* Quick Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { number: '15+', label: 'Projects' },
-                { number: '3+', label: 'Years' },
-                { number: '98%', label: 'Satisfaction' },
-                { number: '24/7', label: 'Available' },
+                { number: '15+', label: 'Projects Delivered' },
+                { number: '3+', label: 'Years Experience' },
+                { number: '98%', label: 'Client Satisfaction' },
+                { number: '24/7', label: 'Availability' },
               ].map((stat, index) => (
-                <Card key={index} className="glass-effect border-0 text-center p-3 sm:p-4">
-                  <div className="text-xl sm:text-2xl font-tech font-bold text-primary">
+                <Card key={index} className="professional-card text-center p-6">
+                  <div className="text-2xl font-bold text-primary mb-2">
                     {stat.number}
                   </div>
-                  <div className="text-xs sm:text-sm text-muted-foreground">{stat.label}</div>
+                  <div className="text-sm text-muted-foreground font-medium">{stat.label}</div>
                 </Card>
               ))}
             </div>

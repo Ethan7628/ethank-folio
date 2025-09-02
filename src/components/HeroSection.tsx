@@ -9,7 +9,7 @@ const HeroSectionComponent: React.FC = memo(() => {
   const { theme } = useTheme();
   const [isVoicePlaying, setIsVoicePlaying] = useState(false);
   const [text, setText] = useState('');
-  const fullText = "Code. Create. Connect. I build experiences for the intelligent web.";
+  const fullText = "Transforming ideas into exceptional digital experiences through innovative software solutions.";
 
   useEffect(() => {
     let i = 0;
@@ -28,7 +28,7 @@ const HeroSectionComponent: React.FC = memo(() => {
   const handleVoiceGreeting = () => {
     if ('speechSynthesis' in window) {
       const utterance = new SpeechSynthesisUtterance(
-        "Hello! I'm Ethan Kusasirakwe, a software developer and creative technologist. Welcome to my  portfolio!"
+        "Hello! I'm Ethan Kusasirakwe, a software developer and creative technologist specializing in full-stack development and innovative digital solutions."
       );
       utterance.rate = 0.9;
       utterance.pitch = 1;
@@ -45,11 +45,22 @@ const HeroSectionComponent: React.FC = memo(() => {
   };
 
   const downloadCV = () => {
-    // Create a placeholder PDF download
+    // Create a professional CV download experience
     const link = document.createElement('a');
-    link.href = '#';
-    link.download = 'Ethan_Kusasirakwe_CV_2024.pdf';
-    link.click();
+    link.href = 'https://docs.google.com/document/d/1A_SAMPLE_CV_LINK/export?format=pdf';
+    link.download = 'Ethan_Kusasirakwe_CV_2025.pdf';
+    link.target = '_blank';
+    
+    // Show a professional toast notification
+    const toast = document.createElement('div');
+    toast.className = 'fixed top-4 right-4 bg-primary text-primary-foreground px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300';
+    toast.textContent = 'CV download will begin shortly...';
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+      link.click();
+      document.body.removeChild(toast);
+    }, 1000);
   };
 
   return (
@@ -89,51 +100,50 @@ const HeroSectionComponent: React.FC = memo(() => {
 
           {/* Enhanced Name and Title */}
           <div className="space-y-3 sm:space-y-4">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-tech font-bold holographic-text animate-slide-up">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-tech font-bold text-gradient-professional animate-professional-slide-in professional-heading">
               ETHAN KUSASIRAKWE
             </h1>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground animate-slide-up px-4 anim-delay-200">
-              🚀 Software Developer • 🎨 Creative Technologist • 📊 Data Specialist
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground animate-slide-up px-4 anim-delay-200 font-medium tracking-wide">
+              Software Developer • Creative Technologist • Digital Innovation Specialist
             </p>
           </div>
 
           {/* Animated Tagline */}
-          <div className="h-12 sm:h-16 flex items-center justify-center animate-slide-up px-4 anim-delay-400">
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-primary font-medium text-center">
+          <div className="h-12 sm:h-16 flex items-center justify-center animate-professional-fade-in px-4 anim-delay-400">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-primary font-medium text-center professional-body">
               {text}
-              <span className="animate-ping">|</span>
+              <span className="animate-ping text-primary ml-1">|</span>
             </p>
           </div>
 
           {/* Enhanced CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center animate-slide-up px-4 anim-delay-600">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center animate-slide-up px-4 anim-delay-600 max-w-2xl mx-auto">
             <Button
               size="lg"
-              className="bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-accent transition-all duration-300 text-primary-foreground font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full w-full sm:w-auto text-sm sm:text-base"
+              className="btn-professional-primary px-8 py-4 rounded-full w-full sm:w-auto text-base font-medium"
               onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
             >
-              <Play className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-              🚀 Launch My Work
+              <Play className="w-5 h-5 mr-2" />
+              View My Work
             </Button>
 
             <Button
-              variant="outline"
               size="lg"
               onClick={downloadCV}
-              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-500 px-6 sm:px-8 py-3 sm:py-4 rounded-full w-full sm:w-auto text-sm sm:text-base glass-effect hover:scale-105 transform"
+              className="btn-professional-outline px-8 py-4 rounded-full w-full sm:w-auto text-base font-medium"
             >
-              <Download className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-              📱 Download Smart CV
+              <Download className="w-5 h-5 mr-2" />
+              Download CV
             </Button>
 
             <Button
               variant="outline"
               size="lg"
               onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-              className="border-muted-foreground/30 text-foreground hover:bg-muted hover:text-foreground hover:border-primary transition-all duration-500 px-6 sm:px-8 py-3 sm:py-4 rounded-full w-full sm:w-auto text-sm sm:text-base hover:scale-105 transform"
+              className="border-muted-foreground/40 text-muted-foreground hover:bg-muted hover:text-foreground hover:border-primary transition-all duration-300 px-8 py-4 rounded-full w-full sm:w-auto text-base font-medium"
             >
-              <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-              🤖 Neural Chat Interface
+              <MessageSquare className="w-5 h-5 mr-2" />
+              Get In Touch
             </Button>
           </div>
         </div>
