@@ -8,6 +8,7 @@ import { LoadingSpinner } from '@/components/enhanced/LoadingSpinner';
 import { AnimatedSection } from '@/components/enhanced/AnimatedSection';
 import { Mail, Phone, Github, Linkedin, MapPin, Send, MessageSquare, Calendar, CheckCircle, ChevronDown, ChevronUp } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { sendContactEmail, initEmailJS } from '@/utils/emailService';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { useToast } from '@/hooks/use-toast';
 import { withErrorBoundary } from './enhanced/PerformanceOptimizer';
@@ -51,9 +52,13 @@ const ContactSectionComponent: React.FC = memo(() => {
     });
   };
 
+  React.useEffect(() => {
+    initEmailJS();
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Trim all fields
     const trimmedData = {
       name: formData.name.trim(),
@@ -62,15 +67,6 @@ const ContactSectionComponent: React.FC = memo(() => {
       phone: formData.phone.trim(),
       company: formData.company.trim()
     };
-    
-    if (!trimmedData.name || !trimmedData.email || !trimmedData.message) {
-      toast({
-        title: "Missing Information",
-        description: "Please fill in all required fields (name, email, and message).",
-        variant: "destructive"
-      });
-      return;
-    }
 
     // Validate lengths
     if (trimmedData.name.length > 100 || trimmedData.email.length > 255 || trimmedData.message.length > 1000) {
@@ -82,21 +78,39 @@ const ContactSectionComponent: React.FC = memo(() => {
       return;
     }
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(trimmedData.email)) {
-      toast({
-        title: "Invalid Email",
-        description: "Please enter a valid email address.",
-        variant: "destructive"
-      });
-      return;
-    }
-
     setIsSubmitting(true);
 
     try {
-      // Store contact form submission in Supabase (using trimmed data)
+      // Send email via EmailJS
+      await sendContactEmail({
+        name: trimmedData.name,
+        email: trimmedData.email,
+        message: trimmedData.message
+      });
+
+      // Track analytics
+      trackFormSubmission('contact', true);
+
+      setIsSubmitted(true);
+      toast({
+        title: "Message Sent!",
+        description: "Thank you for reaching out. I'll get back to you soon.",
+        variant: "default"
+      });
+      setFormData({ name: '', email: '', message: '', phone: '', company: '' });
+    } catch (err) {
+      trackFormSubmission('contact', false);
+      toast({
+        title: "Error Sending Message",
+        description: "There was a problem sending your message. Please try again later.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+    setIsSubmitting(true);
+
+    try {
       const { error } = await supabase
         .from('contacts')
         .insert([
@@ -133,11 +147,11 @@ const ContactSectionComponent: React.FC = memo(() => {
       console.error('Failed to send message:', error);
       trackFormSubmission('contact', false);
       
-      toast({
-        title: "Failed to Send",
-        description: "There was an error sending your message. Please try again or contact me directly at kusasirakweethan31@gmail.com",
-        variant: "destructive"
-      });
+      // toast({
+      //   title: "Failed to Send",
+      //   description: "There was an error sending your message. Please try again or contact me directly at kusasirakweethan31@gmail.com",
+      //   variant: "destructive"
+      // });
     } finally {
       setIsSubmitting(false);
     }
