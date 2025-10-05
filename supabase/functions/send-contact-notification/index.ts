@@ -22,7 +22,7 @@ serve(async (req) => {
   }
 
   try {
-    const resend = new Resend("re_HpUWfHk5_3hHrEva1PxRivRypnxVAbdJw");
+    const resend = new Resend(Deno.env.get('RESEND_API_KEY'));
     const contactData: ContactNotification = await req.json();
 
     console.log('Sending email notification for contact:', contactData.id);

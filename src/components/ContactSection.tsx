@@ -33,16 +33,37 @@ const ContactSectionComponent: React.FC = memo(() => {
   const { toast } = useToast();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    // Sanitize input by trimming and limiting length
+    const sanitizedValue = name === 'message' 
+      ? value.slice(0, 1000) 
+      : name === 'name' || name === 'company'
+      ? value.slice(0, 100)
+      : name === 'email'
+      ? value.slice(0, 255)
+      : name === 'phone'
+      ? value.slice(0, 20)
+      : value;
+    
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: sanitizedValue
     });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.name || !formData.email || !formData.message) {
+    // Trim all fields
+    const trimmedData = {
+      name: formData.name.trim(),
+      email: formData.email.trim(),
+      message: formData.message.trim(),
+      phone: formData.phone.trim(),
+      company: formData.company.trim()
+    };
+    
+    if (!trimmedData.name || !trimmedData.email || !trimmedData.message) {
       toast({
         title: "Missing Information",
         description: "Please fill in all required fields (name, email, and message).",
@@ -51,9 +72,19 @@ const ContactSectionComponent: React.FC = memo(() => {
       return;
     }
 
-    // Basic email validation
+    // Validate lengths
+    if (trimmedData.name.length > 100 || trimmedData.email.length > 255 || trimmedData.message.length > 1000) {
+      toast({
+        title: "Input Too Long",
+        description: "Please ensure your inputs are within the character limits.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
+    if (!emailRegex.test(trimmedData.email)) {
       toast({
         title: "Invalid Email",
         description: "Please enter a valid email address.",
@@ -65,16 +96,16 @@ const ContactSectionComponent: React.FC = memo(() => {
     setIsSubmitting(true);
 
     try {
-      // Store contact form submission in Supabase
+      // Store contact form submission in Supabase (using trimmed data)
       const { error } = await supabase
         .from('contacts')
         .insert([
           {
-            name: formData.name,
-            email: formData.email,
-            message: formData.message,
-            phone: formData.phone || null,
-            company: formData.company || null,
+            name: trimmedData.name,
+            email: trimmedData.email,
+            message: trimmedData.message,
+            phone: trimmedData.phone || null,
+            company: trimmedData.company || null,
           }
         ]);
 
@@ -183,14 +214,14 @@ const ContactSectionComponent: React.FC = memo(() => {
   ];
 
   return (
-    <section id="contact" className="py-12 sm:py-16 lg:py-20 relative px-4 sm:px-6 lg:px-8">
+    <section id="contact" className="py-10 sm:py-16 lg:py-20 relative px-4 sm:px-6 lg:px-8">
       <div className="container mx-auto">
         <AnimatedSection animation="fade-in">
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-tech font-bold text-gradient-professional mb-4 sm:mb-6 professional-heading">
+          <div className="text-center mb-10 sm:mb-16">
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-tech font-bold text-gradient-professional mb-3 sm:mb-6 professional-heading px-2">
               Let's Connect & Create
             </h2>
-            <p className="text-lg sm:text-xl text-muted-foreground mb-6 sm:mb-8 px-4 max-w-2xl mx-auto professional-body">
+            <p className="text-sm sm:text-lg lg:text-xl text-muted-foreground mb-4 sm:mb-8 px-4 max-w-2xl mx-auto professional-body">
               Ready to build something amazing together? I'm available for full-time opportunities, 
               freelance projects, and consulting. Let's discuss how I can help bring your vision to life.
             </p>
@@ -198,13 +229,13 @@ const ContactSectionComponent: React.FC = memo(() => {
           </div>
         </AnimatedSection>
 
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
+        <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
           {/* Contact Form */}
           <AnimatedSection animation="slide-up" delay={200}>
             <EnhancedCard className="professional-card">
-              <EnhancedCardContent className="p-8">
-                <h3 className="text-2xl font-semibold mb-8 flex items-center professional-subheading">
-                  <Send className="w-6 h-6 mr-3 text-primary" />
+              <EnhancedCardContent className="p-5 sm:p-8">
+                <h3 className="text-xl sm:text-2xl font-semibold mb-6 sm:mb-8 flex items-center professional-subheading">
+                  <Send className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 text-primary" />
                   Send Me a Message
                 </h3>
                 
@@ -306,8 +337,8 @@ const ContactSectionComponent: React.FC = memo(() => {
             {/* Contact Info */}
             <AnimatedSection animation="slide-up" delay={400}>
             <EnhancedCard className="professional-card">
-              <EnhancedCardContent className="p-8">
-                <h3 className="text-2xl font-semibold mb-8 professional-subheading">Contact Information</h3>
+              <EnhancedCardContent className="p-5 sm:p-8">
+                <h3 className="text-xl sm:text-2xl font-semibold mb-6 sm:mb-8 professional-subheading">Contact Information</h3>
                    <div className="space-y-4 sm:space-y-6">
                      {(showAllContacts ? contactInfo : contactInfo.slice(0, 3)).map((contact, index) => (
                        <div key={index} className="flex items-center space-x-3 sm:space-x-4 group">
@@ -358,9 +389,9 @@ const ContactSectionComponent: React.FC = memo(() => {
             {/* AI Chat Bot */}
             <AnimatedSection animation="slide-up" delay={600}>
             <EnhancedCard className="professional-card">
-              <EnhancedCardContent className="p-8">
-                <h3 className="text-xl font-semibold mb-6 flex items-center professional-subheading">
-                  <MessageSquare className="w-6 h-6 mr-3 text-primary" />
+              <EnhancedCardContent className="p-5 sm:p-8">
+                <h3 className="text-lg sm:text-xl font-semibold mb-5 sm:mb-6 flex items-center professional-subheading">
+                  <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 text-primary" />
                   AI Assistant
                 </h3>
                   <div className="space-y-3 sm:space-y-4 max-h-48 sm:max-h-60 overflow-y-auto mb-4 scrollbar-thin scrollbar-thumb-tech-primary/20">
