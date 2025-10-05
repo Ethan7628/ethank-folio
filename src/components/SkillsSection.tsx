@@ -164,8 +164,8 @@ const SkillsSectionComponent: React.FC = memo(() => {
           ))}
         </div>
 
-        {/* Enhanced Skills Grid with Progressive Loading */}
-        <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+        {/* Enhanced Skills Grid with Progressive Loading - Horizontal scroll on mobile */}
+        <div className="flex sm:grid sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide">
           {skillCategories.map((category, categoryIndex) => {
             const isExpanded = expandedCategories.has(category.title);
             const visibleSkills = isExpanded ? category.skills : category.skills.slice(0, 2);
@@ -173,7 +173,7 @@ const SkillsSectionComponent: React.FC = memo(() => {
             return (
               <Card
                 key={category.title}
-                className="glass-effect border-0 hover:scale-105 transition-all duration-500 animate-slide-up neon-border"
+                className="glass-effect border-0 hover:scale-105 transition-all duration-500 animate-slide-up neon-border flex-shrink-0 w-[85vw] sm:w-auto snap-center"
                 style={{
                   animationDelay: `${categoryIndex * 0.15}s`,
                   opacity: isVisible ? 1 : 0,
