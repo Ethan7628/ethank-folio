@@ -47,7 +47,8 @@ const HeroSectionComponent: React.FC = memo(() => {
   const downloadCV = () => {
     // Create a professional CV download experience
     const link = document.createElement('a');
-    link.href = 'https://docs.google.com/document/d/1A_SAMPLE_CV_LINK/export?format=pdf';
+    // TODO: Replace with actual CV file path once uploaded
+    link.href = '/cv/Ethan_Kusasirakwe_CV.pdf';
     link.download = 'Ethan_Kusasirakwe_CV_2025.pdf';
     link.target = '_blank';
     

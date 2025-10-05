@@ -36,6 +36,17 @@
     --sidebar-ring: 215 25% 27%;
   }
 
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
   .dark {
     /* Pure dark theme - consistent darkness */
     --background: 215 28% 7%;
