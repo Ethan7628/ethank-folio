@@ -164,17 +164,16 @@ const SkillsSectionComponent: React.FC = memo(() => {
           ))}
         </div>
 
-        {/* Enhanced Skills Grid with Progressive Loading - Horizontal scroll on mobile */}
-        <div className="relative">
-          <div className="flex sm:grid sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide px-4 sm:px-0">
-            {skillCategories.map((category, categoryIndex) => {
-              const isExpanded = expandedCategories.has(category.title);
-              const visibleSkills = isExpanded ? category.skills : category.skills.slice(0, 2);
+        {/* Enhanced Skills Grid with Progressive Loading */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+          {skillCategories.map((category, categoryIndex) => {
+            const isExpanded = expandedCategories.has(category.title);
+            const visibleSkills = isExpanded ? category.skills : category.skills.slice(0, 2);
 
-              return (
-                <Card
-                  key={category.title}
-                  className="glass-effect border-0 hover:scale-105 transition-all duration-500 animate-slide-up neon-border flex-shrink-0 w-[calc(100vw-3rem)] sm:w-auto snap-center"
+            return (
+              <Card
+                key={category.title}
+                className="glass-effect border-0 hover:scale-105 transition-all duration-500 animate-slide-up neon-border"
                 style={{
                   animationDelay: `${categoryIndex * 0.15}s`,
                   opacity: isVisible ? 1 : 0,
@@ -277,20 +276,6 @@ const SkillsSectionComponent: React.FC = memo(() => {
             );
           })}
         </div>
-        
-        {/* Scroll Indicator - Mobile Only */}
-        <div className="flex sm:hidden justify-center items-center gap-2 mt-4">
-          <span className="text-xs text-muted-foreground">Swipe to see more</span>
-          <svg 
-            className="w-4 h-4 text-primary animate-pulse" 
-            fill="none" 
-            stroke="currentColor" 
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </div>
-      </div>
 
         {/* Enhanced Neural Stack Arsenal - Fixed visibility */}
         <div className="mt-12 sm:mt-16 text-center">
