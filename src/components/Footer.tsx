@@ -67,7 +67,6 @@ export const Footer: React.FC = () => {
           <div className="flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-4 text-xs sm:text-sm text-muted-foreground px-4">
             <p>© {currentYear}–2030 Ethan Kusasirakwe. All rights reserved.</p>
             <p className="hidden sm:block">•</p>
-            <p>Made with ❤️ using React, TypeScript & Tailwind CSS</p>
           </div>
 
           {/* Back to Top Button */}

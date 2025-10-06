@@ -1,14 +1,18 @@
 
 import React, { useState, useEffect, memo } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Download, MessageSquare, Play, Volume2, VolumeX, Sparkles } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
+
+
 
 
 const HeroSectionComponent: React.FC = memo(() => {
   const { theme } = useTheme();
   const [isVoicePlaying, setIsVoicePlaying] = useState(false);
   const [text, setText] = useState('');
+  const [cvDialogOpen, setCvDialogOpen] = useState(false);
   const fullText = "Transforming ideas into exceptional digital experiences through innovative software solutions.";
 
   useEffect(() => {
@@ -45,11 +49,13 @@ const HeroSectionComponent: React.FC = memo(() => {
   };
 
   const downloadCV = () => {
-    const link = document.createElement('a');
-    link.href = '/Kusasirakwe_Ethan_Developer_CV_v1.pdf';
-    link.download = 'Kusasirakwe_Ethan_Developer_CV_v1.pdf';
-    link.target = '_blank';
-    link.click();
+  const link = document.createElement('a');
+  link.href = '/Kusasirakwe_Ethan_Developer_CV_v1.pdf';
+  link.download = 'Kusasirakwe_Ethan_Developer_CV_v1.pdf';
+  link.target = '_blank';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
   };
 
   return (
@@ -116,9 +122,10 @@ const HeroSectionComponent: React.FC = memo(() => {
               View My Work
             </Button>
 
+            {/* CV Preview Dialog Trigger */}
             <Button
               size="lg"
-              onClick={downloadCV}
+              onClick={() => setCvDialogOpen(true)}
               className="btn-professional-outline px-6 sm:px-8 py-3 sm:py-4 rounded-full w-full sm:w-auto text-sm sm:text-base font-medium"
             >
               <Download className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
@@ -137,6 +144,36 @@ const HeroSectionComponent: React.FC = memo(() => {
           </div>
         </div>
       </div>
+
+  {/* CV Preview Dialog */}
+      <Dialog open={cvDialogOpen} onOpenChange={setCvDialogOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Preview CV</DialogTitle>
+          </DialogHeader>
+          <div className="w-full h-[70vh] flex items-center justify-center">
+            <iframe
+              src=''
+              title="CV Preview"
+              className="w-full h-full border rounded-lg shadow"
+              onError={(e) => {
+                const target = e.target as HTMLElement;
+                target.style.display = 'none';
+                const fallback = document.createElement('div');
+                fallback.innerText = 'Unable to preview CV. Click Download PDF below.';
+                fallback.className = 'w-full h-full flex items-center justify-center text-center text-destructive';
+                target.parentNode?.appendChild(fallback);
+              }}
+            />
+          </div>
+          <DialogFooter>
+            <Button onClick={downloadCV} className="btn-professional-primary">
+              <Download className="w-4 h-4 mr-2" />
+              Download PDF
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 });
