@@ -45,23 +45,11 @@ const HeroSectionComponent: React.FC = memo(() => {
   };
 
   const downloadCV = () => {
-    // Create a professional CV download experience
     const link = document.createElement('a');
-    // TODO: Replace with actual CV file path once uploaded
-    link.href = '/cv/Ethan_Kusasirakwe_CV.pdf';
-    link.download = 'Ethan_Kusasirakwe_CV_2025.pdf';
+    link.href = '/Kusasirakwe_Ethan_Developer_CV_v1.pdf';
+    link.download = 'Kusasirakwe_Ethan_Developer_CV_v1.pdf';
     link.target = '_blank';
-    
-    // Show a professional toast notification
-    const toast = document.createElement('div');
-    toast.className = 'fixed top-4 right-4 bg-primary text-primary-foreground px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300';
-    toast.textContent = 'CV download will begin shortly...';
-    document.body.appendChild(toast);
-    
-    setTimeout(() => {
-      link.click();
-      document.body.removeChild(toast);
-    }, 1000);
+    link.click();
   };
 
   return (
