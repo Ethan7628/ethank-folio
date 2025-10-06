@@ -5,17 +5,12 @@ export const ProductionLoader: React.FC<{ children: React.ReactNode }> = ({ chil
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate app initialization
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-      // Hide the HTML loading screen
-      const loadingScreen = document.getElementById('loading-screen');
-      if (loadingScreen) {
-        loadingScreen.style.display = 'none';
-      }
-    }, 1000);
-
-    return () => clearTimeout(timer);
+    // Hide the HTML loading screen immediately
+    const loadingScreen = document.getElementById('loading-screen');
+    if (loadingScreen) {
+      loadingScreen.style.display = 'none';
+    }
+    setIsLoading(false);
   }, []);
 
   if (isLoading) {

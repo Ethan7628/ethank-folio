@@ -147,7 +147,7 @@ const ContactSectionComponent: React.FC = memo(() => {
       console.error('Failed to send message:', error);
       trackFormSubmission('contact', false);
       
-      // toast({`
+      // toast({
       //   title: "Failed to Send",
       //   description: "There was an error sending your message. Please try again or contact me directly at kusasirakweethan31@gmail.com",
       //   variant: "destructive"
