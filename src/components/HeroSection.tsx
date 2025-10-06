@@ -153,7 +153,7 @@ const HeroSectionComponent: React.FC = memo(() => {
           </DialogHeader>
           <div className="w-full h-[70vh] flex items-center justify-center">
             <iframe
-              src=''
+              src='/Kusasirakwe_Ethan_Developer_CV_v1.pdf'
               title="CV Preview"
               className="w-full h-full border rounded-lg shadow"
               onError={(e) => {
