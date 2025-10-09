@@ -1,14 +1,9 @@
-
 import emailjs from '@emailjs/browser';
-
-// EmailJS configuration
-// You'll need to replace these with your actual EmailJS credentials
-const EMAILJS_SERVICE_ID = 'service_psyuf78'; // Replace with your service ID
-const EMAILJS_TEMPLATE_ID = 'template_qir7o1t'; // Replace with your template ID  
-const EMAILJS_PUBLIC_KEY = 'JW0WYbjtgCqoOB_Js'; // Replace with your public key
+import { EMAILJS_CONFIG, CONTACT_INFO } from '@/config/constants';
+import { logger } from './logger';
 
 export const initEmailJS = () => {
-  emailjs.init(EMAILJS_PUBLIC_KEY);
+  emailjs.init(EMAILJS_CONFIG.publicKey);
 };
 
 export const sendContactEmail = async (formData: {
@@ -20,18 +15,18 @@ export const sendContactEmail = async (formData: {
     from_name: formData.name,
     from_email: formData.email,
     message: formData.message,
-    to_email: 'kusasirakweethan31@gmail.com',
+    to_email: CONTACT_INFO.email,
   };
 
   try {
     const result = await emailjs.send(
-      EMAILJS_SERVICE_ID,
-      EMAILJS_TEMPLATE_ID,
+      EMAILJS_CONFIG.serviceId,
+      EMAILJS_CONFIG.templateId,
       templateParams
     );
     return result;
   } catch (error) {
-    console.error('EmailJS error:', error);
+    logger.error('EmailJS error:', error);
     throw error;
   }
 };

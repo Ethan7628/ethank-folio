@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Mail, Phone, Building, Calendar, ExternalLink } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { logger } from '@/utils/logger';
+import { CONTACT_INFO } from '@/config/constants';
 
 interface Contact {
   id: string;
@@ -40,7 +42,7 @@ export const ContactDashboard: React.FC = () => {
 
       setContacts(data || []);
     } catch (error) {
-      console.error('Error fetching contacts:', error);
+      logger.error('Error fetching contacts:', error);
       toast({
         title: "Error",
         description: "Failed to load contact submissions",
