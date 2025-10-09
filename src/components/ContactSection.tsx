@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -6,12 +6,14 @@ import { EnhancedCard, EnhancedCardContent } from '@/components/ui/enhanced-card
 import { Badge } from '@/components/ui/badge';
 import { LoadingSpinner } from '@/components/enhanced/LoadingSpinner';
 import { AnimatedSection } from '@/components/enhanced/AnimatedSection';
-import { Mail, Phone, Github, Linkedin, MapPin, Send, MessageSquare, Calendar, CheckCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { Mail, Phone, Github, Linkedin, MapPin, Send, MessageSquare, CheckCircle, ChevronDown, ChevronUp } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { sendContactEmail, initEmailJS } from '@/utils/emailService';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { useToast } from '@/hooks/use-toast';
 import { withErrorBoundary } from './enhanced/PerformanceOptimizer';
+import { CONTACT_INFO, FORM_LIMITS, AI_RESPONSES } from '@/config/constants';
+import { logger } from '@/utils/logger';
 
 const ContactSectionComponent: React.FC = memo(() => {
   const [formData, setFormData] = useState({
@@ -26,8 +28,8 @@ const ContactSectionComponent: React.FC = memo(() => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [chatInput, setChatInput] = useState('');
   const [showAllContacts, setShowAllContacts] = useState(false);
-  const [chatMessages, setChatMessages] = useState([
-    { type: 'bot', message: 'Hello! I\'m an AI assistant. Ask me about Ethan\'s skills, projects, or experience!' }
+  const [chatMessages, setChatMessages] = useState<Array<{ type: 'bot' | 'user'; message: string }>>([
+    { type: 'bot', message: AI_RESPONSES.greeting }
   ]);
 
   const { trackFormSubmission, trackInteraction } = useAnalytics();
@@ -35,16 +37,8 @@ const ContactSectionComponent: React.FC = memo(() => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    // Sanitize input by trimming and limiting length
-    const sanitizedValue = name === 'message' 
-      ? value.slice(0, 1000) 
-      : name === 'name' || name === 'company'
-      ? value.slice(0, 100)
-      : name === 'email'
-      ? value.slice(0, 255)
-      : name === 'phone'
-      ? value.slice(0, 20)
-      : value;
+    const limit = FORM_LIMITS[name as keyof typeof FORM_LIMITS] || 1000;
+    const sanitizedValue = value.slice(0, limit);
     
     setFormData({
       ...formData,
@@ -69,7 +63,9 @@ const ContactSectionComponent: React.FC = memo(() => {
     };
 
     // Validate lengths
-    if (trimmedData.name.length > 100 || trimmedData.email.length > 255 || trimmedData.message.length > 1000) {
+    if (trimmedData.name.length > FORM_LIMITS.name || 
+        trimmedData.email.length > FORM_LIMITS.email || 
+        trimmedData.message.length > FORM_LIMITS.message) {
       toast({
         title: "Input Too Long",
         description: "Please ensure your inputs are within the character limits.",
@@ -81,54 +77,22 @@ const ContactSectionComponent: React.FC = memo(() => {
     setIsSubmitting(true);
 
     try {
-      // Send email via EmailJS
-      await sendContactEmail({
-        name: trimmedData.name,
-        email: trimmedData.email,
-        message: trimmedData.message
-      });
+      // Send both email and save to database in parallel
+      await Promise.all([
+        sendContactEmail({
+          name: trimmedData.name,
+          email: trimmedData.email,
+          message: trimmedData.message
+        }),
+        supabase.from('contacts').insert([{
+          name: trimmedData.name,
+          email: trimmedData.email,
+          message: trimmedData.message,
+          phone: trimmedData.phone || null,
+          company: trimmedData.company || null,
+        }])
+      ]);
 
-      // Track analytics
-      trackFormSubmission('contact', true);
-
-      setIsSubmitted(true);
-      toast({
-        title: "Message Sent!",
-        description: "Thank you for reaching out. I'll get back to you soon.",
-        variant: "default"
-      });
-      setFormData({ name: '', email: '', message: '', phone: '', company: '' });
-    } catch (err) {
-      trackFormSubmission('contact', false);
-      toast({
-        title: "Error Sending Message",
-        description: "There was a problem sending your message. Please try again later.",
-        variant: "destructive"
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-    setIsSubmitting(true);
-
-    try {
-      const { error } = await supabase
-        .from('contacts')
-        .insert([
-          {
-            name: trimmedData.name,
-            email: trimmedData.email,
-            message: trimmedData.message,
-            phone: trimmedData.phone || null,
-            company: trimmedData.company || null,
-          }
-        ]);
-
-      if (error) {
-        throw error;
-      }
-
-      console.log('Contact form submitted successfully to database');
-      
       setIsSubmitted(true);
       trackFormSubmission('contact', true);
       
@@ -144,14 +108,14 @@ const ContactSectionComponent: React.FC = memo(() => {
       }, 3000);
 
     } catch (error) {
-      console.error('Failed to send message:', error);
+      logger.error('Failed to send message:', error);
       trackFormSubmission('contact', false);
       
-      // toast({
-      //   title: "Failed to Send",
-      //   description: "There was an error sending your message. Please try again or contact me directly at kusasirakweethan31@gmail.com",
-      //   variant: "destructive"
-      // });
+      toast({
+        title: "Error Sending Message",
+        description: "There was a problem sending your message. Please try again later.",
+        variant: "destructive"
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -176,56 +140,56 @@ const ContactSectionComponent: React.FC = memo(() => {
     const lowerMessage = message.toLowerCase();
     
     if (lowerMessage.includes('skill') || lowerMessage.includes('technology')) {
-      return 'Ethan is proficient in React, TypeScript, Node.js, Python, Firebase, Supabase, and modern web technologies. He also has experience with UI/UX design and data analysis.';
+      return AI_RESPONSES.skills;
     } else if (lowerMessage.includes('project') || lowerMessage.includes('work')) {
-      return 'Ethan has worked on various projects including portfolio websites, e-commerce platforms, and data-driven applications. Check out the Projects section above for detailed case studies!';
+      return AI_RESPONSES.projects;
     } else if (lowerMessage.includes('experience') || lowerMessage.includes('background')) {
-      return 'Ethan is an experienced full-stack developer with a background in software engineering and data science. He\'s passionate about creating user-friendly applications and solving complex problems.';
+      return AI_RESPONSES.experience;
     } else if (lowerMessage.includes('contact') || lowerMessage.includes('hire') || lowerMessage.includes('available')) {
-      return 'Ethan is currently available for new opportunities! You can reach him via the contact form above, email, or schedule a call using the quick action buttons.';
+      return AI_RESPONSES.contact;
     } else {
-      return 'That\'s a great question! For detailed information about Ethan\'s qualifications and experience, please use the contact form above or reach out directly. He\'d be happy to discuss your specific needs!';
+      return AI_RESPONSES.default;
     }
   };
 
-  const contactInfo = [
+  const contactInfo = useMemo(() => [
     {
       icon: Mail,
       label: 'Email',
-      value: 'kusasirakweethan31@gmail.com',
-      href: 'mailto:kusasirakweethan31@gmail.com'
+      value: CONTACT_INFO.email,
+      href: `mailto:${CONTACT_INFO.email}`
     },
     {
       icon: Phone,
       label: 'Phone',
-      value: '+256 742 128 488',
-      href: 'tel:+256742128488'
+      value: CONTACT_INFO.phone,
+      href: `tel:${CONTACT_INFO.phone.replace(/\s/g, '')}`
     },
     {
       icon: Phone,
       label: 'Phone Alt',
-      value: '+256 776 347 516',
-      href: 'tel:+256776347516'
+      value: CONTACT_INFO.phoneAlt,
+      href: `tel:${CONTACT_INFO.phoneAlt.replace(/\s/g, '')}`
     },
     {
       icon: Github,
       label: 'GitHub',
       value: 'github.com/Ethan7628',
-      href: 'https://github.com/Ethan7628'
+      href: CONTACT_INFO.github
     },
     {
       icon: Linkedin,
       label: 'LinkedIn',
       value: 'Kusasirakwe Ethan',
-      href: 'https://www.linkedin.com/in/kusasirakwe-ethan-21585a34b/'
+      href: CONTACT_INFO.linkedin
     },
     {
       icon: MapPin,
       label: 'Location',
-      value: 'Kampala, Uganda',
+      value: CONTACT_INFO.location,
       href: '#'
     }
-  ];
+  ], []);
 
   return (
     <section id="contact" className="py-10 sm:py-16 lg:py-20 relative px-4 sm:px-6 lg:px-8">
@@ -414,11 +378,7 @@ const ContactSectionComponent: React.FC = memo(() => {
                         <div className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}>
                           <Badge 
                             variant={msg.type === 'user' ? 'default' : 'secondary'}
-                            className={`max-w-[80%] p-2 sm:p-3 text-xs sm:text-sm leading-relaxed ${
-                              msg.type === 'user' 
-                                ? 'bg-tech-primary text-white' 
-                                : 'bg-muted hover:bg-muted/80'
-                            } transition-colors duration-200`}
+                            className="max-w-[85%] text-left text-xs sm:text-sm py-2 px-3 sm:py-3 sm:px-4 rounded-lg"
                           >
                             {msg.message}
                           </Badge>
@@ -430,55 +390,68 @@ const ContactSectionComponent: React.FC = memo(() => {
                     <Input
                       value={chatInput}
                       onChange={(e) => setChatInput(e.target.value)}
-                      placeholder="Ask me anything about Ethan..."
-                      className="flex-1 bg-background/50 border-tech-primary/30 focus:border-tech-primary h-9 sm:h-10 text-sm"
-                      maxLength={200}
+                      placeholder="Ask about my skills, experience..."
+                      className="flex-1 bg-background/50 border-tech-primary/30 focus:border-tech-primary text-sm sm:text-base"
                     />
                     <Button 
                       type="submit" 
                       size="sm"
-                      className="bg-tech-primary hover:bg-tech-secondary text-white px-3 sm:px-4 transition-colors duration-200"
+                      className="btn-professional-primary px-3 sm:px-4"
                     >
-                      <Send className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <Send className="w-4 h-4" />
                     </Button>
                   </form>
-                </EnhancedCardContent>
-              </EnhancedCard>
-            </AnimatedSection>
-
-            {/* Quick Actions */}
-            <AnimatedSection animation="slide-up" delay={800}>
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                <Button 
-                  variant="outline"
-                  className="flex-1 btn-professional-outline py-3 text-base group"
-                  onClick={() => {
-                    trackInteraction('book_call', 'contact');
-                    window.open('https://calendly.com/kusasirakwe-ethan-upti', '_blank');
-                  }}
-                >
-                  <Calendar className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-200" />
-                  Schedule a Call
-                </Button>
-                <Button 
-                  variant="outline"
-                  className="flex-1 btn-professional-outline py-3 text-base group"
-                  onClick={() => {
-                    trackInteraction('whatsapp_click', 'contact');
-                    window.open('https://wa.me/256742128488', '_blank');
-                  }}
-                >
-                  <Phone className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-200" />
-                  WhatsApp Chat
-                </Button>
-              </div>
+              </EnhancedCardContent>
+            </EnhancedCard>
             </AnimatedSection>
           </div>
         </div>
+
+        {/* Quick Action Buttons */}
+        <AnimatedSection animation="fade-in" delay={800}>
+          <div className="mt-10 sm:mt-16 text-center">
+            <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold mb-4 sm:mb-6 text-foreground professional-subheading">
+              Quick Actions
+            </h3>
+            <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 px-4 max-w-2xl mx-auto">
+              <Button 
+                asChild
+                size="lg"
+                className="btn-professional-outline w-full sm:w-auto"
+              >
+                <a href={`mailto:${CONTACT_INFO.email}`}>
+                  <Mail className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                  Email Me
+                </a>
+              </Button>
+              <Button 
+                asChild
+                size="lg"
+                className="btn-professional-outline w-full sm:w-auto"
+              >
+                <a href={CONTACT_INFO.linkedin} target="_blank" rel="noopener noreferrer">
+                  <Linkedin className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                  LinkedIn
+                </a>
+              </Button>
+              <Button 
+                asChild
+                size="lg"
+                className="btn-professional-outline w-full sm:w-auto"
+              >
+                <a href={CONTACT_INFO.github} target="_blank" rel="noopener noreferrer">
+                  <Github className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                  GitHub
+                </a>
+              </Button>
+            </div>
+          </div>
+        </AnimatedSection>
       </div>
     </section>
   );
 });
 
 ContactSectionComponent.displayName = 'ContactSection';
+
 export const ContactSection = withErrorBoundary(ContactSectionComponent);

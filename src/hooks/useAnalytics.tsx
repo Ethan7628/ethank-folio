@@ -1,7 +1,7 @@
-
 import { useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
+import { logger } from '@/utils/logger';
 
 export const useAnalytics = () => {
   const trackEvent = async (eventType: string, section?: string, metadata?: Json) => {
@@ -16,10 +16,10 @@ export const useAnalytics = () => {
         });
 
       if (error) {
-        console.error('Analytics tracking error:', error);
+        logger.error('Analytics tracking error:', error);
       }
     } catch (error) {
-      console.error('Analytics tracking failed:', error);
+      logger.error('Analytics tracking failed:', error);
     }
   };
 

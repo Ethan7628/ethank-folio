@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect, memo } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Download, MessageSquare, Play, Volume2, VolumeX, Sparkles } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
-
+import { CV_PATH } from '@/config/constants';
 
 
 
@@ -50,7 +49,7 @@ const HeroSectionComponent: React.FC = memo(() => {
 
   const downloadCV = () => {
   const link = document.createElement('a');
-  link.href = '/Kusasirakwe_Ethan_Developer_CV_v1.pdf';
+  link.href = CV_PATH;
   link.download = 'Kusasirakwe_Ethan_Developer_CV_v1.pdf';
   link.target = '_blank';
   document.body.appendChild(link);

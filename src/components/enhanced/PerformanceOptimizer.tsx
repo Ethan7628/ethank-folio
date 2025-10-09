@@ -1,5 +1,6 @@
 import React, { memo, useMemo, useCallback } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
+import { logger } from '@/utils/logger';
 
 // Error Fallback Component
 const ErrorFallback: React.FC<{ error: Error; resetErrorBoundary: () => void }> = ({ 
@@ -24,8 +25,7 @@ export const withErrorBoundary = <P extends object>(Component: React.ComponentTy
     <ErrorBoundary
       FallbackComponent={ErrorFallback}
       onError={(error) => {
-        console.error('Component Error:', error);
-        // You can add error tracking here (Sentry, etc.)
+        logger.error('Component Error:', error);
       }}
     >
       <Component {...props} />
