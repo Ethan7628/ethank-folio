@@ -18,7 +18,7 @@ export const ProjectsSection: React.FC = () => {
       image: 'https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=600&h=400&fit=crop',
       tech: ['React', 'TypeScript', 'Context API', 'REST API', 'React Router'],
       category: 'Personal',
-      liveUrl: '#',
+      liveUrl: 'https://placeholder.demo/breakfast-buddy',
       githubUrl: '#',
       features: ['AI Recommendations', 'Meal Planning', 'Nutrition Tracking', 'Shopping Lists'],
       status: 'Completed'
@@ -31,7 +31,7 @@ export const ProjectsSection: React.FC = () => {
       image: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=600&h=400&fit=crop',
       tech: ['Wix', 'Figma', 'JavaScript', 'CSS Animations', 'Responsive Design'],
       category: 'Freelance',
-      liveUrl: '#',
+      liveUrl: 'https://placeholder.demo/creative-agency',
       githubUrl: '#',
       features: ['Custom Animations', 'Mobile Responsive', 'SEO Optimized', 'Fast Loading'],
       status: 'Completed'
@@ -44,7 +44,7 @@ export const ProjectsSection: React.FC = () => {
       image: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=600&h=400&fit=crop',
       tech: ['Firebase', 'React', 'TypeScript', 'Material UI', 'Cloud Functions'],
       category: 'Team',
-      liveUrl: '#',
+      liveUrl: 'https://placeholder.demo/firebase-auth',
       githubUrl: '#',
       features: ['Social Login', 'Role Management', 'Email Verification', 'Password Reset'],
       status: 'Completed'
@@ -57,7 +57,7 @@ export const ProjectsSection: React.FC = () => {
       image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
       tech: ['React', 'Chart.js', 'Node.js', 'MongoDB', 'Express'],
       category: 'Freelance',
-      liveUrl: '#',
+      liveUrl: 'https://placeholder.demo/ecommerce-dashboard',
       githubUrl: '#',
       features: ['Real-time Data', 'Interactive Charts', 'Export Reports', 'Mobile App'],
       status: 'In Progress'
@@ -70,7 +70,7 @@ export const ProjectsSection: React.FC = () => {
       image: 'https://images.unsplash.com/photo-1587560699334-cc4ff634909a?w=600&h=400&fit=crop',
       tech: ['React', 'Socket.io', 'OpenAI API', 'Node.js', 'PostgreSQL'],
       category: 'Personal',
-      liveUrl: '#',
+      liveUrl: 'https://placeholder.demo/ai-chat-app',
       githubUrl: '#',
       features: ['AI Assistant', 'Voice Messages', 'Real-time Chat', 'Smart Analysis'],
       status: 'In Progress'
@@ -83,7 +83,7 @@ export const ProjectsSection: React.FC = () => {
       image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=400&fit=crop',
       tech: ['React', 'PWA', 'IndexedDB', 'Web APIs', 'Chart.js'],
       category: 'Team',
-      liveUrl: '#',
+      liveUrl: 'https://placeholder.demo/fitness-tracker',
       githubUrl: '#',
       features: ['Offline Support', 'Progress Tracking', 'Social Features', 'Workout Plans'],
       status: 'Planning'
@@ -241,15 +241,16 @@ export const ProjectsSection: React.FC = () => {
           ))}
         </div>
 
-        {/* View All Projects Button */}
+       
         <div className="text-center mt-8 sm:mt-12">
-          <Button 
-            size="lg"
-            variant="outline"
-            className="border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base"
+          <a
+            href="https://github.com/Ethan7628?tab=repositories"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base border transition-colors duration-200"
           >
             View All Projects on GitHub
-          </Button>
+          </a>
         </div>
       </div>
     </section>
