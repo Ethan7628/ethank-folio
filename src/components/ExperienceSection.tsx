@@ -136,7 +136,7 @@ export const ExperienceSection: React.FC = () => {
                           <Calendar className="w-4 h-4 mr-1" />
                           {exp.period}
                         </div>
-                        <Badge variant="secondary" className="text-xs bg-primary/10 text-primary border-primary/20">
+                        <Badge variant="info" className="text-xs">
                           {exp.type}
                         </Badge>
                       </div>
@@ -167,7 +167,8 @@ export const ExperienceSection: React.FC = () => {
                       {exp.skills.map((skill) => (
                         <Badge 
                           key={skill}
-                          className={`bg-gradient-to-r ${exp.color} text-white border-0 text-xs`}
+                          variant="info"
+                          className="text-xs"
                         >
                           {skill}
                         </Badge>
@@ -214,10 +215,7 @@ export const ExperienceSection: React.FC = () => {
                           <p className="text-xs text-primary">{cert.year}</p>
                         </div>
                         {cert.verified && (
-                          <Badge 
-                            variant="secondary" 
-                            className="bg-green-500/20 text-green-400 border-green-500/30 text-xs"
-                          >
+                          <Badge variant="success" className="text-xs">
                             Verified
                           </Badge>
                         )}

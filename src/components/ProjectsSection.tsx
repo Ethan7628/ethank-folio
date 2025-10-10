@@ -130,16 +130,12 @@ export const ProjectsSection: React.FC = () => {
         {/* Filter Buttons */}
         <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-8 sm:mb-12">
           {categories.map((category) => (
-          <Button 
-            key={category}
-            variant={filter === category ? "default" : "outline"}
-            onClick={() => setFilter(category)}
-            className={`px-6 py-3 rounded-full transition-all duration-300 text-base font-medium ${
-              filter === category 
-                ? 'btn-professional-primary' 
-                : 'btn-professional-outline'
-            }`}
-          >
+            <Button 
+              key={category}
+              variant={filter === category ? "gradient" : "outline"}
+              onClick={() => setFilter(category)}
+              className="rounded-full"
+            >
               {category}
             </Button>
           ))}
@@ -163,7 +159,9 @@ export const ProjectsSection: React.FC = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                 <div className="absolute top-4 right-4 flex space-x-2">
-                  <Badge className={`${getStatusColor(project.status)} border`}>
+                  <Badge 
+                    variant={project.status === 'Completed' ? 'success' : project.status === 'In Progress' ? 'info' : 'warning'}
+                  >
                     {project.status}
                   </Badge>
                 </div>
@@ -194,12 +192,12 @@ export const ProjectsSection: React.FC = () => {
 
                   <div className="flex flex-wrap gap-2">
                     {project.tech.slice(0, 3).map((tech) => (
-                      <Badge key={tech} variant="secondary" className="text-xs bg-primary/10 text-primary border-primary/20">
+                      <Badge key={tech} variant="info" className="text-xs">
                         {tech}
                       </Badge>
                     ))}
                     {project.tech.length > 3 && (
-                      <Badge variant="secondary" className="text-xs bg-primary/10 text-primary border-primary/20">
+                      <Badge variant="info" className="text-xs">
                         +{project.tech.length - 3}
                       </Badge>
                     )}
@@ -215,7 +213,8 @@ export const ProjectsSection: React.FC = () => {
 
                   <div className="flex space-x-3 pt-6">
                     <Button 
-                      className="flex-1 btn-professional-primary"
+                      variant="gradient"
+                      className="flex-1"
                       onClick={() => window.open(project.liveUrl, '_blank')}
                     >
                       <ExternalLink className="w-4 h-4 mr-2" />
@@ -223,14 +222,15 @@ export const ProjectsSection: React.FC = () => {
                     </Button>
                     <Button 
                       variant="outline"
+                      size="icon"
                       onClick={() => window.open(project.githubUrl, '_blank')}
-                      className="btn-professional-outline"
                     >
                       <Github className="w-4 h-4" />
                     </Button>
                     <Button 
-                      variant="outline"
-                      className="border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground transition-all duration-200"
+                      variant="ghost"
+                      size="icon"
+                      className="border border-muted-foreground/20"
                     >
                       <Eye className="w-4 h-4" />
                     </Button>
@@ -241,16 +241,22 @@ export const ProjectsSection: React.FC = () => {
           ))}
         </div>
 
-       
         <div className="text-center mt-8 sm:mt-12">
-          <a
-            href="https://github.com/Ethan7628?tab=repositories"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base border transition-colors duration-200"
+          <Button
+            variant="outline"
+            size="lg"
+            className="rounded-full"
+            asChild
           >
-            View All Projects on GitHub
-          </a>
+            <a
+              href="https://github.com/Ethan7628?tab=repositories"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Github className="w-4 h-4 mr-2" />
+              View All Projects on GitHub
+            </a>
+          </Button>
         </div>
       </div>
     </section>

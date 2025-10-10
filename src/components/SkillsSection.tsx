@@ -87,44 +87,6 @@ const SkillsSectionComponent: React.FC = memo(() => {
     streak: 156
   };
 
-  const getThemeStyles = () => {
-    switch (theme) {
-      case 'light':
-        return {
-          textColor: 'hsl(210 20% 10%)',
-          textShadow: '0 1px 2px rgba(0, 0, 0, 0.12)',
-          badgeBackground: 'hsl(210 40% 25%)',
-          badgeColor: 'hsl(0 0% 98%)',
-          badgeBorder: '1px solid hsl(210 40% 25%)'
-        };
-      case 'beige':
-        return {
-          textColor: 'hsl(25 35% 15%)',
-          textShadow: '0 1px 2px rgba(0, 0, 0, 0.18)',
-          badgeBackground: 'hsl(28 60% 30%)',
-          badgeColor: 'hsl(42 25% 96%)',
-          badgeBorder: '1px solid hsl(28 60% 30%)'
-        };
-      case 'dark':
-        return {
-          textColor: 'hsl(210 40% 95%)',
-          textShadow: '0 1px 2px rgba(0, 0, 0, 0.4)',
-          badgeBackground: 'hsl(217 91% 60%)',
-          badgeColor: 'hsl(222 84% 10%)',
-          badgeBorder: 'none'
-        };
-      default:
-        return {
-          textColor: 'hsl(210 40% 95%)',
-          textShadow: 'none',
-          badgeBackground: 'hsl(217 91% 60%)',
-          badgeColor: 'hsl(222 84% 10%)',
-          badgeBorder: 'none'
-        };
-    }
-  };
-
-  const themeStyles = getThemeStyles();
 
   return (
     <section ref={ref} id="skills" className="py-12 sm:py-16 lg:py-20 relative px-4 sm:px-6 lg:px-8">
@@ -151,13 +113,7 @@ const SkillsSectionComponent: React.FC = memo(() => {
               <div className="text-xl sm:text-2xl font-tech font-bold text-primary">
                 {stat.value}{stat.suffix}
               </div>
-              <div 
-                className="text-xs sm:text-sm"
-                style={{
-                  color: themeStyles.textColor,
-                  textShadow: themeStyles.textShadow
-                }}
-              >
+              <div className="text-xs sm:text-sm text-foreground">
                 {stat.label}
               </div>
             </Card>
@@ -214,26 +170,10 @@ const SkillsSectionComponent: React.FC = memo(() => {
                         }}
                       >
                         <div className="flex justify-between items-center">
-                          <span 
-                            className="font-medium text-sm sm:text-base"
-                            style={{
-                              color: themeStyles.textColor,
-                              textShadow: themeStyles.textShadow
-                            }}
-                          >
+                          <span className="font-medium text-sm sm:text-base text-foreground">
                             {skill.name}
                           </span>
-                          <Badge
-                            variant="secondary"
-                            className="text-xs animate-pulse"
-                            style={{
-                              background: themeStyles.badgeBackground,
-                              color: themeStyles.badgeColor,
-                              border: themeStyles.badgeBorder,
-                              textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)',
-                              fontWeight: '600'
-                            }}
-                          >
+                          <Badge variant="info" className="text-xs">
                             {skill.years}y
                           </Badge>
                         </div>
@@ -243,14 +183,8 @@ const SkillsSectionComponent: React.FC = memo(() => {
                             className="h-3 bg-muted rounded-full overflow-hidden"
                           />
                           {hoveredSkill === skill.name && (
-                            <div 
-                              className="absolute -top-10 left-0 glass-effect rounded px-3 py-1 text-xs z-10 shadow-xl border border-primary/20"
-                              style={{
-                                color: themeStyles.textColor,
-                                textShadow: themeStyles.textShadow
-                              }}
-                            >
-                              <span className="holographic-text font-bold">{skill.level}%</span>
+                            <div className="absolute -top-10 left-0 glass-effect rounded px-3 py-1 text-xs z-10 shadow-xl border border-primary/20 text-foreground">
+                              <span className="font-bold text-primary">{skill.level}%</span>
                             </div>
                           )}
                         </div>
@@ -260,13 +194,7 @@ const SkillsSectionComponent: React.FC = memo(() => {
 
                   {category.skills.length > 2 && !isExpanded && (
                     <div className="mt-4 text-center">
-                      <span 
-                        className="text-xs"
-                        style={{
-                          color: themeStyles.textColor,
-                          textShadow: themeStyles.textShadow
-                        }}
-                      >
+                      <span className="text-xs text-muted-foreground">
                         +{category.skills.length - 2} more skills
                       </span>
                     </div>
@@ -277,11 +205,9 @@ const SkillsSectionComponent: React.FC = memo(() => {
           })}
         </div>
 
-        {/* Enhanced Neural Stack Arsenal - Fixed visibility */}
+        {/* Technology Stack */}
         <div className="mt-12 sm:mt-16 text-center">
-          <h3 
-            className="text-xl sm:text-2xl font-bold mb-6 sm:mb-8 text-gradient-professional"
-          >
+          <h3 className="text-xl sm:text-2xl font-bold mb-6 sm:mb-8 text-gradient-professional">
             Technology Stack
           </h3>
           <div className="flex flex-wrap justify-center gap-2 sm:gap-4 px-4">
@@ -296,15 +222,11 @@ const SkillsSectionComponent: React.FC = memo(() => {
             ].map((tech, index) => (
               <Badge
                 key={tech.name}
-                className="px-4 py-2 text-sm sm:text-base border-0 professional-card hover:scale-110 transform transition-all duration-300 bg-primary/5 text-primary border border-primary/20"
-                style={{
-                  animation: `pulse-glow 3s ease-in-out infinite`,
-                  animationDelay: `${index * 0.2}s`,
-                  fontWeight: '600'
-                }}
+                variant="info"
+                className="px-4 py-2 text-sm sm:text-base hover:scale-110 transform transition-all duration-300"
               >
                 {tech.name}
-                <span className="text-xs text-muted-foreground ml-2">({tech.type})</span>
+                <span className="text-xs opacity-70 ml-2">({tech.type})</span>
               </Badge>
             ))}
           </div>

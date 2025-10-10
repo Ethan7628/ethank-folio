@@ -113,30 +113,32 @@ const HeroSectionComponent: React.FC = memo(() => {
           {/* Enhanced CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 lg:gap-6 justify-center items-center animate-slide-up px-4 anim-delay-600 max-w-2xl mx-auto pt-4">
             <Button
+              variant="gradient"
               size="lg"
-              className="btn-professional-primary px-6 sm:px-8 py-3 sm:py-4 rounded-full w-full sm:w-auto text-sm sm:text-base font-medium"
+              className="rounded-full w-full sm:w-auto"
               onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
             >
               <Play className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               View My Work
             </Button>
 
-            {/* Direct Download CV Button */}
-            <a
-              href="/Kusasirakwe_Ethan_Developer_CV_v1.pdf"
-              download
-              className="btn-professional-outline px-6 sm:px-8 py-3 sm:py-4 rounded-full w-full sm:w-auto text-sm sm:text-base font-medium flex items-center justify-center"
-              style={{ textDecoration: 'none' }}
-            >
-              <Download className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-              Download CV
-            </a>
-
             <Button
               variant="outline"
               size="lg"
+              className="rounded-full w-full sm:w-auto"
+              asChild
+            >
+              <a href={CV_PATH} download="Kusasirakwe_Ethan_Developer_CV_v1.pdf">
+                <Download className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                Download CV
+              </a>
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="lg"
               onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-              className="border-muted-foreground/40 text-muted-foreground hover:bg-muted hover:text-foreground hover:border-primary transition-all duration-300 px-6 sm:px-8 py-3 sm:py-4 rounded-full w-full sm:w-auto text-sm sm:text-base font-medium"
+              className="rounded-full w-full sm:w-auto border border-muted-foreground/20 hover:border-primary"
             >
               <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               Get In Touch
