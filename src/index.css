@@ -414,4 +414,25 @@
   body {
     overflow-x: hidden;
   }
+
+  /* PWA-specific styles - behave like native app */
+  @media all and (display-mode: standalone) {
+    body {
+      overscroll-behavior-y: none;
+      -webkit-overflow-scrolling: touch;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+    }
+    
+    html {
+      overscroll-behavior: none;
+      touch-action: pan-y;
+    }
+
+    /* Prevent pull-to-refresh */
+    body {
+      overscroll-behavior-y: contain;
+    }
+  }
 }

@@ -4,7 +4,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta id="viewport-meta" name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ethan Kusasirakwe - Software Developer & Creative Technologist</title>
   <meta name="description"
     content="Futuristic portfolio of Ethan Kusasirakwe - Full-stack developer, UI/UX designer, and data specialist building experiences for the intelligent web." />
@@ -84,6 +84,29 @@
 
   <!-- Service Worker Registration -->
   <script>
+    // Detect if running as PWA and adjust viewport accordingly
+    (function() {
+      const isPWA = window.matchMedia('(display-mode: standalone)').matches || 
+                    window.navigator.standalone === true ||
+                    document.referrer.includes('android-app://');
+      
+      const viewportMeta = document.getElementById('viewport-meta');
+      
+      if (isPWA && viewportMeta) {
+        // PWA mode: behave like native app (unzoomable, fixed)
+        viewportMeta.setAttribute('content', 
+          'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover'
+        );
+        document.documentElement.style.setProperty('touch-action', 'pan-y');
+        document.body.style.setProperty('overscroll-behavior', 'none');
+      } else {
+        // Web mode: normal website behavior
+        viewportMeta.setAttribute('content', 
+          'width=device-width, initial-scale=1.0'
+        );
+      }
+    })();
+
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
