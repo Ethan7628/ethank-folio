@@ -151,10 +151,10 @@ export const TestimonialsSection: React.FC = () => {
 
               <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                 <div className="flex items-center space-x-3 sm:space-x-4">
-                  <Badge className="bg-primary/20 text-primary border-primary/30 text-xs sm:text-sm">
+                  <Badge variant="info" className="text-xs sm:text-sm">
                     {current.project}
                   </Badge>
-                  <Badge className="bg-secondary/20 text-secondary border-secondary/30 text-xs sm:text-sm">
+                  <Badge variant="secondary" className="text-xs sm:text-sm">
                     {current.date}
                   </Badge>
                 </div>
@@ -164,7 +164,7 @@ export const TestimonialsSection: React.FC = () => {
                     variant="outline"
                     size="sm"
                     onClick={() => playVoiceTestimonial(current.text, current.name)}
-                    className="border-primary text-primary hover:bg-primary hover:text-primary-foreground text-xs sm:text-sm"
+                    className="text-xs sm:text-sm"
                   >
                     <Volume2 className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                     Play Audio
@@ -185,9 +185,8 @@ export const TestimonialsSection: React.FC = () => {
           <div className="flex justify-center items-center space-x-3 sm:space-x-4 mt-6 sm:mt-8">
             <Button
               variant="outline"
-              size="sm"
+              size="icon"
               onClick={prevTestimonial}
-              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
             >
               <ChevronLeft className="w-4 h-4" />
             </Button>
@@ -211,9 +210,8 @@ export const TestimonialsSection: React.FC = () => {
 
             <Button
               variant="outline"
-              size="sm"
+              size="icon"
               onClick={nextTestimonial}
-              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
             >
               <ChevronRight className="w-4 h-4" />
             </Button>
@@ -252,7 +250,7 @@ export const TestimonialsSection: React.FC = () => {
                       <Star key={i} className="w-2 h-2 sm:w-3 sm:h-3 fill-yellow-400 text-yellow-400" />
                     ))}
                   </div>
-                  <Badge variant="secondary" className="text-xs bg-primary/10 text-primary border-primary/20">
+                  <Badge variant="info" className="text-xs">
                     {testimonial.project}
                   </Badge>
                 </div>

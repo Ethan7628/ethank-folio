@@ -75,7 +75,8 @@ export const AboutSection: React.FC = () => {
                   {content.highlights.map((highlight, index) => (
                     <Badge
                       key={index}
-                      className="bg-primary/10 text-primary border border-primary/20 px-4 py-2 font-medium"
+                      variant="info"
+                      className="px-4 py-2 font-medium"
                     >
                       {highlight}
                     </Badge>

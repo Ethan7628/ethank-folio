@@ -56,7 +56,7 @@ export const Footer: React.FC = () => {
                 href={social.url}
                 target={social.url.startsWith('http') ? '_blank' : undefined}
                 rel={social.url.startsWith('http') ? 'noopener noreferrer' : undefined}
-                className="text-muted-foreground hover:text-primary transition-colors duration-200"
+                className="text-muted-foreground hover:text-primary transition-colors duration-200 link-hover"
               >
                 {social.name}
               </a>
@@ -71,8 +71,10 @@ export const Footer: React.FC = () => {
 
           {/* Back to Top Button */}
           <Button
+            variant="gradient"
+            size="icon"
             onClick={scrollToTop}
-            className="mt-6 sm:mt-8 bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-accent text-primary-foreground rounded-full w-10 h-10 sm:w-12 sm:h-12 p-0"
+            className="mt-6 sm:mt-8 rounded-full"
             title="Back to Top"
           >
             <ArrowUp className="w-4 h-4 sm:w-5 sm:h-5" />

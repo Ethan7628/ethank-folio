@@ -69,14 +69,15 @@ export const Navigation: React.FC = () => {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
             {navItems.map((item) => (
-              <button
+              <Button
                 key={item.label}
+                variant="ghost"
                 onClick={() => scrollToSection(item.href)}
-                className="text-foreground hover:text-primary transition-colors duration-200 font-medium text-sm xl:text-base relative group"
+                className="text-foreground hover:text-primary font-medium text-sm xl:text-base relative group"
               >
                 {item.label}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-              </button>
+              </Button>
             ))}
           </div>
 
@@ -113,13 +114,14 @@ export const Navigation: React.FC = () => {
         {isMobileMenuOpen && (
           <div className="lg:hidden mt-4 glass-effect rounded-lg p-4 space-y-3 sm:space-y-4 shadow-xl">
             {navItems.map((item) => (
-              <button
+              <Button
                 key={item.label}
+                variant="ghost"
                 onClick={() => scrollToSection(item.href)}
-                className="block w-full text-left font-medium py-2 text-base text-foreground hover:bg-primary/5 rounded px-2 transition-colors duration-200"
+                className="w-full justify-start font-medium text-base"
               >
                 {item.label}
-              </button>
+              </Button>
             ))}
           </div>
         )}
