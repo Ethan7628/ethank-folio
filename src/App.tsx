@@ -1,7 +1,7 @@
 
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ProductionLoader } from "@/components/ProductionLoader";
@@ -22,7 +22,7 @@ const queryClient = new QueryClient({
 const App = () => (
   <ErrorBoundary>
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
+      
         <ProductionLoader>
           <Toaster />
           <Sonner />
@@ -34,7 +34,7 @@ const App = () => (
             </Routes>
           </BrowserRouter>
         </ProductionLoader>
-      </TooltipProvider>
+      
     </QueryClientProvider>
   </ErrorBoundary>
 );
