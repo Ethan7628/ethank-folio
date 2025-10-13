@@ -82,7 +82,9 @@ const ContactSectionComponent: React.FC = memo(() => {
         sendContactEmail({
           name: trimmedData.name,
           email: trimmedData.email,
-          message: trimmedData.message
+          message: trimmedData.message,
+          phone: trimmedData.phone,
+          company: trimmedData.company
         }),
         supabase.from('contacts').insert([{
           name: trimmedData.name,
