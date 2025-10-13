@@ -10,11 +10,15 @@ export const sendContactEmail = async (formData: {
   name: string;
   email: string;
   message: string;
+  phone?: string;
+  company?: string;
 }) => {
   const templateParams = {
     from_name: formData.name,
     from_email: formData.email,
     message: formData.message,
+    phone: formData.phone || 'Not provided',
+    company: formData.company || 'Not provided',
     to_email: CONTACT_INFO.email,
   };
 
