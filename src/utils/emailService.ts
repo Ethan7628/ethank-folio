@@ -12,6 +12,7 @@ export const sendContactEmail = async (formData: {
   message: string;
   phone?: string;
   company?: string;
+  purpose?: string;
 }) => {
   const templateParams = {
     from_name: formData.name,
@@ -19,6 +20,7 @@ export const sendContactEmail = async (formData: {
     message: formData.message,
     phone: formData.phone || 'Not provided',
     company: formData.company || 'Not provided',
+    purpose: formData.purpose || 'Not specified',
     to_email: CONTACT_INFO.email,
   };
 
