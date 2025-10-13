@@ -25,7 +25,20 @@ export const FORM_LIMITS = {
   message: 1000,
   phone: 20,
   company: 100,
+  purpose: 100,
 } as const;
+
+export const CONTACT_PURPOSES = [
+  { value: 'frontend', label: 'Frontend Development' },
+  { value: 'fullstack', label: 'Full-Stack Development' },
+  { value: 'backend', label: 'Backend Development' },
+  { value: 'seo', label: 'SEO Analysis' },
+  { value: 'ui-ux', label: 'UI/UX Design' },
+  { value: 'consulting', label: 'Technical Consulting' },
+  { value: 'freelance', label: 'Freelance Project' },
+  { value: 'fulltime', label: 'Full-Time Opportunity' },
+  { value: 'other', label: 'Other' },
+] as const;
 
 export const AI_RESPONSES = {
   greeting: "Hello! I'm an AI assistant. Ask me about Ethan's skills, projects, or experience!",

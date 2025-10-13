@@ -6,13 +6,14 @@ import { EnhancedCard, EnhancedCardContent } from '@/components/ui/enhanced-card
 import { Badge } from '@/components/ui/badge';
 import { LoadingSpinner } from '@/components/enhanced/LoadingSpinner';
 import { AnimatedSection } from '@/components/enhanced/AnimatedSection';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Mail, Phone, Github, Linkedin, MapPin, Send, MessageSquare, CheckCircle, ChevronDown, ChevronUp } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { sendContactEmail, initEmailJS } from '@/utils/emailService';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { useToast } from '@/hooks/use-toast';
 import { withErrorBoundary } from './enhanced/PerformanceOptimizer';
-import { CONTACT_INFO, FORM_LIMITS, AI_RESPONSES } from '@/config/constants';
+import { CONTACT_INFO, FORM_LIMITS, AI_RESPONSES, CONTACT_PURPOSES } from '@/config/constants';
 import { logger } from '@/utils/logger';
 
 const ContactSectionComponent: React.FC = memo(() => {
@@ -21,7 +22,8 @@ const ContactSectionComponent: React.FC = memo(() => {
     email: '',
     message: '',
     phone: '',
-    company: ''
+    company: '',
+    purpose: ''
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -59,7 +61,8 @@ const ContactSectionComponent: React.FC = memo(() => {
       email: formData.email.trim(),
       message: formData.message.trim(),
       phone: formData.phone.trim(),
-      company: formData.company.trim()
+      company: formData.company.trim(),
+      purpose: formData.purpose.trim()
     };
 
     // Validate lengths
@@ -84,7 +87,8 @@ const ContactSectionComponent: React.FC = memo(() => {
           email: trimmedData.email,
           message: trimmedData.message,
           phone: trimmedData.phone,
-          company: trimmedData.company
+          company: trimmedData.company,
+          purpose: trimmedData.purpose
         }),
         supabase.from('contacts').insert([{
           name: trimmedData.name,
@@ -92,6 +96,7 @@ const ContactSectionComponent: React.FC = memo(() => {
           message: trimmedData.message,
           phone: trimmedData.phone || null,
           company: trimmedData.company || null,
+          purpose: trimmedData.purpose || null,
         }])
       ]);
 
@@ -105,7 +110,7 @@ const ContactSectionComponent: React.FC = memo(() => {
 
       // Reset form after 3 seconds
       setTimeout(() => {
-        setFormData({ name: '', email: '', message: '', phone: '', company: '' });
+        setFormData({ name: '', email: '', message: '', phone: '', company: '', purpose: '' });
         setIsSubmitted(false);
       }, 3000);
 
@@ -275,6 +280,25 @@ const ContactSectionComponent: React.FC = memo(() => {
                           disabled={isSubmitting}
                         />
                       </div>
+                    </div>
+
+                    <div>
+                      <Select 
+                        value={formData.purpose} 
+                        onValueChange={(value) => setFormData({ ...formData, purpose: value })}
+                        disabled={isSubmitting}
+                      >
+                        <SelectTrigger className="bg-background/50 border-tech-primary/30 focus:border-tech-primary h-10 sm:h-12 text-sm sm:text-base">
+                          <SelectValue placeholder="Purpose of Contact *" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {CONTACT_PURPOSES.map((purpose) => (
+                            <SelectItem key={purpose.value} value={purpose.value}>
+                              {purpose.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
                     
                     <div>
