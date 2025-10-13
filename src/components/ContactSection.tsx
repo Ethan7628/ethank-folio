@@ -284,7 +284,7 @@ const ContactSectionComponent: React.FC = memo(() => {
 
                     <div>
                       <Select 
-                        value={formData.purpose} 
+                        value={formData.purpose || undefined} 
                         onValueChange={(value) => setFormData({ ...formData, purpose: value })}
                         disabled={isSubmitting}
                       >
