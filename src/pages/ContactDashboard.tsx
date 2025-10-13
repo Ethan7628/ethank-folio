@@ -25,11 +25,7 @@ export const ContactDashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
-  useEffect(() => {
-    fetchContacts();
-  }, []);
-
-  const fetchContacts = async () => {
+  const fetchContacts = React.useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('contacts')
@@ -51,7 +47,11 @@ export const ContactDashboard: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast]);
+
+  useEffect(() => {
+    fetchContacts();
+  }, [fetchContacts]);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
