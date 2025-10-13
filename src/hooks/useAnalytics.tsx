@@ -6,18 +6,13 @@ import { logger } from '@/utils/logger';
 export const useAnalytics = () => {
   const trackEvent = async (eventType: string, section?: string, metadata?: Json) => {
     try {
-      const { error } = await supabase
-        .from('analytics')
-        .insert({
-          event_type: eventType,
-          section: section,
-          user_agent: navigator.userAgent,
-          metadata: metadata
-        });
-
-      if (error) {
-        logger.error('Analytics tracking error:', error);
-      }
+      // Log analytics events to console for now
+      logger.info('Analytics Event:', {
+        eventType,
+        section,
+        metadata,
+        timestamp: new Date().toISOString()
+      });
     } catch (error) {
       logger.error('Analytics tracking failed:', error);
     }
