@@ -76,17 +76,26 @@ const ContactSectionComponent: React.FC = memo(() => {
     setIsSubmitting(true);
 
     try {
-      // Insert into database - trigger will send email
-      const { error } = await supabase.from('contacts').insert([{
-        name: trimmedData.name,
-        email: trimmedData.email,
-        message: trimmedData.message,
-        phone: trimmedData.phone || null,
-        company: trimmedData.company || null,
-        purpose: trimmedData.purpose || null,
-      }]);
+      // Insert into database
+      const { data: contactData, error } = await supabase
+        .from('contacts')
+        .insert([{
+          name: trimmedData.name,
+          email: trimmedData.email,
+          message: trimmedData.message,
+          phone: trimmedData.phone || null,
+          company: trimmedData.company || null,
+          purpose: trimmedData.purpose || null,
+        }])
+        .select()
+        .single();
 
       if (error) throw error;
+
+      // Send email notification
+      await supabase.functions.invoke('send-contact-notification', {
+        body: contactData
+      });
 
       setIsSubmitted(true);
       trackFormSubmission('contact', true);
