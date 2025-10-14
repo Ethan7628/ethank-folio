@@ -11,12 +11,6 @@ export const CONTACT_INFO = {
   location: 'Kampala, Uganda',
 } as const;
 
-export const EMAILJS_CONFIG = {
-  serviceId: 'service_psyuf78',
-  templateId: 'template_qir7o1t',
-  publicKey: 'JW0WYbjtgCqoOB_Js',
-} as const;
-
 export const CV_PATH = '/Kusasirakwe_Ethan_Developer_CV_v1.pdf' as const;
 
 export const FORM_LIMITS = {
