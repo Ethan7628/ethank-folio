@@ -124,7 +124,7 @@ export const ExperienceSection: React.FC = () => {
                       <h4 className="text-lg sm:text-xl font-bold text-primary mb-1">
                         {exp.title}
                       </h4>
-                      <div className="text-base sm:text-lg font-semibold mb-2 text-foreground">
+                      <div className="text-base sm:text-md font-semibold mb-2 text-foreground">
                         {exp.company}
                       </div>
                       <div className="flex flex-wrap gap-3 sm:gap-4 text-sm text-muted-foreground mb-4">
@@ -185,7 +185,7 @@ export const ExperienceSection: React.FC = () => {
             {/* Education */}
             <Card className="glass-effect border-0">
               <CardContent className="p-4 sm:p-6">
-                <h3 className="text-lg sm:text-xl font-bold mb-4 text-primary">Education</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-primary mb-1">Education</h3>
                 <div className="space-y-4">
                   <div>
                     <h4 className="font-semibold text-foreground">Bachelor of Computer Science</h4>
@@ -204,7 +204,7 @@ export const ExperienceSection: React.FC = () => {
             {/* Certifications */}
             <Card className="glass-effect border-0">
               <CardContent className="p-4 sm:p-6">
-                <h3 className="text-lg sm:text-xl font-bold mb-4 text-secondary">Certifications</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-primary mb-1">Certifications</h3>
                 <div className="space-y-4">
                   {certifications.map((cert, index) => (
                     <div key={index} className="border-l-2 border-primary pl-4">
@@ -229,7 +229,7 @@ export const ExperienceSection: React.FC = () => {
             {/* Quick Stats */}
             <Card className="glass-effect border-0">
               <CardContent className="p-4 sm:p-6">
-                <h3 className="text-lg sm:text-xl font-bold mb-4 text-accent">Quick Stats</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-primary mb-1">Quick Stats</h3>
                 <div className="space-y-3">
                   {[
                     { label: 'Years of Experience', value: '3+' },
