@@ -9,7 +9,6 @@ import { AnimatedSection } from '@/components/enhanced/AnimatedSection';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Mail, Phone, Github, Linkedin, MapPin, Send, MessageSquare, CheckCircle, ChevronDown, ChevronUp } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { sendContactEmail, initEmailJS } from '@/utils/emailService';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { useToast } from '@/hooks/use-toast';
 import { withErrorBoundary } from './enhanced/PerformanceOptimizer';
@@ -48,9 +47,6 @@ const ContactSectionComponent: React.FC = memo(() => {
     });
   };
 
-  React.useEffect(() => {
-    initEmailJS();
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -80,25 +76,17 @@ const ContactSectionComponent: React.FC = memo(() => {
     setIsSubmitting(true);
 
     try {
-      // Send both email and save to database in parallel
-      await Promise.all([
-        sendContactEmail({
-          name: trimmedData.name,
-          email: trimmedData.email,
-          message: trimmedData.message,
-          phone: trimmedData.phone,
-          company: trimmedData.company,
-          purpose: trimmedData.purpose
-        }),
-        supabase.from('contacts').insert([{
-          name: trimmedData.name,
-          email: trimmedData.email,
-          message: trimmedData.message,
-          phone: trimmedData.phone || null,
-          company: trimmedData.company || null,
-          purpose: trimmedData.purpose || null,
-        }])
-      ]);
+      // Insert into database - trigger will send email
+      const { error } = await supabase.from('contacts').insert([{
+        name: trimmedData.name,
+        email: trimmedData.email,
+        message: trimmedData.message,
+        phone: trimmedData.phone || null,
+        company: trimmedData.company || null,
+        purpose: trimmedData.purpose || null,
+      }]);
+
+      if (error) throw error;
 
       setIsSubmitted(true);
       trackFormSubmission('contact', true);
