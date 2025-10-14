@@ -1,0 +1,13 @@
+{
+  "name": "folio-send-contact-email",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "send": "node send-contact-email.js"
+  },
+  "dependencies": {
+    "nodemailer": "^6.9.4",
+    "dotenv": "^16.1.4"
+  }
+}
