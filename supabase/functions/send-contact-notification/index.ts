@@ -1,7 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { Resend } from "npm:resend@4.0.0";
 
-const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -27,6 +26,26 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const contactData: ContactNotification = await req.json();
     console.log("Received contact notification:", contactData);
+
+    // Server-side validation
+    if (!contactData.name || contactData.name.trim().length === 0) {
+      throw new Error("Name is required");
+    }
+    if (!contactData.email || contactData.email.trim().length === 0) {
+      throw new Error("Email is required");
+    }
+    if (!contactData.message || contactData.message.trim().length === 0) {
+      throw new Error("Message is required");
+    }
+    if (contactData.name.length > 100) {
+      throw new Error("Name must be less than 100 characters");
+    }
+    if (contactData.email.length > 255) {
+      throw new Error("Email must be less than 255 characters");
+    }
+    if (contactData.message.length > 2000) {
+      throw new Error("Message must be less than 2000 characters");
+    }
 
     const emailHtml = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9fafb;">
@@ -66,19 +85,29 @@ const handler = async (req: Request): Promise<Response> => {
       </div>
     `;
 
-    const { data, error } = await resend.emails.send({
-      from: "Portfolio Contact <onboarding@resend.dev>",
-      to: ["kusasirakweet@gmail.com"], // Your email
-      subject: `New Contact: ${contactData.name} - ${contactData.purpose || 'General Inquiry'}`,
-      html: emailHtml,
-      reply_to: contactData.email,
+    // Call Resend API directly
+    const resendResponse = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: "Portfolio Contact <onboarding@resend.dev>",
+        to: ["kusasirakweet@gmail.com"],
+        subject: `New Contact: ${contactData.name} - ${contactData.purpose || 'General Inquiry'}`,
+        html: emailHtml,
+        reply_to: contactData.email,
+      }),
     });
 
-    if (error) {
-      console.error("Resend error:", error);
-      throw error;
+    if (!resendResponse.ok) {
+      const errorData = await resendResponse.json();
+      console.error("Resend API error:", errorData);
+      throw new Error(`Resend API error: ${JSON.stringify(errorData)}`);
     }
 
+    const data = await resendResponse.json();
     console.log("Email sent successfully:", data);
 
     return new Response(
