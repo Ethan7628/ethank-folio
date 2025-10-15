@@ -8,7 +8,8 @@ import { LoadingSpinner } from '@/components/enhanced/LoadingSpinner';
 import { AnimatedSection } from '@/components/enhanced/AnimatedSection';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Mail, Phone, Github, Linkedin, MapPin, Send, MessageSquare, CheckCircle, ChevronDown, ChevronUp } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+// Frontend now posts to a backend API which inserts into Neon (Postgres) and sends notifications.
+// Removed direct Supabase usage to avoid coupling the client to DB services.
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { useToast } from '@/hooks/use-toast';
 import { withErrorBoundary } from './enhanced/PerformanceOptimizer';
@@ -76,40 +77,38 @@ const ContactSectionComponent: React.FC = memo(() => {
     setIsSubmitting(true);
 
     try {
-      // Insert into database
-      const { data: contactData, error } = await supabase
-        .from('contacts')
-        .insert([{
+      // Post to backend API which will insert into Neon Postgres and send notification email.
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
           name: trimmedData.name,
           email: trimmedData.email,
           message: trimmedData.message,
           phone: trimmedData.phone || null,
           company: trimmedData.company || null,
           purpose: trimmedData.purpose || null,
-        }])
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      // Send email notification
-      const emailResult = await supabase.functions.invoke('send-contact-notification', {
-        body: contactData
+        })
       });
 
-      if (emailResult.error) {
-        console.error('Email notification error:', emailResult.error);
+      const result = await res.json().catch(() => null);
+
+      if (!res.ok) {
+        logger.error('Backend contact API failed', result || { status: res.status });
+        trackFormSubmission('contact', false);
         toast({
-          title: "Warning",
-          description: "Message saved but email notification failed. I'll still receive your message in my dashboard.",
-          variant: "default"
+          title: "Error Sending Message",
+          description: (result && result.error) ? result.error : "There was a problem sending your message. Please try again later.",
+          variant: "destructive"
         });
-      } else {
-        toast({
-          title: "Message Sent!",
-          description: "Thank you for reaching out. I'll get back to you within 24 hours.",
-        });
+        return;
       }
+
+      // Success path
+      toast({
+        title: "Message Sent!",
+        description: "Thank you for reaching out. I'll get back to you within 24 hours.",
+      });
 
       setIsSubmitted(true);
       trackFormSubmission('contact', true);
@@ -123,7 +122,7 @@ const ContactSectionComponent: React.FC = memo(() => {
     } catch (error) {
       logger.error('Failed to send message:', error);
       trackFormSubmission('contact', false);
-      
+
       toast({
         title: "Error Sending Message",
         description: "There was a problem sending your message. Please try again later.",
