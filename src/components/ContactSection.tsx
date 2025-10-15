@@ -93,17 +93,26 @@ const ContactSectionComponent: React.FC = memo(() => {
       if (error) throw error;
 
       // Send email notification
-      await supabase.functions.invoke('send-contact-notification', {
+      const emailResult = await supabase.functions.invoke('send-contact-notification', {
         body: contactData
       });
 
+      if (emailResult.error) {
+        console.error('Email notification error:', emailResult.error);
+        toast({
+          title: "Warning",
+          description: "Message saved but email notification failed. I'll still receive your message in my dashboard.",
+          variant: "default"
+        });
+      } else {
+        toast({
+          title: "Message Sent!",
+          description: "Thank you for reaching out. I'll get back to you within 24 hours.",
+        });
+      }
+
       setIsSubmitted(true);
       trackFormSubmission('contact', true);
-      
-      toast({
-        title: "Message Sent!",
-        description: "Thank you for reaching out. I'll get back to you within 24 hours.",
-      });
 
       // Reset form after 3 seconds
       setTimeout(() => {
