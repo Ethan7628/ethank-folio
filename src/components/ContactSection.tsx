@@ -41,7 +41,7 @@ const ContactSectionComponent: React.FC = memo(() => {
     const { name, value } = e.target;
     const limit = FORM_LIMITS[name as keyof typeof FORM_LIMITS] || 1000;
     const sanitizedValue = value.slice(0, limit);
-    
+
     setFormData({
       ...formData,
       [name]: sanitizedValue
@@ -62,13 +62,11 @@ const ContactSectionComponent: React.FC = memo(() => {
       purpose: formData.purpose.trim()
     };
 
-    // Validate lengths
-    if (trimmedData.name.length > FORM_LIMITS.name || 
-        trimmedData.email.length > FORM_LIMITS.email || 
-        trimmedData.message.length > FORM_LIMITS.message) {
+    // Validate required fields
+    if (!trimmedData.name || !trimmedData.email || !trimmedData.message) {
       toast({
-        title: "Input Too Long",
-        description: "Please ensure your inputs are within the character limits.",
+        title: "Missing Fields",
+        description: "Please fill in all required fields: name, email, and message.",
         variant: "destructive"
       });
       return;
@@ -77,10 +75,14 @@ const ContactSectionComponent: React.FC = memo(() => {
     setIsSubmitting(true);
 
     try {
-      // Post to backend API which will insert into Neon Postgres and send notification email.
-      const res = await fetch('/api/contact', {
+      console.log('Sending request to backend...', trimmedData);
+
+      const res = await fetch('https://form-server-ixq1.onrender.com/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
         body: JSON.stringify({
           name: trimmedData.name,
           email: trimmedData.email,
@@ -91,20 +93,42 @@ const ContactSectionComponent: React.FC = memo(() => {
         })
       });
 
-      const result = await res.json().catch(() => null);
+      console.log('Response status:', res.status);
+
+      let result;
+      try {
+        const text = await res.text();
+        console.log('Raw response:', text);
+        result = text ? JSON.parse(text) : null;
+      } catch (parseError) {
+        console.error('Failed to parse response:', parseError);
+        result = null;
+      }
 
       if (!res.ok) {
+        console.error('Backend error:', result);
         logger.error('Backend contact API failed', result || { status: res.status });
         trackFormSubmission('contact', false);
+
+        let errorMessage = "There was a problem sending your message. Please try again later.";
+        if (result && result.error) {
+          errorMessage = result.error;
+        } else if (res.status === 500) {
+          errorMessage = "Server error. Please try again later.";
+        } else if (res.status === 400) {
+          errorMessage = "Invalid data. Please check your inputs.";
+        }
+
         toast({
           title: "Error Sending Message",
-          description: (result && result.error) ? result.error : "There was a problem sending your message. Please try again later.",
+          description: errorMessage,
           variant: "destructive"
         });
         return;
       }
 
       // Success path
+      console.log('Success!', result);
       toast({
         title: "Message Sent!",
         description: "Thank you for reaching out. I'll get back to you within 24 hours.",
@@ -120,12 +144,13 @@ const ContactSectionComponent: React.FC = memo(() => {
       }, 3000);
 
     } catch (error) {
+      console.error('Network error:', error);
       logger.error('Failed to send message:', error);
       trackFormSubmission('contact', false);
 
       toast({
-        title: "Error Sending Message",
-        description: "There was a problem sending your message. Please try again later.",
+        title: "Network Error",
+        description: "Cannot connect to server. Please check your internet connection and try again.",
         variant: "destructive"
       });
     } finally {
@@ -150,7 +175,7 @@ const ContactSectionComponent: React.FC = memo(() => {
 
   const getAIResponse = (message: string): string => {
     const lowerMessage = message.toLowerCase();
-    
+
     if (lowerMessage.includes('skill') || lowerMessage.includes('technology')) {
       return AI_RESPONSES.skills;
     } else if (lowerMessage.includes('project') || lowerMessage.includes('work')) {
@@ -212,7 +237,7 @@ const ContactSectionComponent: React.FC = memo(() => {
               Let's Connect & Create
             </h2>
             <p className="text-sm sm:text-lg lg:text-xl text-muted-foreground mb-4 sm:mb-8 px-4 max-w-2xl mx-auto professional-body">
-              Ready to build something amazing together? I'm available for full-time opportunities, 
+              Ready to build something amazing together? I'm available for full-time opportunities,
               freelance projects, and consulting. Let's discuss how I can help bring your vision to life.
             </p>
             <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-tech-primary to-tech-secondary mx-auto"></div>
@@ -228,7 +253,7 @@ const ContactSectionComponent: React.FC = memo(() => {
                   <Send className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 text-primary" />
                   Send Me a Message
                 </h3>
-                
+
                 {isSubmitted ? (
                   <div className="text-center py-8">
                     <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
@@ -262,7 +287,7 @@ const ContactSectionComponent: React.FC = memo(() => {
                         />
                       </div>
                     </div>
-                    
+
                     <div className="grid sm:grid-cols-2 gap-4">
                       <div>
                         <Input
@@ -288,8 +313,8 @@ const ContactSectionComponent: React.FC = memo(() => {
                     </div>
 
                     <div>
-                      <Select 
-                        value={formData.purpose || undefined} 
+                      <Select
+                        value={formData.purpose || undefined}
                         onValueChange={(value) => setFormData({ ...formData, purpose: value })}
                         disabled={isSubmitting}
                       >
@@ -305,7 +330,7 @@ const ContactSectionComponent: React.FC = memo(() => {
                         </SelectContent>
                       </Select>
                     </div>
-                    
+
                     <div>
                       <Textarea
                         name="message"
@@ -317,8 +342,8 @@ const ContactSectionComponent: React.FC = memo(() => {
                         disabled={isSubmitting}
                       />
                     </div>
-                    
-                    <Button 
+
+                    <Button
                       type="submit"
                       disabled={isSubmitting}
                       className="w-full btn-professional-primary py-4 text-base font-medium disabled:opacity-50 transition-all duration-300"
@@ -345,69 +370,69 @@ const ContactSectionComponent: React.FC = memo(() => {
           <div className="space-y-6 sm:space-y-8">
             {/* Contact Info */}
             <AnimatedSection animation="slide-up" delay={400}>
-            <EnhancedCard className="professional-card">
-              <EnhancedCardContent className="p-5 sm:p-8">
-                <h3 className="text-xl sm:text-2xl font-semibold mb-6 sm:mb-8 professional-subheading">Contact Information</h3>
-                   <div className="space-y-4 sm:space-y-6">
-                     {(showAllContacts ? contactInfo : contactInfo.slice(0, 3)).map((contact, index) => (
-                       <div key={index} className="flex items-center space-x-3 sm:space-x-4 group">
-                         <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-primary via-secondary to-accent rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300 neon-border">
-                           <contact.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                         </div>
-                         <div className="flex-1 min-w-0">
-                           <p className="text-xs sm:text-sm text-muted-foreground">{contact.label}</p>
-                           {contact.href !== '#' ? (
-                             <a 
-                               href={contact.href}
-                               target={contact.href.startsWith('http') ? '_blank' : undefined}
-                               rel={contact.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                               className="text-sm sm:text-base font-medium holographic-text hover:scale-105 transform transition-all duration-300 break-all hover:underline"
-                               onClick={() => trackInteraction('contact_click', 'contact', { type: contact.label })}
-                             >
-                               {contact.value}
-                             </a>
-                           ) : (
-                             <p className="text-sm sm:text-base font-medium holographic-text">{contact.value}</p>
-                           )}
-                         </div>
-                       </div>
-                     ))}
-                     {contactInfo.length > 3 && (
-                       <button
-                         onClick={() => setShowAllContacts(!showAllContacts)}
-                         className="flex items-center justify-center w-full py-2 text-sm text-primary hover:text-secondary transition-colors"
-                       >
-                         {showAllContacts ? (
-                           <>
-                             <ChevronUp className="w-4 h-4 mr-1" />
-                             Show Less
-                           </>
-                         ) : (
-                           <>
-                             <ChevronDown className="w-4 h-4 mr-1" />
-                             Show More (+{contactInfo.length - 3})
-                           </>
-                         )}
-                       </button>
-                     )}
-                   </div>
+              <EnhancedCard className="professional-card">
+                <EnhancedCardContent className="p-5 sm:p-8">
+                  <h3 className="text-xl sm:text-2xl font-semibold mb-6 sm:mb-8 professional-subheading">Contact Information</h3>
+                  <div className="space-y-4 sm:space-y-6">
+                    {(showAllContacts ? contactInfo : contactInfo.slice(0, 3)).map((contact, index) => (
+                      <div key={index} className="flex items-center space-x-3 sm:space-x-4 group">
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-primary via-secondary to-accent rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300 neon-border">
+                          <contact.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs sm:text-sm text-muted-foreground">{contact.label}</p>
+                          {contact.href !== '#' ? (
+                            <a
+                              href={contact.href}
+                              target={contact.href.startsWith('http') ? '_blank' : undefined}
+                              rel={contact.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                              className="text-sm sm:text-base font-medium holographic-text hover:scale-105 transform transition-all duration-300 break-all hover:underline"
+                              onClick={() => trackInteraction('contact_click', 'contact', { type: contact.label })}
+                            >
+                              {contact.value}
+                            </a>
+                          ) : (
+                            <p className="text-sm sm:text-base font-medium holographic-text">{contact.value}</p>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                    {contactInfo.length > 3 && (
+                      <button
+                        onClick={() => setShowAllContacts(!showAllContacts)}
+                        className="flex items-center justify-center w-full py-2 text-sm text-primary hover:text-secondary transition-colors"
+                      >
+                        {showAllContacts ? (
+                          <>
+                            <ChevronUp className="w-4 h-4 mr-1" />
+                            Show Less
+                          </>
+                        ) : (
+                          <>
+                            <ChevronDown className="w-4 h-4 mr-1" />
+                            Show More (+{contactInfo.length - 3})
+                          </>
+                        )}
+                      </button>
+                    )}
+                  </div>
                 </EnhancedCardContent>
               </EnhancedCard>
             </AnimatedSection>
 
             {/* AI Chat Bot */}
             <AnimatedSection animation="slide-up" delay={600}>
-            <EnhancedCard className="professional-card">
-              <EnhancedCardContent className="p-5 sm:p-8">
-                <h3 className="text-lg sm:text-xl font-semibold mb-5 sm:mb-6 flex items-center professional-subheading">
-                  <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 text-primary" />
-                  AI Assistant
-                </h3>
+              <EnhancedCard className="professional-card">
+                <EnhancedCardContent className="p-5 sm:p-8">
+                  <h3 className="text-lg sm:text-xl font-semibold mb-5 sm:mb-6 flex items-center professional-subheading">
+                    <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 text-primary" />
+                    AI Assistant
+                  </h3>
                   <div className="space-y-3 sm:space-y-4 max-h-48 sm:max-h-60 overflow-y-auto mb-4 scrollbar-thin scrollbar-thumb-tech-primary/20">
                     {chatMessages.map((msg, index) => (
                       <AnimatedSection key={index} animation="fade-in" delay={index * 100}>
                         <div className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-                          <Badge 
+                          <Badge
                             variant={msg.type === 'user' ? 'default' : 'secondary'}
                             className="max-w-[85%] text-left text-xs sm:text-sm py-2 px-3 sm:py-3 sm:px-4 rounded-lg"
                           >
@@ -424,16 +449,16 @@ const ContactSectionComponent: React.FC = memo(() => {
                       placeholder="Ask about my skills, experience..."
                       className="flex-1 bg-background/50 border-tech-primary/30 focus:border-tech-primary text-sm sm:text-base"
                     />
-                    <Button 
-                      type="submit" 
+                    <Button
+                      type="submit"
                       size="sm"
                       className="btn-professional-primary px-3 sm:px-4"
                     >
                       <Send className="w-4 h-4" />
                     </Button>
                   </form>
-              </EnhancedCardContent>
-            </EnhancedCard>
+                </EnhancedCardContent>
+              </EnhancedCard>
             </AnimatedSection>
           </div>
         </div>
@@ -445,7 +470,7 @@ const ContactSectionComponent: React.FC = memo(() => {
               Quick Actions
             </h3>
             <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 px-4 max-w-2xl mx-auto">
-              <Button 
+              <Button
                 asChild
                 size="lg"
                 className="btn-professional-outline w-full sm:w-auto"
@@ -455,7 +480,7 @@ const ContactSectionComponent: React.FC = memo(() => {
                   Email Me
                 </a>
               </Button>
-              <Button 
+              <Button
                 asChild
                 size="lg"
                 className="btn-professional-outline w-full sm:w-auto"
@@ -465,7 +490,7 @@ const ContactSectionComponent: React.FC = memo(() => {
                   LinkedIn
                 </a>
               </Button>
-              <Button 
+              <Button
                 asChild
                 size="lg"
                 className="btn-professional-outline w-full sm:w-auto"
