@@ -184,6 +184,10 @@ const ContactSectionComponent: React.FC = memo(() => {
       return AI_RESPONSES.experience;
     } else if (lowerMessage.includes('contact') || lowerMessage.includes('hire') || lowerMessage.includes('available')) {
       return AI_RESPONSES.contact;
+    }else if(lowerMessage.includes('date') ||lowerMessage.includes('born') || lowerMessage.includes('birth')) {
+      return AI_RESPONSES.date_of_birth;
+    }else if(lowerMessage.includes('age') ||lowerMessage.includes('old') || lowerMessage.includes('years')) {
+      return AI_RESPONSES.age;
     } else {
       return AI_RESPONSES.default;
     }
@@ -426,7 +430,7 @@ const ContactSectionComponent: React.FC = memo(() => {
                 <EnhancedCardContent className="p-5 sm:p-8">
                   <h3 className="text-lg sm:text-xl font-semibold mb-5 sm:mb-6 flex items-center professional-subheading">
                     <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 text-primary" />
-                    AI Assistant
+                    My ChatBot (AI Assistant)
                   </h3>
                   <div className="space-y-3 sm:space-y-4 max-h-48 sm:max-h-60 overflow-y-auto mb-4 scrollbar-thin scrollbar-thumb-tech-primary/20">
                     {chatMessages.map((msg, index) => (
@@ -446,7 +450,7 @@ const ContactSectionComponent: React.FC = memo(() => {
                     <Input
                       value={chatInput}
                       onChange={(e) => setChatInput(e.target.value)}
-                      placeholder="Ask about my skills, experience..."
+                      placeholder="Ask about my skills, experience...about Ethan"
                       className="flex-1 bg-background/50 border-tech-primary/30 focus:border-tech-primary text-sm sm:text-base"
                     />
                     <Button
