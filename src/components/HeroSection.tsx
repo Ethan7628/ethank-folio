@@ -31,10 +31,10 @@ const HeroSectionComponent: React.FC = memo(() => {
   const handleVoiceGreeting = () => {
     if ('speechSynthesis' in window) {
       const utterance = new SpeechSynthesisUtterance(
-        "Hello! I'm Ethan Kusasirakwe, a software developer and creative technologist specializing in full-stack development and innovative digital solutions."
+        "Hello! How are you? I'm Ethan Kusasirakwe, a software developer and creative technologist specializing in full-stack development and innovative digital solutions."
       );
-      utterance.rate = 0.9;
-      utterance.pitch = 1;
+      utterance.rate = .8;
+      utterance.pitch = 2;
 
       if (isVoicePlaying) {
         speechSynthesis.cancel();
@@ -47,15 +47,15 @@ const HeroSectionComponent: React.FC = memo(() => {
     }
   };
 
-  const downloadCV = () => {
-  const link = document.createElement('a');
-  link.href = CV_PATH;
-  link.download = 'Kusasirakwe_Ethan_Developer_CV_v1.pdf';
-  link.target = '_blank';
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  };
+  // const downloadCV = () => {
+  // const link = document.createElement('a');
+  // link.href = CV_PATH;
+  // link.download = 'Kusasirakwe_Ethan_Developer_CV_v1.pdf';
+  // link.target = '_blank';
+  // document.body.appendChild(link);
+  // link.click();
+  // document.body.removeChild(link);
+  // };
 
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 lg:pt-32">
@@ -123,6 +123,7 @@ const HeroSectionComponent: React.FC = memo(() => {
             </Button>
 
             <Button
+            // onClick={downloadCV}
               variant="outline"
               size="lg"
               className="rounded-full w-full sm:w-auto"
