@@ -33,8 +33,8 @@ const HeroSectionComponent: React.FC = memo(() => {
       const utterance = new SpeechSynthesisUtterance(
         "Hello! How are you? I'm Ethan Kusasirakwe, a software developer and creative technologist specializing in full-stack development and innovative digital solutions."
       );
-      utterance.rate = .8;
-      utterance.pitch = 2;
+      utterance.rate = 0.9;
+      utterance.pitch = 1;
 
       if (isVoicePlaying) {
         speechSynthesis.cancel();
