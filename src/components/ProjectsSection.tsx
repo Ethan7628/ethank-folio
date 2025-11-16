@@ -204,6 +204,19 @@ export const ProjectsSection: React.FC = () => {
       githubUrl: 'https://github.com/Ethan7628/First_Portifolio',
       features: ['Custom CSS', 'Responsive Layout', 'Project Gallery', 'Contact Section'],
       status: 'Completed'
+    },
+    {
+      id: 'voxcar',
+      title: 'VoxCar.io',
+      description: 'Car selling web application built with Odyssey Tech Co organization.',
+      longDescription: 'Full-stack TypeScript application for buying and selling cars online, featuring advanced search, vehicle listings, user authentication, and secure payment integration.',
+      image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&h=400&fit=crop',
+      tech: ['TypeScript', 'React', 'Node.js', 'PostgreSQL', 'REST API'],
+      category: 'Team',
+      liveUrl: 'https://github.com/Odyssey-Tech-Dev',
+      githubUrl: 'https://github.com/Odyssey-Tech-Dev',
+      features: ['Vehicle Listings', 'Advanced Search', 'User Authentication', 'Payment Integration'],
+      status: 'In Progress'
     }
   ];
 
