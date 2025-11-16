@@ -377,10 +377,8 @@ export const ProjectsSection: React.FC = () => {
         {/* Show More Button */}
         {filteredProjects.length > 6 && (
           <div className="text-center mt-8">
-            <Button
-              variant="outline"
-              size="lg"
-              className="rounded-full"
+            <button
+              className="flex items-center justify-center w-full py-2 text-sm text-primary hover:text-secondary transition-colors"
               onClick={() => setShowAll(!showAll)}
             >
               {showAll ? (
@@ -391,10 +389,10 @@ export const ProjectsSection: React.FC = () => {
               ) : (
                 <>
                   <ChevronDown className="w-4 h-4 mr-2" />
-                  Show More Projects ({filteredProjects.length - 6} more)
+                  Show More ({filteredProjects.length - 6} more)
                 </>
               )}
-            </Button>
+            </button>
           </div>
         )}
 
