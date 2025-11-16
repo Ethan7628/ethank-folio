@@ -18,6 +18,15 @@ interface ContactNotification {
   created_at: string;
 }
 
+const escapeHtml = (text: string): string => {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+};
+
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -25,26 +34,55 @@ const handler = async (req: Request): Promise<Response> => {
 
   try {
     const contactData: ContactNotification = await req.json();
-    console.log("Received contact notification:", contactData);
+    console.log("Received contact notification");
 
     // Server-side validation
     if (!contactData.name || contactData.name.trim().length === 0) {
-      throw new Error("Name is required");
+      return new Response(
+        JSON.stringify({ error: "Name is required" }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
     }
     if (!contactData.email || contactData.email.trim().length === 0) {
-      throw new Error("Email is required");
+      return new Response(
+        JSON.stringify({ error: "Email is required" }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
     }
     if (!contactData.message || contactData.message.trim().length === 0) {
-      throw new Error("Message is required");
+      return new Response(
+        JSON.stringify({ error: "Message is required" }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
     }
+    
+    // Length validation
     if (contactData.name.length > 100) {
-      throw new Error("Name must be less than 100 characters");
+      return new Response(
+        JSON.stringify({ error: "Name must be less than 100 characters" }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
     }
     if (contactData.email.length > 255) {
-      throw new Error("Email must be less than 255 characters");
+      return new Response(
+        JSON.stringify({ error: "Email must be less than 255 characters" }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
     }
     if (contactData.message.length > 2000) {
-      throw new Error("Message must be less than 2000 characters");
+      return new Response(
+        JSON.stringify({ error: "Message must be less than 2000 characters" }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(contactData.email)) {
+      return new Response(
+        JSON.stringify({ error: "Invalid email format" }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
     }
 
     const emailHtml = `
@@ -56,17 +94,17 @@ const handler = async (req: Request): Promise<Response> => {
         <div style="background-color: white; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
           <div style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 2px solid #e5e7eb;">
             <h2 style="color: #667eea; margin: 0 0 10px 0; font-size: 18px;">Contact Information</h2>
-            <p style="margin: 8px 0; color: #374151;"><strong>Name:</strong> ${contactData.name}</p>
-            <p style="margin: 8px 0; color: #374151;"><strong>Email:</strong> <a href="mailto:${contactData.email}" style="color: #667eea;">${contactData.email}</a></p>
-            ${contactData.phone ? `<p style="margin: 8px 0; color: #374151;"><strong>Phone:</strong> ${contactData.phone}</p>` : ''}
-            ${contactData.company ? `<p style="margin: 8px 0; color: #374151;"><strong>Company:</strong> ${contactData.company}</p>` : ''}
-            ${contactData.purpose ? `<p style="margin: 8px 0; color: #374151;"><strong>Purpose:</strong> ${contactData.purpose}</p>` : ''}
+            <p style="margin: 8px 0; color: #374151;"><strong>Name:</strong> ${escapeHtml(contactData.name)}</p>
+            <p style="margin: 8px 0; color: #374151;"><strong>Email:</strong> <a href="mailto:${escapeHtml(contactData.email)}" style="color: #667eea;">${escapeHtml(contactData.email)}</a></p>
+            ${contactData.phone ? `<p style="margin: 8px 0; color: #374151;"><strong>Phone:</strong> ${escapeHtml(contactData.phone)}</p>` : ''}
+            ${contactData.company ? `<p style="margin: 8px 0; color: #374151;"><strong>Company:</strong> ${escapeHtml(contactData.company)}</p>` : ''}
+            ${contactData.purpose ? `<p style="margin: 8px 0; color: #374151;"><strong>Purpose:</strong> ${escapeHtml(contactData.purpose)}</p>` : ''}
           </div>
           
           <div style="margin-bottom: 20px;">
             <h2 style="color: #667eea; margin: 0 0 10px 0; font-size: 18px;">Message</h2>
             <div style="background-color: #f3f4f6; padding: 15px; border-radius: 5px; color: #374151; line-height: 1.6;">
-              ${contactData.message.replace(/\n/g, '<br>')}
+              ${escapeHtml(contactData.message).replace(/\n/g, '<br>')}
             </div>
           </div>
           
@@ -95,7 +133,7 @@ const handler = async (req: Request): Promise<Response> => {
       body: JSON.stringify({
         from: "Portfolio Contact <onboarding@resend.dev>",
         to: ["kusasirakweet@gmail.com"],
-        subject: `New Contact: ${contactData.name} - ${contactData.purpose || 'General Inquiry'}`,
+        subject: `New Contact: ${escapeHtml(contactData.name)} - ${escapeHtml(contactData.purpose || 'General Inquiry')}`,
         html: emailHtml,
         reply_to: contactData.email,
       }),
