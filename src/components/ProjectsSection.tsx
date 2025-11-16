@@ -3,11 +3,12 @@ import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, Github, Play, Eye, Volume2 } from 'lucide-react';
+import { ExternalLink, Github, Play, Eye, Volume2, ChevronDown, ChevronUp } from 'lucide-react';
 
 export const ProjectsSection: React.FC = () => {
   const [filter, setFilter] = useState('All');
   const [hoveredProject, setHoveredProject] = useState<string | null>(null);
+  const [showAll, setShowAll] = useState(false);
 
   const projects = [
     {
@@ -226,6 +227,8 @@ export const ProjectsSection: React.FC = () => {
     ? projects 
     : projects.filter(project => project.category === filter);
 
+  const displayedProjects = showAll ? filteredProjects : filteredProjects.slice(0, 6);
+
   const playVoiceNote = (projectTitle: string) => {
     if ('speechSynthesis' in window) {
       const utterance = new SpeechSynthesisUtterance(
@@ -273,7 +276,7 @@ export const ProjectsSection: React.FC = () => {
 
         {/* Projects Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {filteredProjects.map((project, index) => (
+          {displayedProjects.map((project, index) => (
         <Card 
               key={project.id}
               className="professional-card group hover:scale-105 transition-all duration-300 overflow-hidden animate-slide-up"
@@ -370,6 +373,30 @@ export const ProjectsSection: React.FC = () => {
             </Card>
           ))}
         </div>
+
+        {/* Show More Button */}
+        {filteredProjects.length > 6 && (
+          <div className="text-center mt-8">
+            <Button
+              variant="outline"
+              size="lg"
+              className="rounded-full"
+              onClick={() => setShowAll(!showAll)}
+            >
+              {showAll ? (
+                <>
+                  <ChevronUp className="w-4 h-4 mr-2" />
+                  Show Less
+                </>
+              ) : (
+                <>
+                  <ChevronDown className="w-4 h-4 mr-2" />
+                  Show More Projects ({filteredProjects.length - 6} more)
+                </>
+              )}
+            </Button>
+          </div>
+        )}
 
         <div className="text-center mt-8 sm:mt-12">
           <Button
