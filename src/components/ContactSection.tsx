@@ -60,6 +60,7 @@ const ContactSectionComponent: React.FC = memo(() => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('[ContactForm] User clicked Send Message button');
 
     // Trim all fields
     const trimmedData = {
@@ -70,11 +71,14 @@ const ContactSectionComponent: React.FC = memo(() => {
       company: formData.company.trim(),
       purpose: formData.purpose.trim()
     };
+    console.log('[ContactForm] Trimmed form data:', trimmedData);
 
     // Validate with zod schema
     try {
       contactSchema.parse(trimmedData);
+      console.log('[ContactForm] Form validation passed');
     } catch (error) {
+      console.error('[ContactForm] Validation failed:', error);
       if (error instanceof z.ZodError) {
         toast({
           title: "Validation Error",
@@ -86,9 +90,11 @@ const ContactSectionComponent: React.FC = memo(() => {
     }
 
     setIsSubmitting(true);
+    console.log('[ContactForm] Set isSubmitting=true, showing loading spinner');
     logger.info('Submitting contact form');
 
     try {
+      console.log('[ContactForm] Sending POST to backend: https://form-server-ixq1.onrender.com/api/contact');
       const res = await fetch('https://form-server-ixq1.onrender.com/api/contact', {
         method: 'POST',
         headers: {
@@ -104,28 +110,36 @@ const ContactSectionComponent: React.FC = memo(() => {
           purpose: trimmedData.purpose || null,
         })
       });
+      console.log('[ContactForm] Backend response received:', { status: res.status, ok: res.ok });
 
       if (!res.ok) {
         logger.error('Backend API failed', { status: res.status });
         const result = await res.json().catch(() => ({ error: 'Unknown error' }));
+        console.error('[ContactForm] Backend error response:', result);
         throw new Error(result.error || `Backend returned ${res.status}`);
       }
+      console.log('[ContactForm] Backend returned success (200-299)');
 
       // Save to Supabase
+      console.log('[ContactForm] Saving to Supabase contacts table');
       const { error: dbError } = await supabase
         .from('contacts')
         .insert([trimmedData]);
 
       if (dbError) {
+        console.error('[ContactForm] Supabase insert failed:', dbError);
         throw dbError;
       }
+      console.log('[ContactForm] Supabase insert succeeded');
 
       trackFormSubmission('contact', true);
+      console.log('[ContactForm] Analytics tracked: success');
 
       toast({
         title: "Message Sent Successfully! 🎉",
         description: "Thank you for reaching out. I'll get back to you as soon as possible.",
       });
+      console.log('[ContactForm] Success toast shown, resetting form');
 
       // Reset form
       setFormData({
@@ -137,18 +151,32 @@ const ContactSectionComponent: React.FC = memo(() => {
         purpose: ''
       });
       setIsSubmitted(true);
+      console.log('[ContactForm] Form reset and success message shown (5s)');
       setTimeout(() => setIsSubmitted(false), 5000);
 
-    } catch (error: any) {
-      logger.error('Contact form submission failed');
+    } catch (error: unknown) {
+      console.error('[ContactForm] Error during submission:', error);
+      logger.error('Contact form submission failed', { error });
       trackFormSubmission('contact', false);
+
+      // Normalize unknown error to a safe message
+      let message = "There was an error sending your message. Please try again.";
+      if (error instanceof Error) {
+        message = error.message;
+        console.error('[ContactForm] Error message:', message);
+      } else if (typeof error === 'string') {
+        message = error;
+      }
+
       toast({
         title: "Submission Failed",
-        description: error.message || "There was an error sending your message. Please try again.",
+        description: message,
         variant: "destructive"
       });
+      console.log('[ContactForm] Error toast shown to user');
     } finally {
       setIsSubmitting(false);
+      console.log('[ContactForm] Set isSubmitting=false, form re-enabled');
     }
   };
 
