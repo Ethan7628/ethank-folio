@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { EnhancedCard, EnhancedCardContent } from '@/components/ui/enhanced-card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Mail, Phone, Building, Calendar, ExternalLink } from 'lucide-react';
+import { Mail, Phone, Building, Calendar, ExternalLink, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { logger } from '@/utils/logger';
 import { CONTACT_INFO } from '@/config/constants';
+import type { User } from '@supabase/supabase-js';
 
 interface Contact {
   id: string;
@@ -23,7 +25,10 @@ interface Contact {
 export const ContactDashboard: React.FC = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
+  const [isAuthorized, setIsAuthorized] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const fetchContacts = React.useCallback(async () => {
     try {
@@ -49,9 +54,50 @@ export const ContactDashboard: React.FC = () => {
     }
   }, [toast]);
 
+  // Check authentication and admin role
   useEffect(() => {
-    fetchContacts();
-  }, [fetchContacts]);
+    const checkAccess = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        toast({
+          title: "Authentication Required",
+          description: "Please log in to access the dashboard.",
+          variant: "destructive",
+        });
+        navigate('/');
+        return;
+      }
+
+      setUser(user);
+
+      // Check if user has admin role
+      const { data: hasAdminRole, error } = await supabase.rpc('has_role', {
+        _user_id: user.id,
+        _role: 'admin'
+      });
+
+      if (error || !hasAdminRole) {
+        toast({
+          title: "Unauthorized",
+          description: "You don't have permission to access this page.",
+          variant: "destructive",
+        });
+        navigate('/');
+        return;
+      }
+
+      setIsAuthorized(true);
+    };
+
+    checkAccess();
+  }, [navigate, toast]);
+
+  useEffect(() => {
+    if (isAuthorized) {
+      fetchContacts();
+    }
+  }, [fetchContacts, isAuthorized]);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -63,12 +109,14 @@ export const ContactDashboard: React.FC = () => {
     });
   };
 
-  if (loading) {
+  if (loading || !isAuthorized) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading contact submissions...</p>
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <Loader2 className="w-8 h-8 animate-spin mx-auto text-primary" />
+          <p className="text-muted-foreground">
+            {!isAuthorized ? 'Verifying access...' : 'Loading contact submissions...'}
+          </p>
         </div>
       </div>
     );

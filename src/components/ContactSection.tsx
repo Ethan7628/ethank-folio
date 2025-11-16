@@ -8,13 +8,22 @@ import { LoadingSpinner } from '@/components/enhanced/LoadingSpinner';
 import { AnimatedSection } from '@/components/enhanced/AnimatedSection';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Mail, Phone, Github, Linkedin, MapPin, Send, MessageSquare, CheckCircle, ChevronDown, ChevronUp } from 'lucide-react';
-// Frontend now posts to a backend API which inserts into Neon (Postgres) and sends notifications.
-// Removed direct Supabase usage to avoid coupling the client to DB services.
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { useToast } from '@/hooks/use-toast';
 import { withErrorBoundary } from './enhanced/PerformanceOptimizer';
 import { CONTACT_INFO, FORM_LIMITS, AI_RESPONSES, CONTACT_PURPOSES } from '@/config/constants';
 import { logger } from '@/utils/logger';
+import { z } from 'zod';
+import { supabase } from '@/integrations/supabase/client';
+
+const contactSchema = z.object({
+  name: z.string().trim().min(1, 'Name is required').max(100, 'Name must be less than 100 characters'),
+  email: z.string().trim().email('Invalid email address').max(255, 'Email must be less than 255 characters'),
+  message: z.string().trim().min(1, 'Message is required').max(2000, 'Message must be less than 2000 characters'),
+  phone: z.string().trim().max(20, 'Phone must be less than 20 characters').optional().or(z.literal('')),
+  company: z.string().trim().max(100, 'Company must be less than 100 characters').optional().or(z.literal('')),
+  purpose: z.string().trim().max(100, 'Purpose must be less than 100 characters').optional().or(z.literal('')),
+});
 
 const ContactSectionComponent: React.FC = memo(() => {
   const [formData, setFormData] = useState({
@@ -62,21 +71,24 @@ const ContactSectionComponent: React.FC = memo(() => {
       purpose: formData.purpose.trim()
     };
 
-    // Validate required fields
-    if (!trimmedData.name || !trimmedData.email || !trimmedData.message) {
-      toast({
-        title: "Missing Fields",
-        description: "Please fill in all required fields: name, email, and message.",
-        variant: "destructive"
-      });
+    // Validate with zod schema
+    try {
+      contactSchema.parse(trimmedData);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        toast({
+          title: "Validation Error",
+          description: error.errors[0].message,
+          variant: "destructive",
+        });
+      }
       return;
     }
 
     setIsSubmitting(true);
+    logger.info('Submitting contact form');
 
     try {
-      console.log('Sending request to backend...', trimmedData);
-
       const res = await fetch('https://form-server-ixq1.onrender.com/api/contact', {
         method: 'POST',
         headers: {
@@ -93,64 +105,46 @@ const ContactSectionComponent: React.FC = memo(() => {
         })
       });
 
-      console.log('Response status:', res.status);
-
-      let result;
-      try {
-        const text = await res.text();
-        console.log('Raw response:', text);
-        result = text ? JSON.parse(text) : null;
-      } catch (parseError) {
-        console.error('Failed to parse response:', parseError);
-        result = null;
-      }
-
       if (!res.ok) {
-        console.error('Backend error:', result);
-        logger.error('Backend contact API failed', result || { status: res.status });
-        trackFormSubmission('contact', false);
-
-        let errorMessage = "There was a problem sending your message. Please try again later.";
-        if (result && result.error) {
-          errorMessage = result.error;
-        } else if (res.status === 500) {
-          errorMessage = "Server error. Please try again later.";
-        } else if (res.status === 400) {
-          errorMessage = "Invalid data. Please check your inputs.";
-        }
-
-        toast({
-          title: "Error Sending Message",
-          description: errorMessage,
-          variant: "destructive"
-        });
-        return;
+        logger.error('Backend API failed', { status: res.status });
+        const result = await res.json().catch(() => ({ error: 'Unknown error' }));
+        throw new Error(result.error || `Backend returned ${res.status}`);
       }
 
-      // Success path
-      console.log('Success!', result);
-      toast({
-        title: "Message Sent!",
-        description: "Thank you for reaching out. I'll get back to you within 24 hours.",
-      });
+      // Save to Supabase
+      const { error: dbError } = await supabase
+        .from('contacts')
+        .insert([trimmedData]);
 
-      setIsSubmitted(true);
+      if (dbError) {
+        throw dbError;
+      }
+
       trackFormSubmission('contact', true);
 
-      // Reset form after 3 seconds
-      setTimeout(() => {
-        setFormData({ name: '', email: '', message: '', phone: '', company: '', purpose: '' });
-        setIsSubmitted(false);
-      }, 3000);
-
-    } catch (error) {
-      console.error('Network error:', error);
-      logger.error('Failed to send message:', error);
-      trackFormSubmission('contact', false);
-
       toast({
-        title: "Network Error",
-        description: "Cannot connect to server. Please check your internet connection and try again.",
+        title: "Message Sent Successfully! 🎉",
+        description: "Thank you for reaching out. I'll get back to you as soon as possible.",
+      });
+
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        message: '',
+        phone: '',
+        company: '',
+        purpose: ''
+      });
+      setIsSubmitted(true);
+      setTimeout(() => setIsSubmitted(false), 5000);
+
+    } catch (error: any) {
+      logger.error('Contact form submission failed');
+      trackFormSubmission('contact', false);
+      toast({
+        title: "Submission Failed",
+        description: error.message || "There was an error sending your message. Please try again.",
         variant: "destructive"
       });
     } finally {
