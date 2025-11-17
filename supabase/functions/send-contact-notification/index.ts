@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 
-const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+const SENDGRID_API_KEY = Deno.env.get("SEND_GRID_API_KEY");
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -123,30 +123,45 @@ const handler = async (req: Request): Promise<Response> => {
       </div>
     `;
 
-    // Call Resend API directly
-    const resendResponse = await fetch("https://api.resend.com/emails", {
+    // Call SendGrid API
+    const sendgridResponse = await fetch("https://api.sendgrid.com/v3/mail/send", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${RESEND_API_KEY}`,
+        "Authorization": `Bearer ${SENDGRID_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Portfolio Contact <onboarding@resend.dev>",
-        to: ["kusasirakweet@gmail.com"],
-        subject: `New Contact: ${escapeHtml(contactData.name)} - ${escapeHtml(contactData.purpose || 'General Inquiry')}`,
-        html: emailHtml,
-        reply_to: contactData.email,
+        personalizations: [
+          {
+            to: [{ email: "kusasirakweet@gmail.com" }],
+            subject: `New Contact: ${escapeHtml(contactData.name)} - ${escapeHtml(contactData.purpose || 'General Inquiry')}`,
+          }
+        ],
+        from: {
+          email: "kusasirakweethan31@gmail.com",
+          name: "Portfolio Contact"
+        },
+        reply_to: {
+          email: contactData.email,
+          name: contactData.name
+        },
+        content: [
+          {
+            type: "text/html",
+            value: emailHtml
+          }
+        ]
       }),
     });
 
-    if (!resendResponse.ok) {
-      const errorData = await resendResponse.json();
-      console.error("Resend API error:", errorData);
-      throw new Error(`Resend API error: ${JSON.stringify(errorData)}`);
+    if (!sendgridResponse.ok) {
+      const errorText = await sendgridResponse.text();
+      console.error("SendGrid API error:", errorText);
+      throw new Error(`SendGrid API error: ${errorText}`);
     }
 
-    const data = await resendResponse.json();
-    console.log("Email sent successfully:", data);
+    console.log("Email sent successfully via SendGrid");
+    const data = { success: true };
 
     return new Response(
       JSON.stringify({ success: true, data }),
