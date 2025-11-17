@@ -39,9 +39,10 @@ const ContactSectionComponent: React.FC = memo(() => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [chatInput, setChatInput] = useState('');
   const [showAllContacts, setShowAllContacts] = useState(false);
-  const [chatMessages, setChatMessages] = useState<Array<{ type: 'bot' | 'user'; message: string }>>([
-    { type: 'bot', message: AI_RESPONSES.greeting }
+  const [chatMessages, setChatMessages] = useState<Array<{ role: 'assistant' | 'user'; content: string }>>([
+    { role: 'assistant', content: "Hello! I'm Ethan's AI assistant. I can help you learn more about his experience, skills, projects, and professional background. What would you like to know?" }
   ]);
+  const [isChatLoading, setIsChatLoading] = useState(false);
 
   const { trackFormSubmission, trackInteraction } = useAnalytics();
   const { toast } = useToast();
@@ -94,32 +95,6 @@ const ContactSectionComponent: React.FC = memo(() => {
     logger.info('Submitting contact form');
 
     try {
-      console.log('[ContactForm] Sending POST to backend: https://form-server-ixq1.onrender.com/api/contact');
-      const res = await fetch('https://form-server-ixq1.onrender.com/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          name: trimmedData.name,
-          email: trimmedData.email,
-          message: trimmedData.message,
-          phone: trimmedData.phone || null,
-          company: trimmedData.company || null,
-          purpose: trimmedData.purpose || null,
-        })
-      });
-      console.log('[ContactForm] Backend response received:', { status: res.status, ok: res.ok });
-
-      if (!res.ok) {
-        logger.error('Backend API failed', { status: res.status });
-        const result = await res.json().catch(() => ({ error: 'Unknown error' }));
-        console.error('[ContactForm] Backend error response:', result);
-        throw new Error(result.error || `Backend returned ${res.status}`);
-      }
-      console.log('[ContactForm] Backend returned success (200-299)');
-
       // Save to Supabase
       console.log('[ContactForm] Saving to Supabase contacts table');
       const { error: dbError } = await supabase
@@ -131,6 +106,26 @@ const ContactSectionComponent: React.FC = memo(() => {
         throw dbError;
       }
       console.log('[ContactForm] Supabase insert succeeded');
+
+      // Send notification email via edge function
+      console.log('[ContactForm] Calling send-contact-notification edge function');
+      const { error: notificationError } = await supabase.functions.invoke('send-contact-notification', {
+        body: {
+          name: trimmedData.name,
+          email: trimmedData.email,
+          message: trimmedData.message,
+          phone: trimmedData.phone || null,
+          company: trimmedData.company || null,
+          purpose: trimmedData.purpose || null,
+        }
+      });
+
+      if (notificationError) {
+        console.warn('[ContactForm] Notification email failed (non-critical):', notificationError);
+        // Don't throw - contact is saved, email is optional
+      } else {
+        console.log('[ContactForm] Notification email sent successfully');
+      }
 
       trackFormSubmission('contact', true);
       console.log('[ContactForm] Analytics tracked: success');
@@ -180,38 +175,76 @@ const ContactSectionComponent: React.FC = memo(() => {
     }
   };
 
-  const handleChatSubmit = (e: React.FormEvent) => {
+  const handleChatSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!chatInput.trim()) return;
+    if (!chatInput.trim() || isChatLoading) return;
 
     const userMessage = chatInput.trim();
     trackInteraction('ai_chat', 'contact', { message: userMessage });
 
-    setChatMessages([
-      ...chatMessages,
-      { type: 'user', message: userMessage },
-      { type: 'bot', message: getAIResponse(userMessage) }
-    ]);
+    // Add user message
+    const newMessages = [...chatMessages, { role: 'user' as const, content: userMessage }];
+    setChatMessages(newMessages);
     setChatInput('');
-  };
+    setIsChatLoading(true);
 
-  const getAIResponse = (message: string): string => {
-    const lowerMessage = message.toLowerCase();
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat-assistant`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          },
+          body: JSON.stringify({ messages: newMessages }),
+        }
+      );
 
-    if (lowerMessage.includes('skill') || lowerMessage.includes('technology')) {
-      return AI_RESPONSES.skills;
-    } else if (lowerMessage.includes('project') || lowerMessage.includes('work')) {
-      return AI_RESPONSES.projects;
-    } else if (lowerMessage.includes('experience') || lowerMessage.includes('background')) {
-      return AI_RESPONSES.experience;
-    } else if (lowerMessage.includes('contact') || lowerMessage.includes('hire') || lowerMessage.includes('available')) {
-      return AI_RESPONSES.contact;
-    }else if(lowerMessage.includes('date') ||lowerMessage.includes('born') || lowerMessage.includes('birth')) {
-      return AI_RESPONSES.date_of_birth;
-    }else if(lowerMessage.includes('age') ||lowerMessage.includes('old') || lowerMessage.includes('years')) {
-      return AI_RESPONSES.age;
-    } else {
-      return AI_RESPONSES.default;
+      if (!response.ok) {
+        throw new Error('Failed to get AI response');
+      }
+
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+      let assistantMessage = '';
+
+      if (reader) {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          const chunk = decoder.decode(value);
+          const lines = chunk.split('\n');
+
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              const data = line.slice(6);
+              if (data === '[DONE]') continue;
+
+              try {
+                const parsed = JSON.parse(data);
+                const content = parsed.choices?.[0]?.delta?.content;
+                if (content) {
+                  assistantMessage += content;
+                  setChatMessages([...newMessages, { role: 'assistant', content: assistantMessage }]);
+                }
+              } catch (e) {
+                // Skip invalid JSON
+              }
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Chat error:', error);
+      toast({
+        title: "Chat Error",
+        description: "Failed to get AI response. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsChatLoading(false);
     }
   };
 
@@ -457,16 +490,24 @@ const ContactSectionComponent: React.FC = memo(() => {
                   <div className="space-y-3 sm:space-y-4 max-h-48 sm:max-h-60 overflow-y-auto mb-4 scrollbar-thin scrollbar-thumb-tech-primary/20">
                     {chatMessages.map((msg, index) => (
                       <AnimatedSection key={index} animation="fade-in" delay={index * 100}>
-                        <div className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+                        <div className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                           <Badge
-                            variant={msg.type === 'user' ? 'default' : 'secondary'}
-                            className="max-w-[85%] text-left text-xs sm:text-sm py-2 px-3 sm:py-3 sm:px-4 rounded-lg"
+                            variant={msg.role === 'user' ? 'default' : 'secondary'}
+                            className="max-w-[85%] text-left text-xs sm:text-sm py-2 px-3 sm:py-3 sm:px-4 rounded-lg whitespace-pre-wrap"
                           >
-                            {msg.message}
+                            {msg.content}
                           </Badge>
                         </div>
                       </AnimatedSection>
                     ))}
+                    {isChatLoading && (
+                      <div className="flex justify-start">
+                        <Badge variant="secondary" className="text-xs sm:text-sm py-2 px-3 sm:py-3 sm:px-4 rounded-lg">
+                          <LoadingSpinner size="sm" className="mr-2" />
+                          Thinking...
+                        </Badge>
+                      </div>
+                    )}
                   </div>
                   <form onSubmit={handleChatSubmit} className="flex gap-2">
                     <Input
@@ -474,11 +515,13 @@ const ContactSectionComponent: React.FC = memo(() => {
                       onChange={(e) => setChatInput(e.target.value)}
                       placeholder="Ask about my skills, experience...about Ethan"
                       className="flex-1 bg-background/50 border-tech-primary/30 focus:border-tech-primary text-sm sm:text-base"
+                      disabled={isChatLoading}
                     />
                     <Button
                       type="submit"
                       size="sm"
                       className="btn-professional-primary px-3 sm:px-4"
+                      disabled={isChatLoading}
                     >
                       <Send className="w-4 h-4" />
                     </Button>
