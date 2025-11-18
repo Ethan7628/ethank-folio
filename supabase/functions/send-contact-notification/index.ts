@@ -1,88 +1,121 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { SMTPClient } from "https://deno.land/x/denomailer@1.6.0/mod.ts";
 
-const SENDGRID_API_KEY = Deno.env.get("SEND_GRID_API_KEY");
+// Get Gmail SMTP credentials from environment variables
+const GMAIL_USER = Deno.env.get("GMAIL_USER");
+const GMAIL_APP_PASSWORD = Deno.env.get("GMAIL_APP_PASSWORD");
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type"
 };
 
-interface ContactNotification {
-  id: string;
-  name: string;
-  email: string;
-  message: string;
-  phone?: string;
-  company?: string;
-  purpose?: string;
-  created_at: string;
-}
-
-const escapeHtml = (text: string): string => {
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+const escapeHtml = (text: string) => {
+  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
 };
 
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, {
+      headers: corsHeaders
+    });
   }
 
   try {
-    const contactData: ContactNotification = await req.json();
+    const contactData = await req.json();
     console.log("Received contact notification:", JSON.stringify(contactData, null, 2));
 
     // Server-side validation
     if (!contactData.name || contactData.name.trim().length === 0) {
-      return new Response(
-        JSON.stringify({ error: "Name is required" }),
-        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
-      );
+      return new Response(JSON.stringify({
+        error: "Name is required"
+      }), {
+        status: 400,
+        headers: {
+          "Content-Type": "application/json",
+          ...corsHeaders
+        }
+      });
     }
+
     if (!contactData.email || contactData.email.trim().length === 0) {
-      return new Response(
-        JSON.stringify({ error: "Email is required" }),
-        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
-      );
+      return new Response(JSON.stringify({
+        error: "Email is required"
+      }), {
+        status: 400,
+        headers: {
+          "Content-Type": "application/json",
+          ...corsHeaders
+        }
+      });
     }
+
     if (!contactData.message || contactData.message.trim().length === 0) {
-      return new Response(
-        JSON.stringify({ error: "Message is required" }),
-        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
-      );
+      return new Response(JSON.stringify({
+        error: "Message is required"
+      }), {
+        status: 400,
+        headers: {
+          "Content-Type": "application/json",
+          ...corsHeaders
+        }
+      });
     }
-    
+
     // Length validation
     if (contactData.name.length > 100) {
-      return new Response(
-        JSON.stringify({ error: "Name must be less than 100 characters" }),
-        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
-      );
+      return new Response(JSON.stringify({
+        error: "Name must be less than 100 characters"
+      }), {
+        status: 400,
+        headers: {
+          "Content-Type": "application/json",
+          ...corsHeaders
+        }
+      });
     }
+
     if (contactData.email.length > 255) {
-      return new Response(
-        JSON.stringify({ error: "Email must be less than 255 characters" }),
-        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
-      );
+      return new Response(JSON.stringify({
+        error: "Email must be less than 255 characters"
+      }), {
+        status: 400,
+        headers: {
+          "Content-Type": "application/json",
+          ...corsHeaders
+        }
+      });
     }
+
     if (contactData.message.length > 2000) {
-      return new Response(
-        JSON.stringify({ error: "Message must be less than 2000 characters" }),
-        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
-      );
+      return new Response(JSON.stringify({
+        error: "Message must be less than 2000 characters"
+      }), {
+        status: 400,
+        headers: {
+          "Content-Type": "application/json",
+          ...corsHeaders
+        }
+      });
     }
 
     // Email format validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(contactData.email)) {
-      return new Response(
-        JSON.stringify({ error: "Invalid email format" }),
-        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
-      );
+      return new Response(JSON.stringify({
+        error: "Invalid email format"
+      }), {
+        status: 400,
+        headers: {
+          "Content-Type": "application/json",
+          ...corsHeaders
+        }
+      });
+    }
+
+    // Check if SMTP credentials are available
+    if (!GMAIL_USER || !GMAIL_APP_PASSWORD) {
+      throw new Error("Gmail SMTP credentials are not configured");
     }
 
     const emailHtml = `
@@ -133,15 +166,15 @@ const handler = async (req: Request): Promise<Response> => {
           
           <div style="text-align: center; padding-top: 20px; border-top: 2px solid #e5e7eb;">
             <p style="color: #9ca3af; font-size: 12px; margin: 5px 0;">
-              📅 Received: ${contactData.created_at ? new Date(contactData.created_at).toLocaleString('en-US', { 
-                dateStyle: 'full', 
-                timeStyle: 'short',
-                timeZone: 'Africa/Kampala'
-              }) : new Date().toLocaleString('en-US', { 
-                dateStyle: 'full', 
-                timeStyle: 'short',
-                timeZone: 'Africa/Kampala'
-              })}
+              📅 Received: ${contactData.created_at ? new Date(contactData.created_at).toLocaleString('en-US', {
+      dateStyle: 'full',
+      timeStyle: 'short',
+      timeZone: 'Africa/Kampala'
+    }) : new Date().toLocaleString('en-US', {
+      dateStyle: 'full',
+      timeStyle: 'short',
+      timeZone: 'Africa/Kampala'
+    })}
             </p>
             ${contactData.id ? `<p style="color: #9ca3af; font-size: 12px; margin: 5px 0;">
               🔑 ID: ${contactData.id}
@@ -157,62 +190,55 @@ const handler = async (req: Request): Promise<Response> => {
       </div>
     `;
 
-    // Call SendGrid API
-    const sendgridResponse = await fetch("https://api.sendgrid.com/v3/mail/send", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${SENDGRID_API_KEY}`,
-        "Content-Type": "application/json",
+    // Create SMTP client for Gmail
+    const client = new SMTPClient({
+      connection: {
+        hostname: "smtp.gmail.com",
+        port: 587,
+        tls: true,
+        auth: {
+          username: GMAIL_USER,
+          password: GMAIL_APP_PASSWORD,
+        },
       },
-      body: JSON.stringify({
-        personalizations: [
-          {
-            to: [{ email: "kusasirakweet@gmail.com" }],
-            subject: `New Contact: ${escapeHtml(contactData.name)} - ${escapeHtml(contactData.purpose || 'General Inquiry')}`,
-          }
-        ],
-        from: {
-          email: "kusasirakweethan31@gmail.com",
-          name: "Portfolio Contact"
-        },
-        reply_to: {
-          email: contactData.email,
-          name: contactData.name
-        },
-        content: [
-          {
-            type: "text/html",
-            value: emailHtml
-          }
-        ]
-      }),
     });
 
-    if (!sendgridResponse.ok) {
-      const errorText = await sendgridResponse.text();
-      console.error("SendGrid API error:", errorText);
-      throw new Error(`SendGrid API error: ${errorText}`);
-    }
+    // Send email via Gmail SMTP
+    await client.send({
+      from: `"Portfolio Contact" <${GMAIL_USER}>`,
+      to: `kusasirakweet@gmail.com`,
+      replyTo: `"${contactData.name}" <${contactData.email}>`,
+      subject: `New Contact: ${escapeHtml(contactData.name)} - ${escapeHtml(contactData.purpose || 'General Inquiry')}`,
+      html: emailHtml,
+    });
 
-    console.log("Email sent successfully via SendGrid");
-    const data = { success: true };
+    // Close the SMTP connection
+    await client.close();
 
-    return new Response(
-      JSON.stringify({ success: true, data }),
-      {
-        status: 200,
-        headers: { "Content-Type": "application/json", ...corsHeaders },
+    console.log("Email sent successfully via Gmail SMTP");
+
+    return new Response(JSON.stringify({
+      success: true,
+      data: { success: true }
+    }), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+        ...corsHeaders
       }
-    );
-  } catch (error: any) {
+    });
+
+  } catch (error) {
     console.error("Error in send-contact-notification:", error);
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json", ...corsHeaders },
+    return new Response(JSON.stringify({
+      error: error.message
+    }), {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json",
+        ...corsHeaders
       }
-    );
+    });
   }
 };
 
