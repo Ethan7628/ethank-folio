@@ -97,26 +97,30 @@ const ContactSectionComponent: React.FC = memo(() => {
     try {
       // Save to Supabase
       console.log('[ContactForm] Saving to Supabase contacts table');
-      const { error: dbError } = await supabase
+      const { data: insertedData, error: dbError } = await supabase
         .from('contacts')
-        .insert([trimmedData]);
+        .insert([trimmedData])
+        .select()
+        .single();
 
       if (dbError) {
         console.error('[ContactForm] Supabase insert failed:', dbError);
         throw dbError;
       }
-      console.log('[ContactForm] Supabase insert succeeded');
+      console.log('[ContactForm] Supabase insert succeeded:', insertedData);
 
-      // Send notification email via edge function
+      // Send notification email via edge function with all data
       console.log('[ContactForm] Calling send-contact-notification edge function');
       const { error: notificationError } = await supabase.functions.invoke('send-contact-notification', {
         body: {
+          id: insertedData.id,
           name: trimmedData.name,
           email: trimmedData.email,
           message: trimmedData.message,
           phone: trimmedData.phone || null,
           company: trimmedData.company || null,
           purpose: trimmedData.purpose || null,
+          created_at: insertedData.created_at,
         }
       });
 
