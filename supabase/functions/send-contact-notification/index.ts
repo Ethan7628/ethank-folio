@@ -206,7 +206,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Send email via Gmail SMTP
     await client.send({
       from: `"Portfolio Contact" <${GMAIL_USER}>`,
-      to: `kusasirakweet@gmail.com`,
+      to: `kusasirakwe.ethan.upti@gmail.com`,
       replyTo: `"${contactData.name}" <${contactData.email}>`,
       subject: `New Contact: ${escapeHtml(contactData.name)} - ${escapeHtml(contactData.purpose || 'General Inquiry')}`,
       html: emailHtml,
