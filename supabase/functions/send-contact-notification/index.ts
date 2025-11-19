@@ -228,7 +228,7 @@ const handler = async (req: Request): Promise<Response> => {
       }
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error in send-contact-notification:", error);
     return new Response(JSON.stringify({
       error: error.message
