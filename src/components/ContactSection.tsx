@@ -126,7 +126,6 @@ const ContactSectionComponent: React.FC = memo(() => {
 
       if (notificationError) {
         console.warn('[ContactForm] Notification email failed (non-critical):', notificationError);
-        // Don't throw - contact is saved, email is optional
       } else {
         console.log('[ContactForm] Notification email sent successfully');
       }
@@ -140,7 +139,7 @@ const ContactSectionComponent: React.FC = memo(() => {
       });
       console.log('[ContactForm] Success toast shown, resetting form');
 
-      // Reset form
+    
       setFormData({
         name: '',
         email: '',
