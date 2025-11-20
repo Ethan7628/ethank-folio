@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Moon, Sun, Zap, Menu, X } from 'lucide-react';
+import { Moon, Sun, Zap, Menu, X, Sparkles } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
 import { ChatDialog } from './ChatDialog';
 
@@ -42,6 +42,8 @@ export const Navigation: React.FC = () => {
         return <Zap className="w-4 h-4 sm:w-5 sm:h-5" />;
       case 'dark':
         return <Moon className="w-4 h-4 sm:w-5 sm:h-5" />;
+      case 'ios26':
+        return <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />;
       default:
         return <Zap className="w-4 h-4 sm:w-5 sm:h-5" />;
     }
