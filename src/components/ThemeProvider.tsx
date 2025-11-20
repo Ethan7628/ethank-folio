@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-type Theme = 'light' | 'dark' | 'beige' | 'ios26';
+type Theme = 'light' | 'dark' | 'beige';
 
 interface ThemeContextType {
   theme: Theme;
@@ -23,7 +23,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as Theme;
-    if (savedTheme && ['light', 'dark', 'beige', 'ios26'].includes(savedTheme)) {
+    if (savedTheme && ['light', 'dark', 'beige'].includes(savedTheme)) {
       setTheme(savedTheme);
     } else {
       // Default to beige theme
@@ -34,14 +34,14 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   useEffect(() => {
     const root = document.documentElement;
     // Remove all theme classes first
-    root.classList.remove('light', 'dark', 'beige', 'ios26');
+    root.classList.remove('light', 'dark', 'beige');
     // Add the current theme class
     root.classList.add(theme);
     localStorage.setItem('theme', theme);
   }, [theme]);
 
   const toggleTheme = () => {
-    const themes: Theme[] = ['light', 'beige', 'dark', 'ios26'];
+    const themes: Theme[] = ['light', 'beige', 'dark'];
     const currentIndex = themes.indexOf(theme);
     const nextIndex = (currentIndex + 1) % themes.length;
     setTheme(themes[nextIndex]);

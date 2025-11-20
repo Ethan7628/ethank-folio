@@ -118,38 +118,6 @@
     --tech-dark: 18 50% 15%;
     --tech-light: 42 40% 85%;
   }
-
-  .ios26 {
-    /* iOS 26 Glassy theme - neutral frosted glass */
-    --background: 0 0% 98%;
-    --foreground: 222.2 10% 15%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 10% 15%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 10% 15%;
-    --primary: 220 10% 45%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 220 10% 96%;
-    --secondary-foreground: 222.2 10% 15%;
-    --muted: 220 10% 96%;
-    --muted-foreground: 220 8% 46%;
-    --accent: 220 10% 92%;
-    --accent-foreground: 222.2 10% 15%;
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 220 10% 45%;
-    --radius: 1rem;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 222.2 10% 15%;
-    --sidebar-primary: 220 10% 45%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 220 10% 92%;
-    --sidebar-accent-foreground: 222.2 10% 15%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 220 10% 45%;
-  }
 }
 
 @layer base {
@@ -226,15 +194,6 @@
         rgba(15, 23, 42, 0.95) 100%);
   }
 
-  .ios26 body {
-    background: linear-gradient(135deg,
-        rgba(248, 248, 250, 0.98) 0%,
-        rgba(242, 242, 245, 0.98) 25%,
-        rgba(235, 235, 238, 0.98) 50%,
-        rgba(242, 242, 245, 0.98) 75%,
-        rgba(248, 248, 250, 0.98) 100%);
-  }
-
   /* Glass effects */
   .glass-effect {
     background: rgba(255, 255, 255, 0.1);
@@ -262,15 +221,6 @@
     background: rgba(30, 41, 59, 0.8);
     border: 1px solid rgba(71, 85, 105, 0.3);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  }
-
-  .ios26 .glass-effect {
-    background: rgba(255, 255, 255, 0.4);
-    -webkit-backdrop-filter: blur(40px) saturate(180%);
-    backdrop-filter: blur(40px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 
-                0 1px 3px rgba(0, 0, 0, 0.05);
   }
 
   /* Professional gradients */
@@ -302,22 +252,6 @@
   .professional-card:hover {
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     transform: translateY(-4px);
-  }
-
-  .ios26 .professional-card {
-    background: rgba(255, 255, 255, 0.6);
-    -webkit-backdrop-filter: blur(30px) saturate(150%);
-    backdrop-filter: blur(30px) saturate(150%);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06),
-                0 1px 3px rgba(0, 0, 0, 0.05);
-  }
-
-  .ios26 .professional-card:hover {
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1),
-                0 10px 20px rgba(0, 0, 0, 0.05);
-    transform: translateY(-4px);
-    border-color: rgba(200, 200, 205, 0.6);
   }
 
   /* Consistent link styles */
@@ -395,29 +329,6 @@
     font-weight: 400;
     line-height: 1.6;
     letter-spacing: 0.01em;
-  }
-
-  /* iOS 26 specific button and input styling */
-  .ios26 button,
-  .ios26 .bg-card {
-    background: rgba(255, 255, 255, 0.5);
-    -webkit-backdrop-filter: blur(20px) saturate(150%);
-    backdrop-filter: blur(20px) saturate(150%);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-  }
-
-  .ios26 input,
-  .ios26 textarea {
-    background: rgba(255, 255, 255, 0.5);
-    -webkit-backdrop-filter: blur(20px) saturate(150%);
-    backdrop-filter: blur(20px) saturate(150%);
-    border: 1px solid rgba(214, 232, 255, 0.6);
-  }
-
-  .ios26 input:focus,
-  .ios26 textarea:focus {
-    background: rgba(255, 255, 255, 0.7);
-    border-color: rgba(0, 123, 255, 0.5);
   }
 
   @keyframes slide-up {
