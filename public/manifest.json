@@ -31,13 +31,8 @@
       "sizes": "96x96",
       "type": "image/png",
       "purpose": "any maskable"
-    },
-    {
-      "src": "/icon.folio.png",
-      "sizes": "any",
-      "type": "image/png",
-      "purpose": "any maskable"
     }
+ 
   ],
   "categories": [
     "portfolio",
