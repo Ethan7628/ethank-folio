@@ -1,5 +1,5 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { SMTPClient } from "https://deno.land/x/denomailer@1.6.0/mod.ts";
+import nodemailer from "npm:nodemailer@6.9.7";
 
 // Get Gmail SMTP credentials from environment variables
 const GMAIL_USER = Deno.env.get("GMAIL_USER");
@@ -190,32 +190,27 @@ const handler = async (req: Request): Promise<Response> => {
       </div>
     `;
 
-    // Create SMTP client for Gmail
-    const client = new SMTPClient({
-      connection: {
-        hostname: "smtp.gmail.com",
-        port: 587,
-        tls: true,
-        auth: {
-          username: GMAIL_USER,
-          password: GMAIL_APP_PASSWORD,
-        },
+    // Create nodemailer transporter for Gmail
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false, // Use STARTTLS
+      auth: {
+        user: GMAIL_USER,
+        pass: GMAIL_APP_PASSWORD,
       },
     });
 
-    // Send email via Gmail SMTP
-    await client.send({
+    // Send email via nodemailer
+    await transporter.sendMail({
       from: `"Portfolio Contact" <${GMAIL_USER}>`,
-      to: `kusasirakwe.ethan.upti@gmail.com`,
+      to: "kusasirakwe.ethan.upti@gmail.com",
       replyTo: `"${contactData.name}" <${contactData.email}>`,
       subject: `New Contact: ${escapeHtml(contactData.name)} - ${escapeHtml(contactData.purpose || 'General Inquiry')}`,
       html: emailHtml,
     });
 
-    // Close the SMTP connection
-    await client.close();
-
-    console.log("Email sent successfully via Gmail SMTP");
+    console.log("Email sent successfully via nodemailer to kusasirakwe.ethan.upti@gmail.com");
 
     return new Response(JSON.stringify({
       success: true,
