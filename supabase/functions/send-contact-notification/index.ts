@@ -191,6 +191,7 @@ const handler = async (req: Request): Promise<Response> => {
     `;
 
     // Create nodemailer transporter for Gmail
+    console.log("Creating nodemailer transporter for Gmail SMTP...");
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 587,
@@ -201,8 +202,13 @@ const handler = async (req: Request): Promise<Response> => {
       },
     });
 
+    console.log("Transporter created, sending email...");
+    console.log(`From: ${GMAIL_USER}`);
+    console.log(`To: kusasirakwe.ethan.upti@gmail.com`);
+    console.log(`Subject: New Contact: ${escapeHtml(contactData.name)}`);
+
     // Send email via nodemailer
-    await transporter.sendMail({
+    const info = await transporter.sendMail({
       from: `"Portfolio Contact" <${GMAIL_USER}>`,
       to: "kusasirakwe.ethan.upti@gmail.com",
       replyTo: `"${contactData.name}" <${contactData.email}>`,
@@ -210,7 +216,9 @@ const handler = async (req: Request): Promise<Response> => {
       html: emailHtml,
     });
 
-    console.log("Email sent successfully via nodemailer to kusasirakwe.ethan.upti@gmail.com");
+    console.log("✅ Email sent successfully via nodemailer!");
+    console.log("Message ID:", info.messageId);
+    console.log("Response:", info.response);
 
     return new Response(JSON.stringify({
       success: true,
