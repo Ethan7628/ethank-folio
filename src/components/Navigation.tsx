@@ -20,7 +20,7 @@ export const Navigation: React.FC = () => {
   }, []);
 
   const navItems = [
-    { label: 'Home', href: '#home' },
+    
     { label: 'About', href: '#about' },
     { label: 'Skills', href: '#skills' },
     { label: 'Projects', href: '#projects' },
@@ -57,14 +57,14 @@ export const Navigation: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
+          <a href='#home' className="flex items-center space-x-2">
             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center shadow-lg">
               <span className="text-primary-foreground font-tech font-bold text-sm sm:text-lg">EK</span>
             </div>
             <span className="text-lg sm:text-xl font-tech font-bold text-foreground">
               Ethan
             </span>
-          </div>
+          </a>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">

@@ -35,6 +35,9 @@ const HeroSectionComponent: React.FC = memo(() => {
       );
       utterance.rate = 0.9;
       utterance.pitch = 1;
+      utterance.lang = 'en-US';
+      utterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'en-US') ;
+      utterance.volume = 1;
 
       if (isVoicePlaying) {
         speechSynthesis.cancel();
