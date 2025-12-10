@@ -7,11 +7,11 @@ import { CV_PATH } from '@/config/constants';
 
 
 
-// Profile images for each theme - replace placeholder URLs with your actual images
+// Profile images for each theme
 const profileImages: Record<string, string> = {
-  beige: '/uploads/790aa63d-8736-498b-b561-e0884f2609a7.png',
-  light: '/uploads/profile-light-theme.png', // Replace with your light theme photo
-  dark: '/uploads/profile-dark-theme.png',   // Replace with your dark theme photo
+  beige: '/uploads/beigetheme.JPG',
+  light: '/uploads/lighttheme.png',
+  dark: '/uploads/darktheme.JPG',
 };
 
 const HeroSectionComponent: React.FC = memo(() => {
