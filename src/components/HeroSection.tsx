@@ -7,12 +7,22 @@ import { CV_PATH } from '@/config/constants';
 
 
 
+// Profile images for each theme - replace placeholder URLs with your actual images
+const profileImages: Record<string, string> = {
+  beige: '/uploads/790aa63d-8736-498b-b561-e0884f2609a7.png',
+  light: '/uploads/profile-light-theme.png', // Replace with your light theme photo
+  dark: '/uploads/profile-dark-theme.png',   // Replace with your dark theme photo
+};
+
 const HeroSectionComponent: React.FC = memo(() => {
   const { theme } = useTheme();
   const [isVoicePlaying, setIsVoicePlaying] = useState(false);
   const [text, setText] = useState('');
   const [cvDialogOpen, setCvDialogOpen] = useState(false);
   const fullText = "Transforming ideas into exceptional digital experiences through innovative software solutions.";
+  
+  // Get profile image based on current theme
+  const currentProfileImage = profileImages[theme] || profileImages.beige;
 
   useEffect(() => {
     let i = 0;
@@ -69,9 +79,9 @@ const HeroSectionComponent: React.FC = memo(() => {
             <div className="w-full h-full rounded-full bg-gradient-to-r from-primary via-secondary to-accent p-1 animate-spin-slow">
               <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
                 <img
-                  src="/uploads/790aa63d-8736-498b-b561-e0884f2609a7.png"
+                  src={currentProfileImage}
                   alt="Ethan Kusasirakwe"
-                  className="w-[calc(100%-8px)] h-[calc(100%-8px)] rounded-full object-cover animate-hologram-flicker"
+                  className="w-[calc(100%-8px)] h-[calc(100%-8px)] rounded-full object-cover animate-hologram-flicker transition-opacity duration-300"
                 />
               </div>
             </div>
