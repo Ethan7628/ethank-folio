@@ -137,7 +137,7 @@ export default {
 				xs: '2px'
 			},
 			fontFamily: {
-				sans: ['Inter', 'system-ui', 'sans-serif'],
+				sans: ['Montserrat', 'system-ui', 'sans-serif'],
 				cyber: ['Orbitron', 'monospace']
 			}
 		}
