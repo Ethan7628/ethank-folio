@@ -129,12 +129,13 @@ const SkillsSectionComponent: React.FC = memo(() => {
             return (
               <Card
                 key={category.title}
-                className="glass-effect border-0 hover:scale-105 transition-all duration-500 animate-slide-up neon-border"
+                className="glass-effect border-0 hover:scale-105 transition-all duration-500 animate-slide-up neon-border cursor-pointer"
                 style={{
                   animationDelay: `${categoryIndex * 0.15}s`,
                   opacity: isVisible ? 1 : 0,
                   transform: isVisible ? 'translateY(0)' : 'translateY(50px)'
                 }}
+                onClick={() => toggleCategory(category.title)}
               >
                 <CardContent className="p-4 sm:p-6">
                   <div className="flex items-center justify-between mb-4 sm:mb-6">
@@ -145,16 +146,13 @@ const SkillsSectionComponent: React.FC = memo(() => {
                       <h3 className="text-lg sm:text-xl font-bold holographic-text">{category.title}</h3>
                     </div>
                     {category.skills.length > 2 && (
-                      <button
-                        onClick={() => toggleCategory(category.title)}
-                        className="text-primary hover:text-secondary transition-colors p-1"
-                      >
+                      <div className="text-primary transition-colors p-1">
                         {isExpanded ? (
                           <ChevronUp className="w-4 h-4" />
                         ) : (
                           <ChevronDown className="w-4 h-4" />
                         )}
-                      </button>
+                      </div>
                     )}
                   </div>
 
