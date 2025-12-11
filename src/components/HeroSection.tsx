@@ -75,7 +75,7 @@ const HeroSectionComponent: React.FC = memo(() => {
             >
               <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
                 <img
-                  src={theme === 'dark' ? "/uploads/darktheme.JPG" : "/uploads/790aa63d-8736-498b-b561-e0884f2609a7.png"}
+                  src={theme === 'dark' ? "/uploads/darktheme-enhanced.jpg" : "/uploads/790aa63d-8736-498b-b561-e0884f2609a7.png"}
                   alt="Ethan Kusasirakwe"
                   className="w-[calc(100%-8px)] h-[calc(100%-8px)] rounded-full object-cover animate-hologram-flicker"
                 />
@@ -161,7 +161,7 @@ const HeroSectionComponent: React.FC = memo(() => {
       <Dialog open={imageDialogOpen} onOpenChange={setImageDialogOpen}>
         <DialogContent className="sm:max-w-md md:max-w-lg p-2">
           <img
-            src={theme === 'dark' ? "/uploads/darktheme.JPG" : "/uploads/790aa63d-8736-498b-b561-e0884f2609a7.png"}
+            src={theme === 'dark' ? "/uploads/darktheme-enhanced.jpg" : "/uploads/790aa63d-8736-498b-b561-e0884f2609a7.png"}
             alt="Ethan Kusasirakwe"
             className="w-full h-auto rounded-lg object-cover"
           />
