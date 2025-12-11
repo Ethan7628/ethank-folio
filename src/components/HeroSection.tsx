@@ -13,6 +13,7 @@ const HeroSectionComponent: React.FC = memo(() => {
   const [text, setText] = useState('');
   const [cvDialogOpen, setCvDialogOpen] = useState(false);
   const [isSpinning, setIsSpinning] = useState(true);
+  const [imageDialogOpen, setImageDialogOpen] = useState(false);
   const fullText = "Transforming ideas into exceptional digital experiences through innovative software solutions.";
 
   useEffect(() => {
@@ -70,6 +71,7 @@ const HeroSectionComponent: React.FC = memo(() => {
             <div 
               className={`w-full h-full rounded-full bg-gradient-to-r from-primary via-secondary to-accent p-1 cursor-pointer ${isSpinning ? 'animate-spin-slow' : ''}`}
               onClick={() => setIsSpinning(!isSpinning)}
+              onDoubleClick={() => setImageDialogOpen(true)}
             >
               <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
                 <img
@@ -154,6 +156,17 @@ const HeroSectionComponent: React.FC = memo(() => {
           </div>
         </div>
       </div>
+
+      {/* Full Image Dialog */}
+      <Dialog open={imageDialogOpen} onOpenChange={setImageDialogOpen}>
+        <DialogContent className="sm:max-w-md md:max-w-lg p-2">
+          <img
+            src={theme === 'dark' ? "/uploads/darktheme.JPG" : "/uploads/790aa63d-8736-498b-b561-e0884f2609a7.png"}
+            alt="Ethan Kusasirakwe"
+            className="w-full h-auto rounded-lg object-cover"
+          />
+        </DialogContent>
+      </Dialog>
     </section>
   );
 });
