@@ -12,6 +12,8 @@ const HeroSectionComponent: React.FC = memo(() => {
   const [isVoicePlaying, setIsVoicePlaying] = useState(false);
   const [text, setText] = useState('');
   const [cvDialogOpen, setCvDialogOpen] = useState(false);
+  const [isSpinning, setIsSpinning] = useState(true);
+  const [imageDialogOpen, setImageDialogOpen] = useState(false);
   const fullText = "Transforming ideas into exceptional digital experiences through innovative software solutions.";
 
   useEffect(() => {
@@ -66,10 +68,14 @@ const HeroSectionComponent: React.FC = memo(() => {
         <div className="text-center space-y-6 sm:space-y-8 lg:space-y-10">
           {/* Enhanced Avatar with Holographic Effect */}
           <div className="relative mx-auto w-40 h-40 sm:w-44 sm:h-44 lg:w-48 lg:h-48 mb-6 sm:mb-8 lg:mb-10">
-            <div className="w-full h-full rounded-full bg-gradient-to-r from-primary via-secondary to-accent p-1 animate-spin-slow">
+            <div 
+              className={`w-full h-full rounded-full bg-gradient-to-r from-primary via-secondary to-accent p-1 cursor-pointer ${isSpinning ? 'animate-spin-slow' : ''}`}
+              onClick={() => setIsSpinning(!isSpinning)}
+              onDoubleClick={() => setImageDialogOpen(true)}
+            >
               <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
                 <img
-                  src={theme === 'dark' ? "/uploads/IMG_000240.JPG" : "/uploads/790aa63d-8736-498b-b561-e0884f2609a7.png"}
+                  src={theme === 'dark' ? "/uploads/darktheme-enhanced.jpg" : "/uploads/790aa63d-8736-498b-b561-e0884f2609a7.png"}
                   alt="Ethan Kusasirakwe"
                   className="w-[calc(100%-8px)] h-[calc(100%-8px)] rounded-full object-cover animate-hologram-flicker"
                 />
@@ -150,6 +156,17 @@ const HeroSectionComponent: React.FC = memo(() => {
           </div>
         </div>
       </div>
+
+      {/* Full Image Dialog */}
+      <Dialog open={imageDialogOpen} onOpenChange={setImageDialogOpen}>
+        <DialogContent className="sm:max-w-md md:max-w-lg p-2">
+          <img
+            src={theme === 'dark' ? "/uploads/darktheme-enhanced.jpg" : "/uploads/790aa63d-8736-498b-b561-e0884f2609a7.png"}
+            alt="Ethan Kusasirakwe"
+            className="w-full h-auto rounded-lg object-cover"
+          />
+        </DialogContent>
+      </Dialog>
     </section>
   );
 });
