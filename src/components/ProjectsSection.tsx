@@ -218,6 +218,19 @@ export const ProjectsSection: React.FC = () => {
       githubUrl: 'https://github.com/Odyssey-Tech-Dev',
       features: ['Vehicle Listings', 'Advanced Search', 'User Authentication', 'Payment Integration'],
       status: 'In Progress'
+    },
+    {
+      id: 'eth-lang-translate',
+      title: 'Eth-Lang-Translate',
+      description: 'A multilingual translator web app that translates text between different languages.',
+      longDescription: 'Full-featured translation application supporting multiple languages with real-time translation, language detection, and text-to-speech capabilities for seamless communication.',
+      image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop',
+      tech: ['TypeScript', 'React', 'Translation API', 'Tailwind CSS'],
+      category: 'Personal',
+      liveUrl: 'https://github.com/Ethan7628/Eth-lang-translate',
+      githubUrl: 'https://github.com/Ethan7628/Eth-lang-translate',
+      features: ['Multi-Language Support', 'Real-time Translation', 'Language Detection', 'Text-to-Speech'],
+      status: 'Completed'
     }
   ];
 
