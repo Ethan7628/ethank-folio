@@ -32,7 +32,7 @@ export const ProjectsSection: React.FC = () => {
       image: 'https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=600&h=400&fit=crop',
       tech: ['TypeScript', 'React', 'Context API', 'REST API'],
       category: 'Personal',
-      liveUrl: 'https://github.com/Ethan7628/breakfastBuddy-App',
+      liveUrl: 'https://breakfastbuddy-app.vercel.app/',
       githubUrl: 'https://github.com/Ethan7628/breakfastBuddy-App',
       features: ['AI Recommendations', 'Meal Planning', 'Nutrition Tracking', 'Recipe Database'],
       status: 'Completed'
@@ -45,9 +45,35 @@ export const ProjectsSection: React.FC = () => {
       image: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=600&h=400&fit=crop',
       tech: ['TypeScript', 'React', 'Tailwind CSS', 'Vite'],
       category: 'Personal',
-      liveUrl: 'https://github.com/Ethan7628/ethank-folio',
+      liveUrl: 'https://ethank.vercel.app/',
       githubUrl: 'https://github.com/Ethan7628/ethank-folio',
       features: ['Responsive Design', 'Dark Mode', 'Project Gallery', 'Contact Form'],
+      status: 'Completed'
+    },
+    {
+      id: 'eth-lang-translate',
+      title: 'Eth-Lang-Translate',
+      description: 'A multilingual translator web app that translates text between different languages.',
+      longDescription: 'Full-featured translation application supporting multiple languages with real-time translation, language detection, and text-to-speech capabilities for seamless communication.',
+      image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop',
+      tech: ['TypeScript', 'React', 'Translation API', 'Tailwind CSS'],
+      category: 'Personal',
+      liveUrl: 'https://eth-lang-translate.vercel.app/',
+      githubUrl: 'https://github.com/Ethan7628/Eth-lang-translate',
+      features: ['Multi-Language Support', 'Real-time Translation', 'Language Detection', 'Text-to-Speech'],
+      status: 'Completed'
+    },
+    {
+      id: 'voxcar',
+      title: 'VoxCar.io',
+      description: 'Car selling web application built with Odyssey Tech Co organization.',
+      longDescription: 'Full-stack TypeScript application for buying and selling cars online, featuring advanced search, vehicle listings, user authentication, and secure payment integration.',
+      image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&h=400&fit=crop',
+      tech: ['TypeScript', 'React', 'Node.js', 'PostgreSQL', 'REST API'],
+      category: 'Team',
+      liveUrl: 'https://voxcar.io',
+      githubUrl: 'https://github.com/Odyssey-Tech-Dev',
+      features: ['Vehicle Listings', 'Advanced Search', 'User Authentication', 'Payment Integration'],
       status: 'Completed'
     },
     {
@@ -205,39 +231,15 @@ export const ProjectsSection: React.FC = () => {
       githubUrl: 'https://github.com/Ethan7628/First_Portifolio',
       features: ['Custom CSS', 'Responsive Layout', 'Project Gallery', 'Contact Section'],
       status: 'Completed'
-    },
-    {
-      id: 'voxcar',
-      title: 'VoxCar.io',
-      description: 'Car selling web application built with Odyssey Tech Co organization.',
-      longDescription: 'Full-stack TypeScript application for buying and selling cars online, featuring advanced search, vehicle listings, user authentication, and secure payment integration.',
-      image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&h=400&fit=crop',
-      tech: ['TypeScript', 'React', 'Node.js', 'PostgreSQL', 'REST API'],
-      category: 'Team',
-      liveUrl: 'https://github.com/Odyssey-Tech-Dev',
-      githubUrl: 'https://github.com/Odyssey-Tech-Dev',
-      features: ['Vehicle Listings', 'Advanced Search', 'User Authentication', 'Payment Integration'],
-      status: 'In Progress'
-    },
-    {
-      id: 'eth-lang-translate',
-      title: 'Eth-Lang-Translate',
-      description: 'A multilingual translator web app that translates text between different languages.',
-      longDescription: 'Full-featured translation application supporting multiple languages with real-time translation, language detection, and text-to-speech capabilities for seamless communication.',
-      image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop',
-      tech: ['TypeScript', 'React', 'Translation API', 'Tailwind CSS'],
-      category: 'Personal',
-      liveUrl: 'https://github.com/Ethan7628/Eth-lang-translate',
-      githubUrl: 'https://github.com/Ethan7628/Eth-lang-translate',
-      features: ['Multi-Language Support', 'Real-time Translation', 'Language Detection', 'Text-to-Speech'],
-      status: 'Completed'
     }
+
+
   ];
 
   const categories = ['All', 'Personal', 'Freelance', 'Team'];
 
-  const filteredProjects = filter === 'All' 
-    ? projects 
+  const filteredProjects = filter === 'All'
+    ? projects
     : projects.filter(project => project.category === filter);
 
   const displayedProjects = showAll ? filteredProjects : filteredProjects.slice(0, 6);
@@ -276,7 +278,7 @@ export const ProjectsSection: React.FC = () => {
         {/* Filter Buttons */}
         <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-8 sm:mb-12">
           {categories.map((category) => (
-            <Button 
+            <Button
               key={category}
               variant={filter === category ? "gradient" : "outline"}
               onClick={() => setFilter(category)}
@@ -290,7 +292,7 @@ export const ProjectsSection: React.FC = () => {
         {/* Projects Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {displayedProjects.map((project, index) => (
-        <Card 
+            <Card
               key={project.id}
               className="professional-card group hover:scale-105 transition-all duration-300 overflow-hidden animate-slide-up"
               style={{ animationDelay: `${index * 0.1}s` }}
@@ -298,14 +300,14 @@ export const ProjectsSection: React.FC = () => {
               onMouseLeave={() => setHoveredProject(null)}
             >
               <div className="relative overflow-hidden">
-                <img 
-                  src={project.image} 
+                <img
+                  src={project.image}
                   alt={project.title}
                   className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                 <div className="absolute top-4 right-4 flex space-x-2">
-                  <Badge 
+                  <Badge
                     variant={project.status === 'Completed' ? 'success' : project.status === 'In Progress' ? 'info' : 'warning'}
                   >
                     {project.status}
@@ -358,7 +360,7 @@ export const ProjectsSection: React.FC = () => {
                   </div>
 
                   <div className="flex space-x-3 pt-6">
-                    <Button 
+                    <Button
                       variant="gradient"
                       className="flex-1"
                       onClick={() => window.open(project.liveUrl, '_blank')}
@@ -366,14 +368,14 @@ export const ProjectsSection: React.FC = () => {
                       <ExternalLink className="w-4 h-4 mr-2" />
                       Live Demo
                     </Button>
-                    <Button 
+                    <Button
                       variant="outline"
                       size="icon"
                       onClick={() => window.open(project.githubUrl, '_blank')}
                     >
                       <Github className="w-4 h-4" />
                     </Button>
-                    <Button 
+                    <Button
                       variant="ghost"
                       size="icon"
                       className="border border-muted-foreground/20"
