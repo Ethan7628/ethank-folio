@@ -1,14 +1,24 @@
-
-import React from 'react';
+import React, { memo, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowUp, Heart, Code, Coffee } from 'lucide-react';
 
-export const Footer: React.FC = () => {
+export const Footer: React.FC = memo(() => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const currentYear = new Date().getFullYear();
+
+  // Pre-compute floating element positions to avoid re-renders
+  const floatingElements = useMemo(() => 
+    Array.from({ length: 5 }, (_, i) => ({
+      id: i,
+      left: `${(i * 20) + 10}%`,
+      top: `${(i * 15) + 10}%`,
+      animationDelay: `${i * 0.6}s`,
+      animationDuration: `${3 + (i * 0.4)}s`,
+    })), 
+  []);
 
   return (
     <footer className="py-8 sm:py-12 relative border-t border-primary/20 px-4 sm:px-6 lg:px-8">
@@ -82,41 +92,23 @@ export const Footer: React.FC = () => {
         </div>
       </div>
 
-      {/* Floating Elements */}
+      {/* Floating Elements - Static positions for performance */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {[...Array(5)].map((_, i) => {
-          // Generate random values once per render for each floating element
-          const left = Math.random() * 100;
-          const top = Math.random() * 100;
-          const animationDelay = Math.random() * 3;
-          const animationDuration = 3 + Math.random() * 2;
-
-          // Create a unique class for each floating element
-          const floatClass = `float-elem-${i}`;
-
-          // Inject the style into the document head (for demo purposes, ideally use a CSS-in-JS solution or pre-generate classes)
-          if (typeof window !== 'undefined' && !document.getElementById(floatClass)) {
-            const style = document.createElement('style');
-            style.id = floatClass;
-            style.innerHTML = `
-              .${floatClass} {
-                left: ${left}%;
-                top: ${top}%;
-                animation-delay: ${animationDelay}s;
-                animation-duration: ${animationDuration}s;
-              }
-            `;
-            document.head.appendChild(style);
-          }
-
-          return (
-            <div
-              key={i}
-              className={`absolute w-1 h-1 sm:w-2 sm:h-2 bg-primary rounded-full animate-float opacity-30 ${floatClass}`}
-            />
-          );
-        })}
+        {floatingElements.map((elem) => (
+          <div
+            key={elem.id}
+            className="absolute w-1 h-1 sm:w-2 sm:h-2 bg-primary rounded-full animate-float opacity-30"
+            style={{
+              left: elem.left,
+              top: elem.top,
+              animationDelay: elem.animationDelay,
+              animationDuration: elem.animationDuration,
+            }}
+          />
+        ))}
       </div>
     </footer>
   );
-};
+});
+
+Footer.displayName = 'Footer';

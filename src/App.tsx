@@ -1,39 +1,53 @@
+import { lazy, Suspense, memo } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
-
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ProductionLoader } from "@/components/ProductionLoader";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
-import { ContactDashboard } from "./pages/ContactDashboard";
 
+// Lazy load pages for better initial load performance
+const Index = lazy(() => import('./pages/Index'));
+const NotFound = lazy(() => import('./pages/NotFound'));
+const ContactDashboard = lazy(() => import('./pages/ContactDashboard').then(m => ({ default: m.ContactDashboard })));
+
+// Minimal loading spinner for route transitions
+const RouteLoader = memo(() => (
+  <div className="min-h-screen flex items-center justify-center bg-background">
+    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+  </div>
+));
+RouteLoader.displayName = 'RouteLoader';
+
+// Optimized QueryClient with aggressive caching
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes
-      gcTime: 10 * 60 * 1000, // 10 minutes
+      staleTime: 10 * 60 * 1000, // 10 minutes
+      gcTime: 30 * 60 * 1000, // 30 minutes
+      refetchOnWindowFocus: false,
+      retry: 1,
     },
   },
 });
 
-const App = () => (
+const App = memo(() => (
   <ErrorBoundary>
     <QueryClientProvider client={queryClient}>
-      <ProductionLoader>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <Suspense fallback={<RouteLoader />}>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/dashboard" element={<ContactDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </BrowserRouter>
-      </ProductionLoader>
+        </Suspense>
+      </BrowserRouter>
     </QueryClientProvider>
   </ErrorBoundary>
-);
+));
+
+App.displayName = 'App';
 
 export default App;
