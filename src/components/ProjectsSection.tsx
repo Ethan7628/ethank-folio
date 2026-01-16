@@ -18,7 +18,7 @@ export const ProjectsSection: React.FC = () => {
       longDescription: 'Built with TypeScript, this application allows citizens to report corruption, infrastructure issues, and other civic concerns with location tracking and status updates.',
       image: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&h=400&fit=crop',
       tech: ['TypeScript', 'React', 'Node.js', 'PostgreSQL'],
-      category: 'Personal',
+      category: 'Team',
       liveUrl: 'https://github.com/Ethan7628/i-reporter',
       githubUrl: 'https://github.com/Ethan7628/i-reporter',
       features: ['Incident Reporting', 'Location Tracking', 'Status Updates', 'Admin Dashboard'],
