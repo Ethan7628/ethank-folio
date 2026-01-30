@@ -276,13 +276,13 @@ export const ProjectsSection: React.FC = () => {
         </div>
 
         {/* Filter Buttons */}
-        <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-8 sm:mb-12">
+        <div className="flex justify-start sm:justify-center gap-3 sm:gap-4 mb-8 sm:mb-12 overflow-x-auto scrollbar-hide pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
           {categories.map((category) => (
             <Button
               key={category}
               variant={filter === category ? "gradient" : "outline"}
               onClick={() => setFilter(category)}
-              className="rounded-full"
+              className="rounded-full whitespace-nowrap flex-shrink-0"
             >
               {category}
             </Button>
