@@ -120,38 +120,37 @@ const HeroSectionComponent: React.FC = memo(() => {
           </div>
 
           {/* Enhanced CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 lg:gap-6 justify-center items-center animate-slide-up px-4 anim-delay-600 max-w-2xl mx-auto pt-4">
+          <div className="flex flex-row flex-wrap gap-2 sm:gap-4 lg:gap-6 justify-center items-center animate-slide-up px-4 anim-delay-600 max-w-2xl mx-auto pt-4">
             <Button
               variant="gradient"
-              size="lg"
-              className="rounded-full w-full sm:w-auto"
+              className="rounded-full text-xs sm:text-sm px-3 py-2 sm:px-6 sm:py-3 h-auto"
               onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
             >
-              <Play className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-              View My Work
+              <Play className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">View My Work</span>
+              <span className="sm:hidden">Work</span>
             </Button>
 
             <Button
-            // onClick={downloadCV}
               variant="outline"
-              size="lg"
-              className="rounded-full w-full sm:w-auto"
+              className="rounded-full text-xs sm:text-sm px-3 py-2 sm:px-6 sm:py-3 h-auto"
               asChild
             >
               <a href={CV_PATH} download="Kusasirakwe_Ethan_Developer_CV_v1.pdf">
-                <Download className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                Download CV
+                <Download className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">Download CV</span>
+                <span className="sm:hidden">CV</span>
               </a>
             </Button>
 
             <Button
               variant="ghost"
-              size="lg"
               onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-              className="rounded-full w-full sm:w-auto border border-muted-foreground/20 hover:border-primary"
+              className="rounded-full text-xs sm:text-sm px-3 py-2 sm:px-6 sm:py-3 h-auto border border-muted-foreground/20 hover:border-primary"
             >
-              <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-              Get In Touch
+              <MessageSquare className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Get In Touch</span>
+              <span className="sm:hidden">Contact</span>
             </Button>
           </div>
         </div>
