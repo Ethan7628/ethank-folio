@@ -77,6 +77,10 @@ const HeroSectionComponent: React.FC = memo(() => {
                 <img
                   src={theme === 'dark' ? "/uploads/darktheme-enhanced.jpg" : "/uploads/790aa63d-8736-498b-b561-e0884f2609a7.png"}
                   alt="Ethan Kusasirakwe"
+                  width={192}
+                  height={192}
+                  fetchPriority="high"
+                  decoding="async"
                   className="w-[calc(100%-8px)] h-[calc(100%-8px)] rounded-full object-cover animate-hologram-flicker"
                 />
               </div>
