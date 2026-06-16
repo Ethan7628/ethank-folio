@@ -33,7 +33,7 @@ const HeroSectionComponent: React.FC = memo(() => {
   const handleVoiceGreeting = () => {
     if ('speechSynthesis' in window) {
       const utterance = new SpeechSynthesisUtterance(
-        "Hello! How are you? I'm Ethan Kusasirakwe, a software developer and creative technologist specializing in full-stack development and innovative digital solutions."
+        "Hello! I'm Ethan Kusasirakwe, a Software Developer and Creative Technologist focused on full-stack development and crafting innovative digital experiences. I combine technical expertise with creative problem-solving to build impactful solutions that drive results."
       );
       utterance.rate = 0.9;
       utterance.pitch = 1;
