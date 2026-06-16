@@ -90,6 +90,7 @@ const HeroSectionComponent: React.FC = memo(() => {
                 variant="ghost"
                 size="sm"
                 onClick={handleVoiceGreeting}
+                aria-label={isVoicePlaying ? 'Stop voice greeting' : 'Play voice greeting'}
                 className="rounded-full w-8 h-8 sm:w-12 sm:h-12 p-0 hover:scale-110 transition-transform"
               >
                 {isVoicePlaying ? (

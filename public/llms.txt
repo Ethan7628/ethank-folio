@@ -1,0 +1,7 @@
+# Ethan Kusasirakwe — Portfolio
+
+> Portfolio of Ethan Kusasirakwe, a full-stack software developer and creative technologist based in Kampala, Uganda, specializing in React, TypeScript, and modern web technologies.
+
+## Pages
+
+- [Home](/): About, skills, featured projects, experience, testimonials, and contact form.

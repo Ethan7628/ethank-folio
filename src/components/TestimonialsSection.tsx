@@ -186,6 +186,7 @@ export const TestimonialsSection: React.FC = () => {
             <Button
               variant="outline"
               size="icon"
+              aria-label="Previous testimonial"
               onClick={prevTestimonial}
             >
               <ChevronLeft className="w-4 h-4" />
@@ -211,6 +212,7 @@ export const TestimonialsSection: React.FC = () => {
             <Button
               variant="outline"
               size="icon"
+              aria-label="Next testimonial"
               onClick={nextTestimonial}
             >
               <ChevronRight className="w-4 h-4" />
