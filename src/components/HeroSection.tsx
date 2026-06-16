@@ -77,6 +77,10 @@ const HeroSectionComponent: React.FC = memo(() => {
                 <img
                   src={theme === 'dark' ? "/uploads/darktheme-enhanced.jpg" : "/uploads/790aa63d-8736-498b-b561-e0884f2609a7.png"}
                   alt="Ethan Kusasirakwe"
+                  width={192}
+                  height={192}
+                  fetchPriority="high"
+                  decoding="async"
                   className="w-[calc(100%-8px)] h-[calc(100%-8px)] rounded-full object-cover animate-hologram-flicker"
                 />
               </div>
@@ -90,6 +94,7 @@ const HeroSectionComponent: React.FC = memo(() => {
                 variant="ghost"
                 size="sm"
                 onClick={handleVoiceGreeting}
+                aria-label={isVoicePlaying ? 'Stop voice greeting' : 'Play voice greeting'}
                 className="rounded-full w-8 h-8 sm:w-12 sm:h-12 p-0 hover:scale-110 transition-transform"
               >
                 {isVoicePlaying ? (

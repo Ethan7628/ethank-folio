@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { EnhancedCard, EnhancedCardContent } from '@/components/ui/enhanced-card';
@@ -124,6 +125,15 @@ export const ContactDashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background p-4 sm:p-6 lg:p-8">
+      <Helmet>
+        <title>Contact Dashboard — Ethan Kusasirakwe</title>
+        <meta name="description" content="Admin dashboard for reviewing portfolio contact form submissions from visitors of Ethan Kusasirakwe's portfolio." />
+        <meta name="robots" content="noindex, nofollow" />
+        <link rel="canonical" href="https://ethans-future-folio.lovable.app/dashboard" />
+        <meta property="og:title" content="Contact Dashboard — Ethan Kusasirakwe" />
+        <meta property="og:description" content="Admin dashboard for portfolio contact submissions." />
+        <meta property="og:url" content="https://ethans-future-folio.lovable.app/dashboard" />
+      </Helmet>
       <div className="container mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">Contact Dashboard</h1>
@@ -136,7 +146,7 @@ export const ContactDashboard: React.FC = () => {
           <EnhancedCard>
             <EnhancedCardContent className="p-8 text-center">
               <Mail className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No Contact Submissions</h3>
+              <h2 className="text-lg font-semibold mb-2">No Contact Submissions</h2>
               <p className="text-muted-foreground">
                 Contact form submissions will appear here when visitors use your portfolio contact form.
               </p>
@@ -150,9 +160,9 @@ export const ContactDashboard: React.FC = () => {
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-4">
-                        <h3 className="text-lg font-semibold text-foreground">
+                        <h2 className="text-lg font-semibold text-foreground">
                           {contact.name}
-                        </h3>
+                        </h2>
                         <Badge variant="secondary" className="text-xs">
                           {contact.status || 'New'}
                         </Badge>
@@ -225,7 +235,7 @@ export const ContactDashboard: React.FC = () => {
                   <Separator className="my-4" />
 
                   <div>
-                    <h4 className="font-medium text-foreground mb-2">Message:</h4>
+                    <h3 className="font-medium text-foreground mb-2">Message:</h3>
                     <p className="text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed bg-muted/30 p-3 rounded-md">
                       {contact.message}
                     </p>

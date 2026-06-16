@@ -1,4 +1,5 @@
 import { lazy, Suspense, memo } from 'react';
+import { HelmetProvider } from 'react-helmet-async';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -32,19 +33,21 @@ const queryClient = new QueryClient({
 
 const App = memo(() => (
   <ErrorBoundary>
-    <QueryClientProvider client={queryClient}>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Suspense fallback={<RouteLoader />}>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/dashboard" element={<ContactDashboard />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
-      </BrowserRouter>
-    </QueryClientProvider>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Suspense fallback={<RouteLoader />}>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/dashboard" element={<ContactDashboard />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </HelmetProvider>
   </ErrorBoundary>
 ));
 

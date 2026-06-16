@@ -1,5 +1,5 @@
 import { lazy, Suspense, memo } from 'react';
-import { HelmetProvider } from 'react-helmet-async';
+import { Helmet } from 'react-helmet-async';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { Navigation } from '@/components/Navigation';
 import { HeroSection } from '@/components/HeroSection';
@@ -28,41 +28,43 @@ const Index = memo(() => {
   usePageAnalytics('home');
 
   return (
-    <HelmetProvider>
-      <ThemeProvider>
-        <SEOHead />
-        <ScrollProgressIndicator />
-        <div className="min-h-screen bg-background text-foreground">
-          <Navigation />
-          <main>
-            <div id="home">
-              <HeroSection />
-            </div>
-            <Suspense fallback={<SectionLoader />}>
-              <AboutSection />
-            </Suspense>
-            <Suspense fallback={<SectionLoader />}>
-              <SkillsSection />
-            </Suspense>
-            <Suspense fallback={<SectionLoader />}>
-              <ProjectsSection />
-            </Suspense>
-            <Suspense fallback={<SectionLoader />}>
-              <ExperienceSection />
-            </Suspense>
-            <Suspense fallback={<SectionLoader />}>
-              <TestimonialsSection />
-            </Suspense>
-            <Suspense fallback={<SectionLoader />}>
-              <ContactSection />
-            </Suspense>
-          </main>
-          <Suspense fallback={null}>
-            <Footer />
+    <ThemeProvider>
+      <Helmet>
+        <link rel="canonical" href="https://ethans-future-folio.lovable.app/" />
+        <meta property="og:url" content="https://ethans-future-folio.lovable.app/" />
+      </Helmet>
+      <SEOHead />
+      <ScrollProgressIndicator />
+      <div className="min-h-screen bg-background text-foreground">
+        <Navigation />
+        <main>
+          <div id="home">
+            <HeroSection />
+          </div>
+          <Suspense fallback={<SectionLoader />}>
+            <AboutSection />
           </Suspense>
-        </div>
-      </ThemeProvider>
-    </HelmetProvider>
+          <Suspense fallback={<SectionLoader />}>
+            <SkillsSection />
+          </Suspense>
+          <Suspense fallback={<SectionLoader />}>
+            <ProjectsSection />
+          </Suspense>
+          <Suspense fallback={<SectionLoader />}>
+            <ExperienceSection />
+          </Suspense>
+          <Suspense fallback={<SectionLoader />}>
+            <TestimonialsSection />
+          </Suspense>
+          <Suspense fallback={<SectionLoader />}>
+            <ContactSection />
+          </Suspense>
+        </main>
+        <Suspense fallback={null}>
+          <Footer />
+        </Suspense>
+      </div>
+    </ThemeProvider>
   );
 });
 

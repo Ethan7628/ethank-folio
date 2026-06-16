@@ -371,6 +371,7 @@ export const ProjectsSection: React.FC = () => {
                     <Button
                       variant="outline"
                       size="icon"
+                      aria-label={`View ${project.title} source on GitHub`}
                       onClick={() => window.open(project.githubUrl, '_blank')}
                     >
                       <Github className="w-4 h-4" />
@@ -378,6 +379,7 @@ export const ProjectsSection: React.FC = () => {
                     <Button
                       variant="ghost"
                       size="icon"
+                      aria-label={`Preview ${project.title}`}
                       className="border border-muted-foreground/20"
                     >
                       <Eye className="w-4 h-4" />

@@ -11,8 +11,8 @@ interface SEOHeadProps {
 }
 
 export const SEOHead = ({
-  title = "Ethan Kusasirakwe - Full-Stack Developer & Creative Technologist",
-  description = "Experienced full-stack developer specializing in React, TypeScript, Node.js, and modern web technologies. Building scalable applications and exceptional user experiences.",
+  title = "Ethan Kusasirakwe — Developer & Creative Technologist",
+  description = "Full-stack developer specializing in React, TypeScript and Node.js — building scalable apps and polished user experiences.",
   keywords = [
     "full-stack developer",
     "React developer", 
