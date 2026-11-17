@@ -53,35 +53,37 @@
   }
 
   .dark {
-    /* Pure dark theme - consistent darkness */
-    --background: 215 28% 7%;
-    --foreground: 210 40% 98%;
-    --card: 215 28% 10%;
-    --card-foreground: 210 40% 98%;
-    --popover: 215 28% 10%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217 91% 65%;
-    --primary-foreground: 215 28% 7%;
-    --secondary: 215 28% 17%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 215 28% 17%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 215 28% 20%;
-    --accent-foreground: 210 40% 98%;
+    /* Midnight navy (#031749) + electric blue (#2563EB) */
+    --background: 226 75% 5%;
+    --foreground: 220 30% 96%;
+    --card: 224 70% 9%;
+    --card-foreground: 220 30% 96%;
+    --popover: 224 70% 9%;
+    --popover-foreground: 220 30% 96%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 224 92% 15%;
+    --secondary-foreground: 220 30% 96%;
+    --muted: 224 60% 13%;
+    --muted-foreground: 218 20% 72%;
+    --accent: 224 70% 18%;
+    --accent-foreground: 220 30% 96%;
     --destructive: 0 62% 55%;
     --destructive-foreground: 210 40% 98%;
-    --border: 215 28% 20%;
-    --input: 215 28% 20%;
-    --ring: 217 91% 65%;
-    --sidebar-background: 215 28% 7%;
-    --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 217 91% 65%;
-    --sidebar-primary-foreground: 215 28% 7%;
-    --sidebar-accent: 215 28% 17%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 215 28% 20%;
-    --sidebar-ring: 217 91% 65%;
+    --border: 222 50% 20%;
+    --input: 222 50% 20%;
+    --ring: 221 83% 53%;
+    --silver: 220 15% 78%;
+    --sidebar-background: 226 75% 5%;
+    --sidebar-foreground: 220 30% 96%;
+    --sidebar-primary: 221 83% 53%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 224 60% 13%;
+    --sidebar-accent-foreground: 220 30% 96%;
+    --sidebar-border: 222 50% 20%;
+    --sidebar-ring: 221 83% 53%;
   }
+
 
   .beige {
     /* Warm beige theme - consistent warmth */
@@ -186,13 +188,13 @@
   }
 
   .dark body {
-    background: linear-gradient(135deg,
-        rgba(15, 23, 42, 0.95) 0%,
-        rgba(30, 41, 59, 0.95) 25%,
-        rgba(51, 65, 85, 0.95) 50%,
-        rgba(30, 41, 59, 0.95) 75%,
-        rgba(15, 23, 42, 0.95) 100%);
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -10%, hsl(221 83% 53% / 0.25), transparent 70%),
+      radial-gradient(ellipse 60% 40% at 100% 100%, hsl(224 92% 15% / 0.8), transparent 70%),
+      hsl(226 75% 5%);
+    background-attachment: fixed;
   }
+
 
   /* Glass effects */
   .glass-effect {
@@ -388,6 +390,8 @@
   }
 
   /* Smooth scrolling */
+  html.lenis, html.lenis body { height: auto; }
+  @media (pointer: fine) { html.has-cursor, html.has-cursor * { cursor: none !important; } }
   html {
     scroll-behavior: smooth;
   }

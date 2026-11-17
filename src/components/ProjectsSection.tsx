@@ -294,7 +294,9 @@ export const ProjectsSection: React.FC = () => {
           {displayedProjects.map((project, index) => (
             <Card
               key={project.id}
-              className="professional-card group hover:scale-105 transition-all duration-300 overflow-hidden animate-slide-up"
+              data-tilt
+              data-cursor="view"
+              className="professional-card group hover:shadow-[0_0_40px_-8px_hsl(var(--primary)/0.6)] hover:border-primary/60 transition-[box-shadow,border-color] duration-300 overflow-hidden animate-slide-up"
               style={{ animationDelay: `${index * 0.1}s` }}
               onMouseEnter={() => setHoveredProject(project.id)}
               onMouseLeave={() => setHoveredProject(null)}

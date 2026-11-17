@@ -5,7 +5,7 @@ import { Navigation } from '@/components/Navigation';
 import { HeroSection } from '@/components/HeroSection';
 import { SEOHead } from '@/components/enhanced/SEOHead';
 import { ScrollProgressIndicator } from '@/components/enhanced/ProgressIndicator';
-import { SmoothScroll, MotionCursor, MotionSection, HeroParallax } from '@/components/motion/MotionLayer';
+import { SmoothScroll, MotionCursor, MotionSection, HeroParallax, Interactions } from '@/components/motion/MotionLayer';
 import { usePageAnalytics } from '@/hooks/useAnalytics';
 
 // Lazy load below-the-fold sections for faster initial paint
@@ -39,14 +39,15 @@ const Index = memo(() => {
       <ScrollProgressIndicator />
       <SmoothScroll />
       <MotionCursor />
-      <div className="min-h-screen bg-background text-foreground">
+      <div aria-hidden className="pointer-events-none fixed inset-0 z-0">
+        <Suspense fallback={null}><TechScene /></Suspense>
+      </div>
+      <Interactions />
+      <div className="relative z-10 min-h-screen text-foreground">
         <Navigation />
         <main>
-          <div id="home" className="relative">
-            <div aria-hidden className="pointer-events-none absolute inset-0 z-0 opacity-50">
-              <Suspense fallback={null}><TechScene /></Suspense>
-            </div>
-            <div className="relative z-10"><HeroParallax><HeroSection /></HeroParallax></div>
+          <div id="home">
+            <HeroParallax><HeroSection /></HeroParallax>
           </div>
           <Suspense fallback={<SectionLoader />}>
             <MotionSection><AboutSection /></MotionSection>
