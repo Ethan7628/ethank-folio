@@ -5,6 +5,7 @@ import { Navigation } from '@/components/Navigation';
 import { HeroSection } from '@/components/HeroSection';
 import { SEOHead } from '@/components/enhanced/SEOHead';
 import { ScrollProgressIndicator } from '@/components/enhanced/ProgressIndicator';
+import { SmoothScroll, MotionCursor, MotionSection, HeroParallax } from '@/components/motion/MotionLayer';
 import { usePageAnalytics } from '@/hooks/useAnalytics';
 
 // Lazy load below-the-fold sections for faster initial paint
@@ -35,29 +36,31 @@ const Index = memo(() => {
       </Helmet>
       <SEOHead />
       <ScrollProgressIndicator />
+      <SmoothScroll />
+      <MotionCursor />
       <div className="min-h-screen bg-background text-foreground">
         <Navigation />
         <main>
           <div id="home">
-            <HeroSection />
+            <HeroParallax><HeroSection /></HeroParallax>
           </div>
           <Suspense fallback={<SectionLoader />}>
-            <AboutSection />
+            <MotionSection><AboutSection /></MotionSection>
           </Suspense>
           <Suspense fallback={<SectionLoader />}>
-            <SkillsSection />
+            <MotionSection><SkillsSection /></MotionSection>
           </Suspense>
           <Suspense fallback={<SectionLoader />}>
-            <ProjectsSection />
+            <MotionSection><ProjectsSection /></MotionSection>
           </Suspense>
           <Suspense fallback={<SectionLoader />}>
-            <ExperienceSection />
+            <MotionSection><ExperienceSection /></MotionSection>
           </Suspense>
           <Suspense fallback={<SectionLoader />}>
-            <TestimonialsSection />
+            <MotionSection><TestimonialsSection /></MotionSection>
           </Suspense>
           <Suspense fallback={<SectionLoader />}>
-            <ContactSection />
+            <MotionSection><ContactSection /></MotionSection>
           </Suspense>
         </main>
         <Suspense fallback={null}>
