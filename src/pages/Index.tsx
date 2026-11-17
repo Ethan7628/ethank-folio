@@ -15,6 +15,7 @@ const ProjectsSection = lazy(() => import('@/components/ProjectsSection').then(m
 const ExperienceSection = lazy(() => import('@/components/ExperienceSection').then(m => ({ default: m.ExperienceSection })));
 const TestimonialsSection = lazy(() => import('@/components/TestimonialsSection').then(m => ({ default: m.TestimonialsSection })));
 const ContactSection = lazy(() => import('@/components/ContactSection').then(m => ({ default: m.ContactSection })));
+const TechScene = lazy(() => import('@/components/motion/TechScene'));
 const Footer = lazy(() => import('@/components/Footer').then(m => ({ default: m.Footer })));
 
 // Minimal section loader
@@ -41,8 +42,11 @@ const Index = memo(() => {
       <div className="min-h-screen bg-background text-foreground">
         <Navigation />
         <main>
-          <div id="home">
-            <HeroParallax><HeroSection /></HeroParallax>
+          <div id="home" className="relative">
+            <div aria-hidden className="pointer-events-none absolute inset-0 z-0 opacity-50">
+              <Suspense fallback={null}><TechScene /></Suspense>
+            </div>
+            <div className="relative z-10"><HeroParallax><HeroSection /></HeroParallax></div>
           </div>
           <Suspense fallback={<SectionLoader />}>
             <MotionSection><AboutSection /></MotionSection>
