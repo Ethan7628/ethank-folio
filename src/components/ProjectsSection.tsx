@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, Github, Play, Eye, Volume2, ChevronDown, ChevronUp } from 'lucide-react';
+import { Github } from 'lucide-react';
+import { BookCarousel } from '@/components/projects/BookCarousel';
 
 export const ProjectsSection: React.FC = () => {
   const [filter, setFilter] = useState('All');
@@ -289,131 +290,7 @@ export const ProjectsSection: React.FC = () => {
           ))}
         </div>
 
-        {/* Projects Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {displayedProjects.map((project, index) => (
-            <Card
-              key={project.id}
-              data-tilt
-              data-cursor="view"
-              className="professional-card group hover:shadow-[0_0_40px_-8px_hsl(var(--primary)/0.6)] hover:border-primary/60 transition-[box-shadow,border-color] duration-300 overflow-hidden animate-slide-up"
-              style={{ animationDelay: `${index * 0.1}s` }}
-              onMouseEnter={() => setHoveredProject(project.id)}
-              onMouseLeave={() => setHoveredProject(null)}
-            >
-              <div className="relative overflow-hidden">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                <div className="absolute top-4 right-4 flex space-x-2">
-                  <Badge
-                    variant={project.status === 'Completed' ? 'success' : project.status === 'In Progress' ? 'info' : 'warning'}
-                  >
-                    {project.status}
-                  </Badge>
-                </div>
-                <div className="absolute bottom-4 left-4 right-4">
-                  <div className="flex space-x-2">
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      onClick={() => playVoiceNote(project.title)}
-                      className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-white/20"
-                    >
-                      <Volume2 className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </div>
-              </div>
-
-              <CardContent className="p-4 sm:p-6">
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-lg sm:text-xl font-bold mb-2 text-foreground group-hover:text-primary transition-colors">
-                      {project.title}
-                    </h3>
-                    <p className="text-muted-foreground text-sm">
-                      {hoveredProject === project.id ? project.longDescription : project.description}
-                    </p>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2">
-                    {project.tech.slice(0, 3).map((tech) => (
-                      <Badge key={tech} variant="info" className="text-xs">
-                        {tech}
-                      </Badge>
-                    ))}
-                    {project.tech.length > 3 && (
-                      <Badge variant="info" className="text-xs">
-                        +{project.tech.length - 3}
-                      </Badge>
-                    )}
-                  </div>
-
-                  <div className="flex flex-wrap gap-1 text-xs text-muted-foreground">
-                    {project.features.map((feature, i) => (
-                      <span key={i}>
-                        {feature}{i < project.features.length - 1 && ' • '}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="flex space-x-3 pt-6">
-                    <Button
-                      variant="gradient"
-                      className="flex-1"
-                      onClick={() => window.open(project.liveUrl, '_blank')}
-                    >
-                      <ExternalLink className="w-4 h-4 mr-2" />
-                      Live Demo
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      aria-label={`View ${project.title} source on GitHub`}
-                      onClick={() => window.open(project.githubUrl, '_blank')}
-                    >
-                      <Github className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      aria-label={`Preview ${project.title}`}
-                      className="border border-muted-foreground/20"
-                    >
-                      <Eye className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Show More Button */}
-        {filteredProjects.length > 6 && (
-          <div className="text-center mt-8">
-            <button
-              className="flex items-center justify-center w-full py-2 text-sm text-primary hover:text-secondary transition-colors"
-              onClick={() => setShowAll(!showAll)}
-            >
-              {showAll ? (
-                <>
-                  <ChevronUp className="w-4 h-4 mr-2" />
-                  Show Less
-                </>
-              ) : (
-                <>
-                  <ChevronDown className="w-4 h-4 mr-2" />
-                  Show More ({filteredProjects.length - 6} more)
-                </>
-              )}
-            </button>
-          </div>
-        )}
+        <BookCarousel projects={filteredProjects} />
 
         <div className="text-center mt-8 sm:mt-12">
           <Button
