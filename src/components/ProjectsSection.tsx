@@ -8,8 +8,6 @@ import { BookCarousel } from '@/components/projects/BookCarousel';
 
 export const ProjectsSection: React.FC = () => {
   const [filter, setFilter] = useState('All');
-  const [hoveredProject, setHoveredProject] = useState<string | null>(null);
-  const [showAll, setShowAll] = useState(false);
 
   const projects = [
     {
@@ -243,7 +241,6 @@ export const ProjectsSection: React.FC = () => {
     ? projects
     : projects.filter(project => project.category === filter);
 
-  const displayedProjects = showAll ? filteredProjects : filteredProjects.slice(0, 6);
 
   const playVoiceNote = (projectTitle: string) => {
     if ('speechSynthesis' in window) {

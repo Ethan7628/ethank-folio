@@ -1,2 +1,3 @@
 - Motion lives in src/components/motion: one fixed lazy-loaded R3F scene reads scroll/pointer from a plain object (no React state per frame), and cursor/tilt/magnetic effects are delegated listeners keyed on data-tilt / data-cursor / data-magnetic attributes — so sections stay untouched and effects are opt-in.
 - Framer Motion + Lenis are the motion engine; GSAP is intentionally not added — avoids a duplicate animation library.
+- Featured projects render as a 3D book ring (src/components/projects/BookCarousel.tsx) built with CSS 3D + Framer Motion — no extra WebGL canvas per card keeps it light.
