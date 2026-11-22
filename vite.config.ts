@@ -39,12 +39,12 @@ export default defineConfig(({ mode }) => ({
     react(),
   ],
   resolve: {
-    dedupe: ['react', 'react-dom'],
+    dedupe: ['react', 'react-dom', 'react/jsx-runtime', 'three', '@react-three/fiber'],
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
   optimizeDeps: {
-    include: ['react', 'react-dom']
+    include: ['react', 'react-dom', 'react/jsx-runtime', 'react-dom/client', 'framer-motion', 'lenis']
   },
 }));
