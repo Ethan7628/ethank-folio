@@ -43,7 +43,7 @@ function Core({ color }: { color: THREE.Color }) {
       <Float speed={1.4} floatIntensity={1.2} rotationIntensity={0.4}>
         <mesh ref={outer}>
           <icosahedronGeometry args={[1.9, 1]} />
-          <meshBasicMaterial color={color} wireframe transparent opacity={0.3} />
+          <meshBasicMaterial color={color} wireframe transparent opacity={0.38} />
         </mesh>
         <mesh ref={inner}>
           <octahedronGeometry args={[0.7, 0]} />
@@ -148,7 +148,7 @@ export default function TechScene() {
   return (
     <Canvas dpr={mobile ? [1, 1.25] : [1, 1.5]} frameloop={reduced ? 'demand' : 'always'}
       camera={{ position: [0, 0, 7.5], fov: 50 }} gl={{ antialias: !mobile, alpha: true, powerPreference: 'high-performance' }}
-      className="opacity-60">
+      className="opacity-75">
       <Lights color={color} />
       <Core color={color} />
       <Shards count={mobile ? 6 : 14} />

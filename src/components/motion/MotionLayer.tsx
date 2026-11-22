@@ -133,3 +133,26 @@ export const HeroParallax = ({ children }: { children: ReactNode }) => {
     </motion.div>
   );
 };
+
+/** Kinetic headings: section h2s split into masked words that slide up on view. Delegated, so sections stay untouched. */
+export const KineticHeadings = () => {
+  useEffect(() => {
+    if (prefersReduced()) return;
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('kin-in'); io.unobserve(e.target); }
+    }), { threshold: 0.4 });
+    const prep = () => document.querySelectorAll<HTMLElement>('main section h2:not([data-kin])').forEach(h => {
+      h.dataset.kin = '1';
+      if ([...h.childNodes].some(n => n.nodeType !== 3)) return;
+      const words = (h.textContent || '').trim().split(/\s+/);
+      h.setAttribute('aria-label', words.join(' '));
+      h.innerHTML = words.map((w, i) => `<span class="kin-mask" aria-hidden="true"><span class="kin-word" style="transition-delay:${i * 90}ms">${w.replace(/</g, '&lt;')}</span></span>`).join(' ');
+      io.observe(h);
+    });
+    prep();
+    const mo = new MutationObserver(prep);
+    mo.observe(document.body, { childList: true, subtree: true });
+    return () => { mo.disconnect(); io.disconnect(); };
+  }, []);
+  return null;
+};

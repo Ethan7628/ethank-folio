@@ -4,11 +4,13 @@ import { Button } from '@/components/ui/button';
 import { Moon, Sun, Zap, Menu, X } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
 import { ChatDialog } from './ChatDialog';
+import { motion } from 'framer-motion';
 
 export const Navigation: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [active, setActive] = useState('');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,7 +18,9 @@ export const Navigation: React.FC = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && setActive(e.target.id)), { rootMargin: '-45% 0px -50% 0px' });
+    const t = setInterval(() => ['about','skills','projects','experience','contact'].forEach(id => { const el = document.getElementById(id); if (el && !el.dataset.navObs) { el.dataset.navObs = '1'; io.observe(el); } }), 800);
+    return () => { window.removeEventListener('scroll', handleScroll); io.disconnect(); clearInterval(t); };
   }, []);
 
   const navItems = [
@@ -47,14 +51,10 @@ export const Navigation: React.FC = () => {
     }
   };
 
-  const getNavBackground = () => {
-    if (!isScrolled) return 'bg-transparent';
-    return 'glass-effect backdrop-blur-lg';
-  };
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${getNavBackground()}`}>
-      <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
+    <nav className="fixed top-0 left-0 right-0 z-50 px-3 pt-3 transition-all duration-300">
+      <div className={`container mx-auto max-w-6xl ${isMobileMenuOpen ? "rounded-3xl glass-effect" : "rounded-full"} border px-4 sm:px-6 py-2 sm:py-2.5 transition-all duration-500 ${isScrolled ? 'glass-effect border-primary/30' : 'border-transparent'}`}>
         <div className="flex items-center justify-between">
           {/* Logo */}
           <a href='#home' className="flex items-center space-x-2">
@@ -67,16 +67,16 @@ export const Navigation: React.FC = () => {
           </a>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
+          <div className="hidden lg:flex items-center space-x-1 xl:space-x-2">
             {navItems.map((item) => (
               <Button
                 key={item.label}
                 variant="ghost"
                 onClick={() => scrollToSection(item.href)}
-                className="text-foreground hover:text-primary font-medium text-sm xl:text-base relative group"
+                className={`relative isolate rounded-full font-medium text-sm xl:text-base hover:text-primary ${active === item.href.slice(1) ? 'text-primary-foreground' : 'text-foreground'}`}
               >
+                {active === item.href.slice(1) && <motion.span layoutId="nav-active" className="absolute inset-0 -z-10 rounded-full bg-primary shadow-[0_0_20px_hsl(var(--primary)/0.6)]" transition={{ type: 'spring', stiffness: 380, damping: 30 }} />}
                 {item.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
               </Button>
             ))}
           </div>
@@ -112,7 +112,7 @@ export const Navigation: React.FC = () => {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden mt-4 glass-effect rounded-lg p-4 space-y-3 sm:space-y-4 shadow-xl">
+          <div className="lg:hidden mt-3 glass-effect rounded-2xl p-4 space-y-3 sm:space-y-4 shadow-xl">
             {navItems.map((item) => (
               <Button
                 key={item.label}
