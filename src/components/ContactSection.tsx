@@ -97,11 +97,11 @@ const ContactSectionComponent: React.FC = memo(() => {
     try {
       // Save to Supabase
       console.log('[ContactForm] Saving to Supabase contacts table');
-      const { data: insertedData, error: dbError } = await supabase
+      // Visitors can't read contacts back (admin-only), so create the id here instead of selecting it.
+      const insertedData = { id: crypto.randomUUID(), created_at: new Date().toISOString() };
+      const { error: dbError } = await supabase
         .from('contacts')
-        .insert([trimmedData])
-        .select()
-        .single();
+        .insert([{ ...trimmedData, ...insertedData }]);
 
       if (dbError) {
         console.error('[ContactForm] Supabase insert failed:', dbError);
