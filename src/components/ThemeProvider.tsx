@@ -18,17 +18,20 @@ export const useTheme = () => {
   return context;
 };
 
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [theme, setTheme] = useState<Theme>('dark');
+const DEFAULT_THEME: Theme = 'dark';
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as Theme;
-    if (savedTheme && ['light', 'dark', 'beige'].includes(savedTheme)) {
-      setTheme(savedTheme);
-    } else {
-      setTheme('dark');
-    }
-  }, []);
+const readStoredTheme = (): Theme => {
+  if (typeof window === 'undefined') return DEFAULT_THEME;
+  try {
+    const saved = window.localStorage.getItem('theme') as Theme | null;
+    return saved && ['light', 'dark', 'beige'].includes(saved) ? saved : DEFAULT_THEME;
+  } catch {
+    return DEFAULT_THEME;
+  }
+};
+
+export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [theme, setTheme] = useState<Theme>(readStoredTheme);
 
   useEffect(() => {
     const root = document.documentElement;
