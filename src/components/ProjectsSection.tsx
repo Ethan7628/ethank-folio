@@ -11,6 +11,19 @@ export const ProjectsSection: React.FC = () => {
 
   const projects = [
     {
+      id: 'gp-smart-solutions',
+      title: 'GP Smart Solutions',
+      description: 'Professional IT & security solutions website for homes and businesses across Uganda — CCTV, networking, Wi-Fi, cabling and access control.',
+      longDescription: 'A modern business website for GP Smart Solutions Limited showcasing six core service areas (CCTV & Security, Networking & Wi-Fi, Fiber & Structured Cabling, Access Control, Business IT Infrastructure and PABX), with dedicated service pages, an equipment catalogue, free site-survey booking and direct WhatsApp contact with an IT expert.',
+      image: '/projects/gpsmartsolutions.jpg',
+      tech: ['React', 'TypeScript', 'Tailwind CSS', 'Vite'],
+      category: 'Freelance',
+      liveUrl: 'https://www.gpsmartsolutions.com',
+      githubUrl: '',
+      features: ['Service Pages', 'Free Site Survey Booking', 'WhatsApp Integration', 'Equipment Catalogue'],
+      status: 'Completed'
+    },
+    {
       id: 'i-reporter',
       title: 'i-Reporter',
       description: 'A civic engagement platform enabling citizens to report incidents and issues to authorities.',

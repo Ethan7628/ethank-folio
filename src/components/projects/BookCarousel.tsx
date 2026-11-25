@@ -55,7 +55,7 @@ const OpenBook = ({ p, onClose }: { p: BookProject; onClose: () => void }) => {
       <ul className="space-y-1 text-sm text-muted-foreground">{p.features.map(f => <li key={f}>▹ {f}</li>)}</ul>
       <div className="flex flex-wrap gap-2 pt-2">
         <Button variant="gradient" size="sm" onClick={() => window.open(p.liveUrl, '_blank')}><ExternalLink className="mr-2 h-4 w-4" />Live Demo</Button>
-        <Button variant="outline" size="icon" aria-label={`View ${p.title} source on GitHub`} onClick={() => window.open(p.githubUrl, '_blank')}><Github className="h-4 w-4" /></Button>
+        {p.githubUrl && <Button variant="outline" size="icon" aria-label={`View ${p.title} source on GitHub`} onClick={() => window.open(p.githubUrl, '_blank')}><Github className="h-4 w-4" /></Button>}
         <Button variant="outline" size="icon" aria-label={`Listen to ${p.title}`} onClick={speak}><Volume2 className="h-4 w-4" /></Button>
       </div>
     </div>,
